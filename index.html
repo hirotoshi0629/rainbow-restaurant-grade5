@@ -1,0 +1,3001 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>At a Restaurant - English Game</title>
+  <meta name="description" content="小学5年生向け。店員役とお客役を一人で練習できる英語レストランゲーム。">
+  <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff7043'/%3E%3Cpath d='M14 18h36v8a18 18 0 0 1-36 0z' fill='%23fff3e0'/%3E%3Cpath d='M19 38h26v8H19z' fill='%23fff'/%3E%3C/svg%3E">
+  <style>
+    @font-face {
+      font-family: 'NHHandwriting-Medium';
+      src: local('NHHandwriting-Medium'), local('NHHandwriting Medium'), url('NHHandwriting-Medium.otf');
+    }
+    
+    * {
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'NHHandwriting-Medium', "Hiragino Kaku Gothic ProN", "Meiryo", sans-serif;
+      background-color: #fce4ec;
+      background-image: radial-gradient(#f8bbd0 15%, transparent 16%), radial-gradient(#f8bbd0 15%, transparent 16%);
+      background-size: 30px 30px;
+      background-position: 0 0, 15px 15px;
+      margin: 0;
+      padding: 15px;
+      color: #333;
+      user-select: none;
+    }
+
+    .container {
+      max-width: 850px;
+      margin: 0 auto;
+      background: rgba(255, 255, 255, 0.95);
+      border-radius: 24px;
+      padding: 20px;
+      box-shadow: 0 12px 24px rgba(0,0,0,0.15);
+      position: relative;
+      border: 4px solid #fff;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 3px dashed #ff80ab;
+      padding-bottom: 12px;
+      margin-bottom: 15px;
+    }
+
+    .point-badge {
+      background: linear-gradient(135deg, #ff9800, #f57c00);
+      color: white;
+      padding: 8px 18px;
+      border-radius: 20px;
+      font-weight: bold;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 8px rgba(255,152,0,0.3);
+    }
+
+    /* ホーム画面 */
+    .home-screen {
+      text-align: center;
+      padding: 20px 10px;
+      background: #fff8e1;
+      border-radius: 20px;
+      border: 3px solid #ffe082;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .garland-banner {
+      display: flex;
+      justify-content: space-around;
+      margin-top: -20px;
+      margin-bottom: 15px;
+    }
+    .flag {
+      width: 0; height: 0;
+      border-left: 18px solid transparent;
+      border-right: 18px solid transparent;
+      border-top: 30px solid #f44336;
+    }
+    .flag:nth-child(2n) { border-top-color: #2196f3; }
+    .flag:nth-child(3n) { border-top-color: #4caf50; }
+    .flag:nth-child(4n) { border-top-color: #ffeb3b; }
+    .flag:nth-child(5n) { border-top-color: #9c27b0; }
+
+    .restaurant-sign {
+      background: linear-gradient(135deg, #5d4037, #3e2723);
+      color: #fff8e1;
+      display: inline-block;
+      padding: 12px 30px;
+      border-radius: 15px;
+      border: 4px solid #d7ccc8;
+      box-shadow: 0 6px 12px rgba(0,0,0,0.2);
+      margin-bottom: 15px;
+    }
+    .restaurant-sign h1 {
+      margin: 0;
+      font-size: 2rem;
+      letter-spacing: 2px;
+      text-shadow: 2px 2px 4px #000;
+    }
+
+    .role-buttons {
+      display: flex;
+      justify-content: center;
+      gap: 25px;
+      margin-top: 25px;
+      flex-wrap: wrap;
+    }
+
+    .role-card {
+      background: #ffffff;
+      border: 4px solid #ff9800;
+      border-radius: 20px;
+      padding: 20px;
+      width: 240px;
+      cursor: pointer;
+      transition: 0.3s;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      position: relative;
+    }
+
+    .role-card:hover {
+      transform: translateY(-8px) scale(1.02);
+      border-color: #e65100;
+      background: #fff3e0;
+    }
+
+    .role-card.clerk-card { border-color: #2196f3; }
+    .role-card.clerk-card:hover { background: #e3f2fd; }
+    .daily-role-status { width:max-content; margin:8px auto 0; padding:4px 9px; border-radius:999px; background:#eceff1; color:#546e7a; font-size:.8rem; font-weight:bold; }
+    .daily-role-status.done { background:#e8f5e9; color:#2e7d32; }
+
+    .role-icon {
+      font-size: 4.5rem;
+      margin-bottom: 10px;
+      filter: drop-shadow(0 4px 4px rgba(0,0,0,0.15));
+    }
+
+    .game-screen { display: none; }
+    .vocab-entry-btn { margin-top:24px; min-width:260px; padding:16px; border:3px solid #8e24aa; border-radius:16px; background:#f3e5f5; color:#4527a0; font-size:1.05rem; font-weight:bold; cursor:pointer; }
+    .vocab-entry-btn:hover { background:#8e24aa; color:#fff; }
+    .rush-entry-btn { margin:12px 6px 0; min-width:260px; padding:16px; border:3px solid #d84315; border-radius:16px; background:linear-gradient(135deg,#fff3e0,#ffccbc); color:#bf360c; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 0 #ffab91; }
+    .rush-entry-btn:hover { background:#d84315; color:#fff; transform:translateY(-2px); }
+    .vocab-screen { display:none; text-align:center; padding:12px; }
+    .vocab-home-btn { background:#78909c; color:white; padding:9px 16px; border:0; border-radius:12px; cursor:pointer; float:left; }
+    .vocab-toolbar { display:flex; gap:8px; justify-content:center; flex-wrap:wrap; margin:14px 0; }
+    .vocab-filter { padding:9px 13px; border:2px solid #8e24aa; border-radius:999px; background:#fff; color:#6a1b9a; font-weight:bold; cursor:pointer; }
+    .vocab-filter.active { background:#8e24aa; color:#fff; }
+    .vocab-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(135px,1fr)); gap:11px; margin-top:14px; }
+    .vocab-tile { position:relative; min-height:142px; padding:13px 7px; border:3px solid #ce93d8; border-radius:17px; background:#fff; color:#4527a0; cursor:pointer; box-shadow:0 4px 10px rgba(69,39,160,.1); transition:.18s; }
+    .vocab-tile:hover,.vocab-tile:focus-visible { transform:translateY(-3px); border-color:#7b1fa2; outline:none; }
+    .vocab-tile.hard { background:#fff3e0; border-color:#ff9800; }
+    .spoken-badge { display:none; position:absolute; top:5px; left:5px; padding:3px 7px; border-radius:999px; background:#2e7d32; color:#fff; font-size:.72rem; font-weight:bold; }
+    .vocab-tile.spoken .spoken-badge { display:block; }
+    .vocab-tile.mastered { border-color:#2e7d32; box-shadow:0 0 0 3px #c8e6c9,0 4px 10px rgba(46,125,50,.18); }
+    .vocab-tile.mastered .spoken-badge { background:linear-gradient(135deg,#2e7d32,#00897b); }
+    .listening-review-badge { display:none; margin:5px auto 0; width:max-content; padding:2px 7px; border-radius:999px; background:#e3f2fd; color:#0d47a1; font-size:.75rem; font-weight:bold; }
+    .vocab-tile.review .listening-review-badge { display:block; }
+    .vocab-picture { display:block; width:100%; height:82px; object-fit:contain; border-radius:10px; background:#fff; }
+    .vocab-tile-picture { margin:0 auto; }
+    .vocab-tile-word { display:block; margin-top:7px; font-size:1rem; font-weight:bold; }
+    .hard-badge { display:none; position:absolute; top:5px; right:5px; padding:3px 6px; border-radius:999px; background:#ff9800; color:#fff; font-size:.72rem; font-weight:bold; }
+    .vocab-tile.hard .hard-badge { display:block; }
+    .word-practice-overlay { display:none; position:fixed; inset:0; z-index:50; padding:18px; background:rgba(33,20,50,.64); align-items:center; justify-content:center; }
+    .word-practice-panel { width:min(560px,100%); max-height:94vh; overflow:auto; padding:22px; border:5px solid #ab47bc; border-radius:24px; background:#fff; box-shadow:0 18px 50px rgba(0,0,0,.32); text-align:center; }
+    .practice-word-icon { display:flex; justify-content:center; }
+    .practice-word-picture { width:220px; height:190px; object-fit:contain; border-radius:16px; background:#fff; }
+    .practice-word-text { margin:4px 0 14px; color:#4527a0; font-size:2.1rem; font-weight:bold; }
+    .practice-actions { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
+    .practice-btn { min-height:54px; padding:10px; border:0; border-radius:14px; color:#fff; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .practice-btn:disabled { opacity:.45; cursor:not-allowed; }
+    .speed-normal { background:#00acc1; }.speed-slow { background:#1976d2; }
+    .record-start { background:#e53935; }.record-start.recording { background:#b71c1c; animation:pulse 1s infinite; }
+    .record-play { background:#43a047; }.hard-toggle { background:#ff9800; grid-column:1/-1; }
+    .pronunciation-check { background:#1565c0; box-shadow:0 4px 0 #0d47a1; }
+    .pronunciation-check.listening { background:#e53935; box-shadow:0 4px 0 #b71c1c; }
+    .hard-toggle.on { background:#ef6c00; box-shadow:inset 0 0 0 3px #ffe0b2; }
+    .record-status { min-height:28px; margin:12px 0 4px; font-weight:bold; color:#5d4037; }
+    .pronunciation-result { display:none; margin:12px 0 2px; padding:11px; border-radius:12px; background:#e3f2fd; color:#0d47a1; font-weight:bold; }
+    .pronunciation-result.good { background:#e8f5e9; color:#1b5e20; border:2px solid #66bb6a; }
+    .pronunciation-result.retry { background:#fff3e0; color:#bf360c; border:2px solid #ffb74d; }
+    .practice-close { margin-top:13px; padding:9px 20px; border:0; border-radius:999px; background:#78909c; color:white; font-weight:bold; cursor:pointer; }
+    .listening-start { margin:12px 0 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#ff8f00,#f4511e); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(244,81,30,.25); }
+    .listening-start:hover { transform:translateY(-2px); }
+    .smart-practice-start { margin:12px 5px 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#7b1fa2,#3949ab); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(69,39,160,.25); }
+    .smart-practice-start:hover { transform:translateY(-2px); }
+    .smart-practice-progress { display:none; margin:0 0 10px; padding:9px 12px; border-radius:12px; background:#ede7f6; color:#4527a0; font-weight:bold; }
+    .smart-next { display:none; width:100%; margin-top:10px; padding:12px; border:0; border-radius:14px; background:linear-gradient(135deg,#7b1fa2,#3949ab); color:#fff; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .listening-overlay { display:none; position:fixed; inset:0; z-index:60; padding:16px; background:rgba(31,20,45,.72); align-items:center; justify-content:center; }
+    .listening-panel { width:min(760px,100%); max-height:96vh; overflow:auto; padding:20px; border:5px solid #ff9800; border-radius:24px; background:#fffdf5; text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.32); }
+    .listening-top { display:flex; justify-content:space-between; gap:10px; color:#6a1b9a; font-size:1.05rem; font-weight:bold; }
+    .listening-hear { margin:12px 0; padding:13px 24px; border:0; border-radius:999px; background:#00acc1; color:#fff; font-size:1.1rem; font-weight:bold; cursor:pointer; }
+    .listening-choices { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .listening-choice { min-height:175px; padding:10px; border:4px solid #ce93d8; border-radius:18px; background:#fff; color:#4527a0; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .listening-choice:hover,.listening-choice:focus-visible { border-color:#7b1fa2; outline:none; transform:translateY(-2px); }
+    .listening-choice.correct { border-color:#43a047; background:#e8f5e9; }
+    .listening-choice.wrong { border-color:#e53935; background:#ffebee; }
+    .rush-overlay { display:none; position:fixed; inset:0; z-index:70; padding:14px; background:rgba(38,20,12,.78); align-items:center; justify-content:center; }
+    .rush-panel { width:min(820px,96vw); max-height:92vh; overflow-y:auto; padding:20px; border:5px solid #ff8f00; border-radius:24px; background:linear-gradient(180deg,#fff8e1,#fff); text-align:center; box-shadow:0 18px 55px rgba(0,0,0,.35); }
+    .rush-top { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:10px; }
+    .rush-stat { padding:9px; border-radius:12px; background:#5d4037; color:#fff; font-weight:bold; }
+    .rush-stat strong { display:block; font-size:1.35rem; color:#ffd54f; }
+    .rush-order { margin:12px auto; padding:14px; border:3px solid #ffb300; border-radius:15px; background:#fff; color:#4e342e; font-size:1.15rem; font-weight:bold; }
+    .rush-choices { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; }
+    .rush-choices.choices-3 { grid-template-columns:repeat(3,1fr); }
+    .rush-choices.choices-6 { grid-template-columns:repeat(3,1fr); }
+    .rush-choice { padding:8px; border:3px solid #ffcc80; border-radius:15px; background:#fff; color:#4e342e; font:inherit; font-weight:bold; cursor:pointer; }
+    .rush-choice:hover,.rush-choice:focus-visible { border-color:#e65100; outline:none; transform:translateY(-2px); }
+    .rush-choice img { display:block; width:100%; height:115px; object-fit:contain; }
+    .rush-choice.correct { border-color:#43a047; background:#e8f5e9; }
+    .rush-choice.wrong { border-color:#e53935; background:#ffebee; }
+    .rush-feedback { min-height:32px; margin:10px 0; color:#bf360c; font-size:1.1rem; font-weight:bold; }
+    .rush-result { display:none; padding:18px; border-radius:16px; background:#fff3e0; }
+    .rush-setup { padding:8px 0 2px; }
+    .rush-course-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0; }
+    .rush-course { min-height:150px; padding:14px 10px; border:3px solid #ffb74d; border-radius:16px; background:#fff; color:#4e342e; font:inherit; cursor:pointer; }
+    .rush-course:hover,.rush-course:focus-visible { border-color:#e65100; outline:none; transform:translateY(-3px); box-shadow:0 7px 15px rgba(230,81,0,.18); }
+    .rush-course strong { display:block; margin-bottom:7px; color:#bf360c; font-size:1.15rem; }
+    .rush-course span { display:block; line-height:1.55; }
+    .rush-course-best { margin-top:8px; color:#1565c0; font-weight:bold; }
+    .rush-review { margin-top:14px; padding:12px; border:2px solid #ffb74d; border-radius:14px; background:#fff; }
+    .rush-review h3 { margin:0 0 9px; color:#bf360c; }
+    .rush-review-list { display:flex; flex-wrap:wrap; justify-content:center; gap:8px; }
+    .rush-review-word { display:flex; align-items:center; gap:7px; padding:7px 10px; border:2px solid #ffe0b2; border-radius:12px; background:#fffaf2; color:#4e342e; font:inherit; font-weight:bold; cursor:pointer; }
+    .rush-review-word img { width:54px; height:54px; object-fit:contain; }
+    .report-entry-btn { margin:12px 6px 0; min-width:260px; padding:16px; border:3px solid #1565c0; border-radius:16px; background:linear-gradient(135deg,#e3f2fd,#fff); color:#0d47a1; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 0 #90caf9; }
+    .report-entry-btn:hover { background:#1565c0; color:#fff; transform:translateY(-2px); }
+    .device-entry-btn { margin:12px 6px 0; min-width:260px; padding:13px 16px; border:2px solid #546e7a; border-radius:16px; background:#fff; color:#37474f; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .device-entry-btn:hover { background:#eceff1; transform:translateY(-2px); }
+    .device-modal-content { max-width:620px; border:5px solid #00acc1; border-radius:24px; background:linear-gradient(180deg,#e0f7fa,#fff); }
+    .device-check-row { margin:12px 0; padding:14px; border:2px solid #b2ebf2; border-radius:14px; background:#fff; text-align:left; }
+    .device-check-row strong { display:block; margin-bottom:7px; color:#006064; font-size:1.05rem; }
+    .device-status { margin-top:8px; color:#455a64; font-weight:bold; }
+    .device-status.good { color:#2e7d32; }.device-status.bad { color:#c62828; }
+    .device-test-btn { padding:9px 15px; border:0; border-radius:999px; background:#00838f; color:#fff; font-weight:bold; cursor:pointer; }
+    .mic-meter { height:18px; margin-top:10px; overflow:hidden; border-radius:999px; background:#eceff1; }
+    .mic-meter-fill { width:0; height:100%; border-radius:999px; background:linear-gradient(90deg,#26c6da,#43a047,#fdd835); transition:width .08s linear; }
+    .report-modal-content { max-width:820px; border:5px solid #1565c0; border-radius:24px; background:linear-gradient(180deg,#e3f2fd,#fff); }
+    .report-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:9px; margin:14px 0; }
+    .report-stat { padding:12px 7px; border:2px solid #90caf9; border-radius:13px; background:#fff; }
+    .report-stat strong { display:block; color:#0d47a1; font-size:1.45rem; }
+    .activity-chart { display:grid; grid-template-columns:repeat(7,1fr); align-items:end; gap:8px; height:170px; margin:12px 0 4px; padding:10px; border-radius:14px; background:#fff; }
+    .activity-day { height:100%; display:flex; flex-direction:column; justify-content:flex-end; align-items:center; gap:4px; color:#455a64; font-size:.78rem; font-weight:bold; }
+    .activity-bar-wrap { width:70%; height:115px; display:flex; align-items:flex-end; border-radius:8px; background:#eceff1; overflow:hidden; }
+    .activity-bar { width:100%; min-height:3px; background:linear-gradient(180deg,#42a5f5,#1565c0); border-radius:8px 8px 0 0; }
+    .coach-card { margin:16px 0; padding:16px; border:3px solid #ffb300; border-radius:16px; background:#fff8e1; text-align:left; }
+    .coach-card h3 { margin:0 0 6px; color:#e65100; }
+    .data-safety { margin:14px 0; padding:14px; border:2px solid #90caf9; border-radius:14px; background:#fff; }
+    .data-safety h3 { margin:0 0 5px; color:#0d47a1; }
+    .data-safety p { margin:4px 0 10px; color:#455a64; }
+    .data-action { margin:4px; padding:10px 15px; border:0; border-radius:999px; background:#1565c0; color:#fff; font-weight:bold; cursor:pointer; }
+    .data-action.restore { background:#546e7a; }
+    .data-status { min-height:24px; margin-top:8px; color:#2e7d32; font-weight:bold; }
+    .role-balance { display:grid; grid-template-columns:1fr 1fr; gap:10px; margin:12px 0; }
+    .role-balance-item { padding:10px; border-radius:12px; background:#fff; border:2px solid #bbdefb; font-weight:bold; }
+    .listening-picture { height:115px; }
+    .listening-feedback { min-height:34px; margin:12px 0 4px; font-size:1.1rem; font-weight:bold; color:#5d4037; }
+    .listening-next { display:none; margin:6px auto; padding:12px 28px; border:0; border-radius:999px; background:#7b1fa2; color:#fff; font-size:1rem; font-weight:bold; cursor:pointer; }
+    .listening-result { display:none; padding:18px; border-radius:18px; background:#fff3e0; }
+    @keyframes pulse { 50% { transform:scale(1.04); } }
+
+    /* ステップメーター */
+    .step-tracker {
+      background: #fffde7;
+      border: 2px solid #fbc02d;
+      border-radius: 12px;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    .step-title {
+      text-align: center;
+      font-size: 0.85rem;
+      font-weight: bold;
+      color: #f57f17;
+      margin-bottom: 5px;
+    }
+
+    .step-flow {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+    }
+
+    .step-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 6px 10px;
+      border-radius: 8px;
+      background: #fff;
+      border: 1px solid #ddd;
+      font-size: 0.85rem;
+      opacity: 0.5;
+    }
+
+    .step-row.active {
+      opacity: 1;
+      border-color: #2196f3;
+      background: #e3f2fd;
+      font-weight: bold;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    }
+
+    .step-col { width: 48%; }
+    .step-col.left { text-align: left; color: #1976d2; }
+    .step-col.right { text-align: right; color: #388e3c; }
+
+    /* カテゴリタブ & メニュー */
+    .category-tabs {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    .tab-btn {
+      flex: 1;
+      padding: 8px 4px;
+      border: 1px solid #2196f3;
+      background: #f1f8fe;
+      color: #1976d2;
+      border-radius: 8px 8px 0 0;
+      cursor: pointer;
+      font-size: 0.9rem;
+      font-weight: bold;
+    }
+
+    .tab-btn.active {
+      background: #2196f3;
+      color: white;
+    }
+
+    .menu-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
+      gap: 10px;
+      max-height: 240px;
+      overflow-y: auto;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 0 0 10px 10px;
+      margin-bottom: 15px;
+      background: #fafafa;
+    }
+
+    .menu-card {
+      border: 2px solid #e0e0e0;
+      border-radius: 12px;
+      padding: 10px 5px;
+      text-align: center;
+      cursor: pointer;
+      background: white;
+      transition: transform 0.2s, border-color 0.2s;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .menu-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.08);
+    }
+
+    .menu-card.selected {
+      border-color: #ff4081;
+      background: #fce4ec;
+      transform: scale(1.03);
+      animation: bounce 0.3s ease;
+    }
+
+    @keyframes bounce {
+      0% { transform: scale(0.95); }
+      50% { transform: scale(1.08); }
+      100% { transform: scale(1.03); }
+    }
+
+    .menu-picture { width:100%; height:76px; object-fit:contain; margin-bottom:4px; border-radius:8px; background:#fff; }
+
+    .menu-name { font-weight: bold; font-size: 0.85rem; margin-bottom: 2px; }
+    .menu-price { color: #e91e63; font-size: 0.85rem; font-weight: bold; }
+
+    /* チャット画面 */
+    .chat-container {
+      background: #f5f5f5;
+      border-radius: 15px;
+      padding: 12px;
+      max-height: 200px;
+      overflow-y: auto;
+      margin-bottom: 15px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+
+    .chat-bubble {
+      max-width: 85%;
+      padding: 8px 12px;
+      border-radius: 12px;
+      font-size: 1rem;
+      font-weight: bold;
+    }
+
+    .chat-bubble.opponent {
+      background: #ffffff;
+      border: 2px solid #90caf9;
+      align-self: flex-start;
+    }
+
+    .chat-bubble.user {
+      background: #fff9c4;
+      border: 2px solid #fbc02d;
+      align-self: flex-end;
+    }
+
+    .chat-role {
+      font-size: 0.7rem;
+      color: #666;
+      display: block;
+      margin-bottom: 2px;
+    }
+
+    /* 追加：チャット内日本語訳用スタイル */
+    .chat-jp-translation {
+      font-size: 0.85rem;
+      color: #555;
+      margin-top: 4px;
+      padding-top: 4px;
+      border-top: 1px dashed #ccc;
+      font-weight: normal;
+    }
+
+    .target-speech-box {
+      background: #e8f5e9;
+      border: 2px solid #4caf50;
+      border-radius: 12px;
+      padding: 10px;
+      text-align: center;
+      margin-bottom: 15px;
+    }
+
+    .target-label { font-size: 0.8rem; color: #2e7d32; font-weight: bold; }
+    .target-text { font-size: 1.2rem; font-weight: bold; color: #1b5e20; margin: 4px 0; }
+    .jp-subtext { font-size: 0.85rem; color: #444; }
+
+    .controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
+
+    button {
+      font-family: inherit; border: none; padding: 10px 20px; font-size: 1rem;
+      border-radius: 25px; cursor: pointer; font-weight: bold; box-shadow: 0 4px 6px rgba(0,0,0,0.1); transition: 0.1s;
+    }
+    button:active { transform: scale(0.95); }
+
+    .btn-mic { background: #4caf50; color: white; }
+    .btn-mic.recording { background: #f44336; animation: pulse 1s infinite; }
+    .btn-hint { background: #00bcd4; color: white; }
+    .btn-money { background: #ffca28; color: #333; padding: 6px 12px; }
+    .btn-stamp { background: #6a1b9a; color: white; }
+    .btn-home { background: #78909c; color: white; margin-right: auto; }
+
+    @keyframes pulse { 0% { opacity: 1; } 50% { opacity: 0.5; } 100% { opacity: 1; } }
+
+    .judge-overlay {
+      position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%);
+      font-size: 10rem; font-weight: bold; pointer-events: none; z-index: 2000; display: none;
+    }
+    .judge-maru { color: rgba(76, 175, 80, 0.85); }
+    .judge-batsu { color: rgba(244, 67, 54, 0.85); }
+
+    .money-area {
+      display: flex; justify-content: center; align-items: center; gap: 8px; margin-top: 10px;
+      background: #f1f8e9; padding: 10px; border-radius: 10px;
+    }
+
+    .modal {
+      display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); justify-content: center; align-items: center; z-index: 1000;
+    }
+
+    .modal-content {
+      background: white; padding: 20px; border-radius: 15px; max-width: 700px; width: 90%;
+      max-height: 80vh; overflow-y: auto; text-align: center;
+    }
+
+    .restaurant-modal-content { max-width:780px; border:5px solid #6a1b9a; border-radius:24px; background:linear-gradient(180deg,#fff,#fff8e1); }
+    .restaurant-stage-image { width:100%; max-width:560px; height:300px; object-fit:contain; border-radius:18px; background:#fff; }
+    .restaurant-rank { margin:8px 0 2px; color:#4a148c; font-size:1.65rem; font-weight:bold; }
+    .restaurant-level-label { color:#e65100; font-weight:bold; }
+    .growth-track { height:18px; margin:12px auto 5px; max-width:560px; border-radius:999px; background:#e0e0e0; overflow:hidden; box-shadow:inset 0 2px 4px rgba(0,0,0,.15); }
+    .growth-fill { width:0; height:100%; border-radius:999px; background:linear-gradient(90deg,#ffb300,#f4511e); transition:width .45s ease; }
+    .growth-message { min-height:26px; color:#5d4037; font-weight:bold; }
+    .management-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:16px 0; }
+    .management-stat { padding:12px 8px; border:2px solid #ce93d8; border-radius:14px; background:#fff; }
+    .management-stat strong { display:block; color:#6a1b9a; font-size:1.35rem; }
+    .stage-road { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:12px 0; }
+    .stage-step { padding:8px 3px; border-radius:10px; background:#eeeeee; color:#757575; font-size:.75rem; font-weight:bold; }
+    .stage-step.reached { background:#6a1b9a; color:#fff; }
+    .stage-step.current { outline:3px solid #ffb300; }
+    .career-summary { margin:12px 0; padding:12px; border-radius:14px; background:#f3e5f5; color:#4a148c; font-weight:bold; }
+    .promotion-box,.weekly-box { margin:14px 0; padding:14px; border:2px solid #ce93d8; border-radius:16px; background:#fff; text-align:left; }
+    .promotion-box h3,.weekly-box h3 { margin:0 0 9px; color:#6a1b9a; text-align:center; }
+    .requirement-list,.weekly-list { display:grid; gap:7px; }
+    .requirement,.weekly-item { display:grid; grid-template-columns:28px 1fr auto; gap:8px; align-items:center; padding:8px 10px; border-radius:10px; background:#f5f5f5; }
+    .requirement.done,.weekly-item.done { background:#e8f5e9; color:#1b5e20; }
+    .requirement-mark { font-weight:bold; text-align:center; }
+    .requirement-progress,.weekly-reward { font-size:.85rem; font-weight:bold; white-space:nowrap; }
+    .career-note { color:#6d4c41; font-size:.9rem; line-height:1.55; }
+    .world-tour-box { margin:14px 0; padding:14px; border:3px solid #1565c0; border-radius:18px; background:linear-gradient(180deg,#e3f2fd,#fff); text-align:left; }
+    .world-tour-box h3 { margin:0; color:#0d47a1; text-align:center; }
+    .tour-passport { margin:4px 0 12px; color:#1565c0; text-align:center; font-weight:bold; }
+    .tour-grid { display:grid; grid-template-columns:repeat(5,1fr); gap:8px; }
+    .tour-city { position:relative; min-width:0; padding:0 0 9px; overflow:hidden; border:2px solid #90a4ae; border-radius:12px; background:#fff; text-align:center; color:#263238; font:inherit; font-weight:bold; }
+    .tour-city img { width:100%; height:76px; object-fit:cover; display:block; margin-bottom:7px; }
+    .tour-city.locked img { filter:grayscale(1) brightness(.55); }
+    .tour-city.locked { color:#78909c; }
+    .tour-city.available { cursor:pointer; border-color:#1e88e5; }
+    .tour-city.active { outline:4px solid #ffb300; border-color:#ff8f00; }
+    .tour-lock { display:block; font-size:.72rem; font-weight:normal; }
+    .tour-mission { margin-top:12px; padding:11px; border-radius:12px; background:#fff; color:#37474f; text-align:center; font-weight:bold; }
+    .daily-board { max-width:720px; margin:20px auto 4px; padding:16px; border:3px solid #455a64; border-radius:18px; background:#fff; text-align:left; box-shadow:0 7px 16px rgba(38,50,56,.13); }
+    .daily-board h3 { margin:0 0 4px; color:#263238; text-align:center; letter-spacing:.04em; }
+    .daily-board-sub { margin:0 0 12px; color:#607d8b; text-align:center; font-size:.9rem; }
+    .daily-mission-list { display:grid; gap:9px; }
+    .daily-mission { display:grid; grid-template-columns:42px 1fr auto; align-items:center; gap:10px; padding:10px; border:2px solid #cfd8dc; border-radius:13px; background:#fafafa; }
+    .daily-mission.done { border-color:#43a047; background:#e8f5e9; }
+    .mission-number { width:34px; height:34px; display:grid; place-items:center; border-radius:10px; background:#455a64; color:#fff; font-weight:bold; }
+    .daily-mission.done .mission-number { background:#2e7d32; }
+    .mission-copy strong { display:block; color:#263238; }
+    .mission-progress { color:#546e7a; font-size:.88rem; font-weight:bold; }
+    .mission-reward { color:#e65100; font-weight:bold; white-space:nowrap; }
+    .daily-complete { display:none; margin-top:10px; padding:10px; border-radius:12px; background:#4a148c; color:#fff; text-align:center; font-weight:bold; }
+    .mission-toast { display:none; position:fixed; z-index:3000; left:50%; top:18px; transform:translateX(-50%); width:min(480px,90%); padding:14px 20px; border-radius:14px; background:#263238; color:#fff; font-weight:bold; text-align:center; box-shadow:0 10px 30px rgba(0,0,0,.3); }
+
+    .hero-visual { width:100%; max-height:260px; object-fit:cover; object-position:center 56%; border-radius:18px; border:4px solid #fff; box-shadow:0 8px 20px rgba(93,64,55,.18); }
+    .level-picker { margin:18px auto 4px; max-width:600px; padding:14px; background:#fff; border:2px solid #ffd54f; border-radius:16px; }
+    .level-picker h3 { margin:0 0 10px; color:#5d4037; }
+    .level-buttons { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .level-btn { min-height:54px; border:2px solid #ffb300; background:#fff8e1; color:#5d4037; font-weight:bold; border-radius:12px; cursor:pointer; }
+    .level-btn.active { background:#ffb300; color:#3e2723; box-shadow:0 3px 0 #ef6c00; transform:translateY(-2px); }
+    .mission-card { display:none; margin:0 0 14px; padding:12px 14px; border-radius:14px; background:linear-gradient(135deg,#fff3e0,#fffde7); border:3px solid #ffb300; }
+    .mission-card strong { color:#e65100; font-size:1.05rem; }
+    .customer-chip { display:inline-flex; align-items:center; gap:7px; margin-top:7px; padding:5px 10px; border-radius:999px; background:#fff; border:1px solid #ffcc80; font-weight:bold; }
+    .heard-box { display:none; margin:8px 0; padding:9px 12px; background:#eef8ff; border-left:5px solid #2196f3; border-radius:8px; }
+    .heard-box strong { color:#1565c0; }
+    .mic-status { margin-top:8px; min-height:24px; text-align:center; font-weight:bold; color:#37474f; }
+    .mic-status.error { color:#c62828; background:#ffebee; border-radius:10px; padding:9px; }
+    .mic-level-wrap { display:none; width:min(420px,88%); height:18px; margin:8px auto 0; overflow:hidden; background:#eceff1; border:2px solid #b0bec5; border-radius:999px; }
+    .mic-level-bar { width:0; height:100%; background:linear-gradient(90deg,#66bb6a,#00c853,#ffd600); border-radius:999px; transition:width .08s linear; }
+    .btn-voice-fallback { display:none; margin:10px auto 0; padding:11px 20px; background:#ff9800; color:#fff; font-weight:bold; border:0; border-radius:999px; box-shadow:0 4px 0 #e65100; cursor:pointer; }
+    .btn-new-tab { display:none; margin:8px auto 0; background:#455a64; color:#fff; }
+    .stars { color:#ffb300; letter-spacing:2px; font-size:1.2rem; }
+    .judge-overlay { font-family:inherit; width:auto!important; font-size:3rem!important; padding:24px 34px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:24px; background:rgba(255,255,255,.96); box-shadow:0 14px 40px rgba(0,0,0,.24); }
+    .judge-batsu { color:#ef6c00!important; }
+    @media (max-width:650px){ body{padding:6px}.container{padding:12px}.level-buttons{grid-template-columns:1fr}.step-row{font-size:.75rem}.hero-visual{max-height:180px}.restaurant-sign h1{font-size:1.35rem}.role-card{width:46%;padding:12px}.role-icon{font-size:3rem}.menu-grid{grid-template-columns:repeat(2,1fr)}.vocab-grid{grid-template-columns:repeat(2,1fr)}.practice-actions{grid-template-columns:1fr}.hard-toggle{grid-column:auto}.word-practice-panel{padding:17px}.listening-panel{padding:14px}.listening-choice{min-height:145px}.listening-picture{height:88px}.rush-choices,.rush-choices.choices-3,.rush-choices.choices-6{grid-template-columns:repeat(2,1fr)}.rush-choice img{height:90px}.rush-top{gap:4px}.rush-stat{font-size:.78rem;padding:7px}.rush-course-grid{grid-template-columns:1fr}.rush-course{min-height:0}.report-stats{grid-template-columns:repeat(2,1fr)}.activity-chart{gap:3px;padding:7px}.activity-bar-wrap{width:82%} }
+    @media (max-width:650px){ .restaurant-stage-image{height:210px}.management-stats{grid-template-columns:1fr}.stage-road{grid-template-columns:repeat(3,1fr)}header{align-items:flex-start;gap:6px}header>div{display:flex;flex-direction:column;gap:6px}.point-badge{font-size:.9rem;padding:7px 11px}.btn-stamp{padding:7px 11px;font-size:.9rem}.daily-board{padding:12px}.daily-mission{grid-template-columns:36px 1fr}.mission-reward{grid-column:2}.tour-grid{grid-template-columns:repeat(2,1fr)}.tour-city:last-child{grid-column:1/-1} }
+  </style>
+</head>
+<body>
+
+<div class="container">
+  <header>
+    <h2 style="margin:0; color:#d81b60;">At a Restaurant 🍔</h2>
+    <div>
+      <span class="point-badge" id="point-display">売上 0 coin</span>
+      <button class="btn-stamp" onclick="openMyRestaurant()">マイレストラン</button>
+    </div>
+  </header>
+
+  <!-- 1. ホーム画面 -->
+  <div class="home-screen" id="home-screen">
+    <div class="garland-banner">
+      <div class="flag"></div><div class="flag"></div><div class="flag"></div>
+      <div class="flag"></div><div class="flag"></div><div class="flag"></div>
+      <div class="flag"></div><div class="flag"></div>
+    </div>
+
+    <div class="restaurant-sign">
+      <h1>WELCOME TO OUR RESTAURANT</h1>
+    </div>
+
+    <img class="hero-visual" src="assets/restaurant-hero.png" alt="レストランで英語のやり取りをする小学生">
+
+    <p style="font-size: 1.25rem; font-weight:bold; color: #5d4037; margin-top:5px;">
+      英語で注文＆接客の練習をしよう！役割を選んでね！
+    </p>
+
+    <div class="level-picker" aria-label="ヒントの量を選ぶ">
+      <h3>① ヒントの量を選ぼう</h3>
+      <div class="level-buttons">
+        <button class="level-btn active" data-level="easy" onclick="setLevel('easy',this)">🌱 やさしい<br><small>英文＋日本語</small></button>
+        <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)">⭐ ふつう<br><small>穴あき英文</small></button>
+        <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">🔥 チャレンジ<br><small>日本語だけ</small></button>
+      </div>
+    </div>
+
+    <h3 style="margin:18px 0 0;color:#5d4037;">② 練習する役を選ぼう</h3>
+
+    <div class="role-buttons">
+      <div class="role-card clerk-card" onclick="startGame('clerk')">
+        <div class="role-icon">🧑‍🍳</div>
+        <h3 style="margin:5px 0; color:#1565c0;">店員さんになろう！</h3>
+        <p style="margin:0; color:#555; font-weight:bold;">Clerk Mode</p>
+        <div class="daily-role-status" id="clerk-daily-status">今日 未クリア</div>
+      </div>
+
+      <div class="role-card" onclick="startGame('customer')">
+        <div class="role-icon">😋</div>
+        <h3 style="margin:5px 0; color:#e65100;">お客さんになろう！</h3>
+        <p style="margin:0; color:#555; font-weight:bold;">Customer Mode</p>
+        <div class="daily-role-status" id="customer-daily-status">今日 未クリア</div>
+      </div>
+    </div>
+    <button class="vocab-entry-btn" onclick="openVocabulary()">🔤 単語の練習</button>
+    <button class="rush-entry-btn" onclick="openLunchRush()">LUNCH RUSH　注文を聞き取れ！</button>
+    <button class="report-entry-btn" onclick="openTrainingReport()">MY TRAINING REPORT　成長を確認</button>
+    <button class="device-entry-btn" onclick="openDeviceCheck()">授業前の音声・マイクチェック</button>
+    <section class="daily-board" aria-labelledby="daily-board-title">
+      <h3 id="daily-board-title">TODAY'S MISSIONS</h3>
+      <p class="daily-board-sub">3つの仕事を達成して、お店の売上を伸ばそう。</p>
+      <div class="daily-mission-list" id="daily-mission-list"></div>
+      <div class="daily-complete" id="daily-complete">ALL CLEAR　全ミッション達成ボーナス +150 coin</div>
+    </section>
+  </div>
+
+  <!-- 単語練習画面 -->
+  <div class="vocab-screen" id="vocab-screen">
+    <button class="vocab-home-btn" onclick="closeVocabulary()">🏠 ホームへ</button>
+    <div style="clear:both"></div>
+    <h2 style="color:#6a1b9a;margin:4px 0;">🔤 Unit 6 単語の練習</h2>
+    <p style="margin-bottom:6px;">練習したい単語をタッチしよう！</p>
+    <button class="smart-practice-start" onclick="startSmartPractice()">今日のおまかせ5語</button>
+    <button class="listening-start" onclick="startListeningChallenge()">🎧 聞き取りチャレンジ（10問）</button>
+    <div id="vocab-summary" style="font-weight:bold;color:#6a1b9a;"></div>
+    <div class="vocab-toolbar" aria-label="単語の種類で絞り込む">
+      <button class="vocab-filter active" data-filter="all" onclick="filterVocabulary('all',this)">すべて</button>
+      <button class="vocab-filter" data-filter="food" onclick="filterVocabulary('food',this)">🍔 food</button>
+      <button class="vocab-filter" data-filter="japanese" onclick="filterVocabulary('japanese',this)">🍱 Japanese</button>
+      <button class="vocab-filter" data-filter="drinks" onclick="filterVocabulary('drinks',this)">🥤 drinks</button>
+      <button class="vocab-filter" data-filter="dessert" onclick="filterVocabulary('dessert',this)">🍰 dessert</button>
+      <button class="vocab-filter" data-filter="hard" onclick="filterVocabulary('hard',this)">⭐ 苦手だけ</button>
+      <button class="vocab-filter" data-filter="listening-review" onclick="filterVocabulary('listening-review',this)">🎧 聞き取り復習</button>
+    </div>
+    <div class="vocab-grid" id="vocab-grid"></div>
+    <div id="vocab-empty" style="display:none;padding:30px;font-weight:bold;color:#795548;">苦手タグを付けた単語はまだありません。</div>
+  </div>
+
+  <div class="word-practice-overlay" id="word-practice-overlay" role="dialog" aria-modal="true" aria-labelledby="practice-word-text" onclick="closeWordPractice(event)">
+    <div class="word-practice-panel" onclick="event.stopPropagation()">
+      <div class="smart-practice-progress" id="smart-practice-progress"></div>
+      <div class="practice-word-icon" id="practice-word-icon">🍽️</div>
+      <div class="practice-word-text" id="practice-word-text"></div>
+      <div class="practice-actions">
+        <button class="practice-btn speed-normal" onclick="playPracticeWord(0.9)">🔊 ふつうの速さ</button>
+        <button class="practice-btn speed-slow" onclick="playPracticeWord(0.55)">🐢 ゆっくり</button>
+        <button class="practice-btn record-start" id="record-button" onclick="toggleWordRecording()">🔴 録音する</button>
+        <button class="practice-btn record-play" id="play-recording-button" onclick="playWordRecording()" disabled>▶ 自分の声を聞く</button>
+        <button class="practice-btn pronunciation-check" id="pronunciation-check-button" onclick="checkWordPronunciation()">🎤 発音チェック</button>
+        <button class="practice-btn hard-toggle" id="hard-toggle-button" onclick="toggleHardWord()">☆ 苦手タグを付ける</button>
+      </div>
+      <div class="record-status" id="record-status" role="status" aria-live="polite">お手本を聞いてから、録音してみよう。</div>
+      <div class="pronunciation-result" id="pronunciation-result" role="status" aria-live="polite"></div>
+      <button class="smart-next" id="smart-next-button" onclick="nextSmartPracticeWord()">次の単語へ ➜</button>
+      <button class="practice-close" onclick="closeWordPractice()">閉じる</button>
+    </div>
+  </div>
+
+  <div class="listening-overlay" id="listening-overlay" role="dialog" aria-modal="true" aria-labelledby="listening-title">
+    <div class="listening-panel">
+      <div class="listening-top">
+        <span id="listening-progress">1 / 10</span>
+        <span id="listening-score">せいかい 0　🔥 0れんぞく</span>
+      </div>
+      <h2 id="listening-title" style="color:#e65100;margin:10px 0 4px;">🎧 聞こえた単語はどれ？</h2>
+      <button class="listening-hear" id="listening-hear-button" onclick="playListeningWord()">🔊 もう一度聞く</button>
+      <div class="listening-choices" id="listening-choices"></div>
+      <div class="listening-feedback" id="listening-feedback" role="status" aria-live="polite"></div>
+      <button class="listening-next" id="listening-next" onclick="nextListeningQuestion()">次の問題へ ➜</button>
+      <div class="listening-result" id="listening-result"></div>
+      <button class="practice-close" onclick="closeListeningChallenge()">練習を終わる</button>
+    </div>
+  </div>
+
+  <div class="rush-overlay" id="rush-overlay" role="dialog" aria-modal="true" aria-labelledby="rush-title">
+    <div class="rush-panel">
+      <div class="rush-top" id="rush-top">
+        <div class="rush-stat">ORDER<strong id="rush-progress">1 / 5</strong></div>
+        <div class="rush-stat">TIME<strong id="rush-time">75</strong></div>
+        <div class="rush-stat">COMBO<strong id="rush-combo">0</strong></div>
+      </div>
+      <h2 id="rush-title" style="color:#bf360c;margin:8px 0;">LUNCH RUSH</h2>
+      <div class="rush-setup" id="rush-setup">
+        <p style="font-weight:bold;">自分に合うコースを選ぼう。</p>
+        <div class="rush-course-grid">
+          <button class="rush-course" onclick="startLunchRush('warmup')"><strong>WARM-UP</strong><span>3択・5人<br>90秒・ゆっくり音声</span><span class="rush-course-best" id="rush-best-warmup">BEST 0</span></button>
+          <button class="rush-course" onclick="startLunchRush('standard')"><strong>STANDARD</strong><span>4択・5人<br>75秒・ふつうの音声</span><span class="rush-course-best" id="rush-best-standard">BEST 0</span></button>
+          <button class="rush-course" onclick="startLunchRush('expert')"><strong>EXPERT</strong><span>6択・7人<br>60秒・速めの音声</span><span class="rush-course-best" id="rush-best-expert">BEST 0</span></button>
+        </div>
+      </div>
+      <div class="rush-order" id="rush-order">注文の英文を聞いて、正しいメニューを選ぼう。</div>
+      <button class="listening-hear" id="rush-hear" onclick="playRushOrder()">🔊 注文をもう一度聞く</button>
+      <div class="rush-choices" id="rush-choices"></div>
+      <div class="rush-feedback" id="rush-feedback" role="status" aria-live="polite"></div>
+      <div class="rush-result" id="rush-result"></div>
+      <button class="practice-close" onclick="closeLunchRush()">ゲームを終わる</button>
+    </div>
+  </div>
+
+  <!-- 2. メインゲーム画面 -->
+  <div class="game-screen" id="game-screen">
+    <div style="display: flex; align-items: center; margin-bottom: 10px;">
+      <button class="btn-home" onclick="goHome()">🏠 ホームへ</button>
+      <span id="role-badge" style="font-weight: bold; font-size: 1.1rem; color: #1976d2;"></span>
+    </div>
+
+    <!-- ステップメーター -->
+    <div class="step-tracker">
+      <div class="step-title">🗣️ 会話の流れ（進行状況）</div>
+      <div class="step-flow" id="step-flow-box"></div>
+    </div>
+
+    <div class="mission-card" id="mission-card">
+      <strong id="mission-title">SERVICE MISSION</strong>
+      <div id="mission-text"></div>
+      <div class="customer-chip" id="customer-chip"></div>
+    </div>
+
+    <div class="guide-msg" id="guide-msg" style="margin-bottom: 10px; font-weight: bold; color: #333;"></div>
+
+    <!-- カテゴリ選択タブ -->
+    <div class="category-tabs" id="category-tabs">
+      <button class="tab-btn active" onclick="switchCategory('food')">🍔 food</button>
+      <button class="tab-btn" onclick="switchCategory('japanese')">🍱 Japanese</button>
+      <button class="tab-btn" onclick="switchCategory('drinks')">🥤 drinks</button>
+      <button class="tab-btn" onclick="switchCategory('dessert')">🍰 dessert</button>
+    </div>
+
+    <!-- メニュー格子 -->
+    <div class="menu-grid" id="menu-grid"></div>
+
+    <!-- 会話チャット画面 -->
+    <div class="chat-container" id="chat-container"></div>
+
+    <!-- 発音ターゲット英文ボックス -->
+    <div class="target-speech-box" id="target-speech-box">
+      <div class="target-label">🗣️ あなたがマイクで言う英文：</div>
+      <div class="target-text" id="target-text">Select items...</div>
+      <div class="jp-subtext" id="jp-subtext"></div>
+    </div>
+    <div class="heard-box" id="heard-box"><strong>聞こえた英語：</strong><span id="heard-text"></span></div>
+
+    <!-- 操作ボタン -->
+    <div class="controls">
+      <button class="btn-hint" onclick="playCurrentTargetHint()">🔊 お手本を聞く (ゆっくり)</button>
+      <button class="btn-mic" id="mic-btn" onclick="toggleMic()">🎤 マイクで話す</button>
+    </div>
+    <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
+    <div class="mic-level-wrap" id="mic-level-wrap" aria-label="マイクの音量"><div class="mic-level-bar" id="mic-level-bar"></div></div>
+    <button class="btn-voice-fallback" id="voice-fallback-btn" onclick="acceptDetectedVoice()">🔊 お手本を聞いて、もう一度</button>
+    <button class="btn-new-tab" id="btn-new-tab" onclick="window.open(location.href, '_blank', 'noopener')">↗ 新しいタブで開く</button>
+
+    <!-- お金支払いエリア（お客役のみ） -->
+    <div class="money-area" id="money-area" style="display:none;">
+      <span>払うお金：<strong id="inserted-money-text" style="color:#d32f2f;">0</strong>円</span>
+      <button class="btn-money" onclick="addMoney(1000)">1000円</button>
+      <button class="btn-money" onclick="addMoney(100)">100円</button>
+      <button class="btn-money" onclick="addMoney(10)">10円</button>
+      <button style="background:#4caf50; color:white; padding: 6px 16px;" onclick="payMoney()">払う</button>
+    </div>
+  </div>
+</div>
+
+<!-- 〇✕演出 -->
+<div class="judge-overlay judge-maru" id="judge-maru">Great! ⭐</div>
+<div class="judge-overlay judge-batsu" id="judge-batsu">Try again! 💪</div>
+<div class="mission-toast" id="mission-toast" role="status" aria-live="polite"></div>
+
+<!-- マイレストラン -->
+<div class="modal" id="restaurant-modal" role="dialog" aria-modal="true" aria-labelledby="restaurant-rank-name">
+  <div class="modal-content restaurant-modal-content">
+    <div class="restaurant-level-label" id="restaurant-level-label">RESTAURANT LEVEL 1</div>
+    <div class="restaurant-rank" id="restaurant-rank-name">小さな屋台</div>
+    <img class="restaurant-stage-image" id="restaurant-stage-image" src="assets/restaurant-stages/stage-00.webp" alt="成長中のレストラン">
+    <div class="growth-track" aria-label="次のレストランまでの成長度">
+      <div class="growth-fill" id="growth-fill"></div>
+    </div>
+    <div class="growth-message" id="growth-message"></div>
+    <div class="career-summary" id="career-summary">全30レベルのレストランキャリア</div>
+    <div class="stage-road" id="stage-road"></div>
+    <div class="management-stats">
+      <div class="management-stat"><span>売上</span><strong id="restaurant-coins">0</strong><small>coin</small></div>
+      <div class="management-stat"><span>会話成功</span><strong id="conversation-count">0</strong><small>回</small></div>
+      <div class="management-stat"><span>聞き取り最高</span><strong id="listening-best">0 / 10</strong><small>自己ベスト</small></div>
+      <div class="management-stat"><span>ランチラッシュ</span><strong id="rush-best">0</strong><small>ハイスコア</small></div>
+    </div>
+    <section class="promotion-box">
+      <h3>次のレベルへの昇格条件</h3>
+      <div class="requirement-list" id="promotion-requirements"></div>
+    </section>
+    <section class="weekly-box">
+      <h3>WEEKLY CHALLENGE</h3>
+      <div class="weekly-list" id="weekly-challenge-list"></div>
+      <div class="daily-complete" id="weekly-complete">WEEKLY CLEAR　全達成ボーナス +400 coin</div>
+    </section>
+    <section class="world-tour-box">
+      <h3>WORLD RESTAURANT TOUR</h3>
+      <div class="tour-passport" id="tour-passport">LEVEL 30で世界ツアーがオープン</div>
+      <div class="tour-grid" id="tour-grid"></div>
+      <div class="tour-mission" id="tour-mission">まずはレストランキャリアを進めよう。</div>
+    </section>
+    <p class="career-note">同じ練習だけではなく、会話・聞き取り・単語をバランスよく続けると昇格できます。記録はこの端末に保存されます。</p>
+    <p style="color:#5d4037;font-weight:bold;">英語を練習して売上を増やし、世界一のレストランを目指そう。</p>
+    <button onclick="closeMyRestaurant()">閉じる</button>
+  </div>
+</div>
+
+<div class="modal" id="training-report-modal" role="dialog" aria-modal="true" aria-labelledby="training-report-title">
+  <div class="modal-content report-modal-content">
+    <h2 id="training-report-title" style="color:#0d47a1;margin:2px 0;">MY TRAINING REPORT</h2>
+    <p style="margin:4px 0;color:#455a64;font-weight:bold;">自分の記録を見て、次の練習を決めよう。</p>
+    <div class="report-stats">
+      <div class="report-stat"><span>練習した単語</span><strong id="report-vocab">0 / 44</strong></div>
+      <div class="report-stat"><span>苦手な単語</span><strong id="report-hard">0</strong></div>
+      <div class="report-stat"><span>聞き取り正解</span><strong id="report-listening">0</strong></div>
+      <div class="report-stat"><span>ランチラッシュ</span><strong id="report-rush">0</strong></div>
+    </div>
+    <h3 style="color:#0d47a1;margin-bottom:4px;">直近7日間の練習</h3>
+    <div class="activity-chart" id="activity-chart"></div>
+    <div class="role-balance">
+      <div class="role-balance-item">店員役　<span id="report-clerk">0回</span></div>
+      <div class="role-balance-item">お客さん役　<span id="report-customer">0回</span></div>
+    </div>
+    <div class="coach-card"><h3>NEXT TRAINING</h3><div id="coach-message"></div></div>
+    <section class="data-safety">
+      <h3>学習記録を守る</h3>
+      <p>記録をファイルに保存すると、別の端末でも続きから始められます。</p>
+      <button class="data-action" onclick="downloadLearningRecord()">学習記録を保存</button>
+      <button class="data-action restore" onclick="document.getElementById('learning-record-file').click()">記録を戻す</button>
+      <input id="learning-record-file" type="file" accept="application/json,.json" hidden onchange="restoreLearningRecord(event)">
+      <div class="data-status" id="data-safety-status" role="status" aria-live="polite"></div>
+    </section>
+    <button onclick="closeTrainingReport()">閉じる</button>
+  </div>
+</div>
+
+<div class="modal" id="device-check-modal" role="dialog" aria-modal="true" aria-labelledby="device-check-title">
+  <div class="modal-content device-modal-content">
+    <h2 id="device-check-title" style="color:#006064;margin:2px 0;">音声・マイクチェック</h2>
+    <p style="margin:5px 0 12px;font-weight:bold;color:#455a64;">練習を始める前に、音が使えるか確認しよう。</p>
+    <div class="device-check-row">
+      <strong>1　スピーカー</strong>
+      <button class="device-test-btn" onclick="testDeviceSpeaker()">英語の音声を聞く</button>
+      <div class="device-status" id="speaker-check-status">音声が聞こえたらOKです。</div>
+    </div>
+    <div class="device-check-row">
+      <strong>2　マイク</strong>
+      <button class="device-test-btn" id="mic-check-button" onclick="testDeviceMicrophone()">声を入れて確認する</button>
+      <div class="mic-meter" aria-label="マイクに届いている声の大きさ"><div class="mic-meter-fill" id="mic-meter-fill"></div></div>
+      <div class="device-status" id="mic-check-status">ボタンを押してから、マイクに向かって話してね。</div>
+    </div>
+    <div class="device-check-row">
+      <strong>3　発音チェック機能</strong>
+      <div class="device-status" id="speech-check-status"></div>
+    </div>
+    <button onclick="closeDeviceCheck()">閉じる</button>
+  </div>
+</div>
+
+<script>
+  const menuData = [
+    { id: 1, name: "rice", price: 130, cat: "food", icon: "🍚" },
+    { id: 2, name: "rice ball", price: 120, cat: "food", icon: "🍙" },
+    { id: 3, name: "curry and rice", price: 490, cat: "food", icon: "🍛" },
+    { id: 4, name: "grilled eel", price: 830, cat: "food", icon: "🍱" },
+    { id: 5, name: "grilled fish", price: 400, cat: "food", icon: "🐟" },
+    { id: 6, name: "bread", price: 160, cat: "food", icon: "🍞" },
+    { id: 7, name: "sandwich", price: 180, cat: "food", icon: "🥪" },
+    { id: 8, name: "pancake", price: 300, cat: "food", icon: "🥞" },
+    { id: 9, name: "pizza", price: 500, cat: "food", icon: "🍕" },
+    { id: 10, name: "hamburger", price: 340, cat: "food", icon: "🍔" },
+    { id: 11, name: "hot dog", price: 290, cat: "food", icon: "🌭" },
+    { id: 12, name: "French fries", price: 260, cat: "food", icon: "🍟" },
+    { id: 13, name: "fried chicken", price: 250, cat: "food", icon: "🍗" },
+    { id: 14, name: "sausage", price: 190, cat: "food", icon: "🌭" },
+    { id: 15, name: "steak", price: 630, cat: "food", icon: "🥩" },
+    { id: 16, name: "omelet", price: 410, cat: "food", icon: "🍳" },
+    { id: 17, name: "spaghetti", price: 560, cat: "food", icon: "🍝" },
+    { id: 18, name: "pie", price: 330, cat: "food", icon: "🥧" },
+    { id: 19, name: "salad", price: 240, cat: "food", icon: "🥗" },
+    { id: 20, name: "soup", price: 270, cat: "food", icon: "🥣" },
+    { id: 21, name: "fried noodles", price: 350, cat: "japanese", icon: "🥢" },
+    { id: 22, name: "ramen", price: 480, cat: "japanese", icon: "🍜" },
+    { id: 23, name: "soba", price: 420, cat: "japanese", icon: "🍜" },
+    { id: 24, name: "beef bowl", price: 380, cat: "japanese", icon: "🍚" },
+    { id: 25, name: "sushi", price: 400, cat: "japanese", icon: "🍣" },
+    { id: 26, name: "tempura", price: 590, cat: "japanese", icon: "🍤" },
+    { id: 27, name: "coffee", price: 150, cat: "drinks", icon: "☕" },
+    { id: 28, name: "tea", price: 140, cat: "drinks", icon: "🫖" },
+    { id: 29, name: "green tea", price: 150, cat: "drinks", icon: "🍵" },
+    { id: 30, name: "juice", price: 200, cat: "drinks", icon: "🧃" },
+    { id: 31, name: "soda", price: 130, cat: "drinks", icon: "🥤" },
+    { id: 32, name: "milk", price: 110, cat: "drinks", icon: "🥛" },
+    { id: 33, name: "water", price: 0, cat: "drinks", icon: "💧" },
+    { id: 34, name: "mineral water", price: 100, cat: "drinks", icon: "🍼" },
+    { id: 35, name: "cake", price: 250, cat: "dessert", icon: "🍰" },
+    { id: 36, name: "donut", price: 100, cat: "dessert", icon: "🍩" },
+    { id: 37, name: "parfait", price: 320, cat: "dessert", icon: "🍨" },
+    { id: 38, name: "pudding", price: 210, cat: "dessert", icon: "🍮" },
+    { id: 39, name: "ice cream", price: 220, cat: "dessert", icon: "🍦" },
+    { id: 40, name: "shaved ice", price: 170, cat: "dessert", icon: "🍧" },
+    { id: 41, name: "chocolate", price: 110, cat: "dessert", icon: "🍫" },
+    { id: 42, name: "cream puff", price: 120, cat: "dessert", icon: "🧁" },
+    { id: 43, name: "popcorn", price: 190, cat: "dessert", icon: "🍿" },
+    { id: 44, name: "potato chips", price: 120, cat: "dessert", icon: "🥔" }
+  ];
+
+  const categoryImageStart = { food: 1, japanese: 21, drinks: 27, dessert: 35 };
+  function vocabImageUrl(item) {
+    if (item.id === 14) return 'assets/vocab-v2/food-13-v2.webp';
+    if (item.id === 15) return 'assets/vocab-v2/food-14-v2.webp';
+    const number = String(item.id - categoryImageStart[item.cat]).padStart(2, '0');
+    return `assets/vocab-v2/${item.cat}-${number}.webp`;
+  }
+
+  function vocabPicture(item, className) {
+    return `<img class="vocab-picture ${className}" src="${vocabImageUrl(item)}" alt="${item.name}" loading="lazy" decoding="async">`;
+  }
+
+  const restaurantStages = [
+    { name:'小さな屋台', threshold:0, image:'assets/restaurant-stages/stage-00.webp' },
+    { name:'まちのカフェ', threshold:300, image:'assets/restaurant-stages/stage-01.webp' },
+    { name:'レインボーレストラン', threshold:800, image:'assets/restaurant-stages/stage-02.webp' },
+    { name:'人気レストラン', threshold:1600, image:'assets/restaurant-stages/stage-03.webp' },
+    { name:'高級レストラン', threshold:2800, image:'assets/restaurant-stages/stage-04.webp' },
+    { name:'世界一のレストラン', threshold:4500, image:'assets/restaurant-stages/stage-05.webp' }
+  ];
+
+  const careerLevelCount = 30;
+  const careerRankNames = ['ROOKIE','BRONZE','SILVER','GOLD','PLATINUM'];
+  const worldTourCities = [
+    { name:'NEW YORK', jp:'ニューヨーク', stamps:0, image:'assets/world-tour/new-york.webp', mission:'会話練習を今週8回クリア' },
+    { name:'LONDON', jp:'ロンドン', stamps:2, image:'assets/world-tour/london.webp', mission:'聞き取りで今週50問正解' },
+    { name:'SYDNEY', jp:'シドニー', stamps:5, image:'assets/world-tour/sydney.webp', mission:'違う単語を今週25語練習' },
+    { name:'SINGAPORE', jp:'シンガポール', stamps:8, image:'assets/world-tour/singapore.webp', mission:'店員役・お客さん役を今週4回ずつクリア' },
+    { name:'PARIS', jp:'パリ', stamps:12, image:'assets/world-tour/paris.webp', mission:'ヒントなし会話を今週5回クリア' }
+  ];
+
+  let currentRole = 'customer';
+  let vocabFilter = 'all';
+  let vocabCurrent = null;
+  let hardWords = new Set(JSON.parse(localStorage.getItem('restaurant_hard_words') || '[]'));
+  let wordRecorder = null;
+  let wordRecordingStream = null;
+  let wordRecordingChunks = [];
+  let wordRecordings = new Map();
+  let wordRecordingTimer = null;
+  let wordCheckRecognition = null;
+  let spokenWords = new Set(JSON.parse(localStorage.getItem('restaurant_spoken_words') || '[]'));
+  let wordMastery;
+  try { wordMastery = JSON.parse(localStorage.getItem('restaurant_word_mastery') || '{}'); } catch (_) { wordMastery = {}; }
+  spokenWords.forEach(name => { if (!Array.isArray(wordMastery[name])) wordMastery[name] = ['以前の成功']; });
+  localStorage.setItem('restaurant_word_mastery',JSON.stringify(wordMastery));
+  let smartPracticeQueue = [];
+  let smartPracticeIndex = -1;
+  let listeningQuestions = [];
+  let listeningIndex = 0;
+  let listeningCorrect = 0;
+  let listeningStreak = 0;
+  let listeningAnswered = false;
+  let listeningReview;
+  try { listeningReview = JSON.parse(localStorage.getItem('restaurant_listening_review') || '{}'); } catch (_) { listeningReview = {}; }
+  let deviceMicStream = null;
+  let deviceAudioContext = null;
+  let deviceMeterFrame = null;
+  let deviceMicTimer = null;
+  let restaurantName = "Rainbow";
+  let selectedItems = [];
+  let currentCategory = 'food';
+  let points = parseInt(localStorage.getItem('restaurant_pts') || '0');
+  let completedConversations = parseInt(localStorage.getItem('restaurant_completed') || '0');
+  let listeningBest = parseInt(localStorage.getItem('restaurant_listening_best') || '0');
+  let totalListeningCorrect = parseInt(localStorage.getItem('restaurant_listening_total_correct') || '0');
+  let customerClears = parseInt(localStorage.getItem('restaurant_customer_clears') || '0');
+  let clerkClears = parseInt(localStorage.getItem('restaurant_clerk_clears') || '0');
+  let noHintClears = parseInt(localStorage.getItem('restaurant_no_hint_clears') || '0');
+  let practicedWords = new Set(JSON.parse(localStorage.getItem('restaurant_practiced_words') || '[]'));
+  let dailyMissionState = null;
+  let weeklyMissionState = null;
+  let trainingHistory;
+  try { trainingHistory = JSON.parse(localStorage.getItem('restaurant_training_history') || '{}'); } catch (_) { trainingHistory = {}; }
+  let worldTourStamps = parseInt(localStorage.getItem('restaurant_world_tour_stamps') || '0');
+  let activeTourCity = parseInt(localStorage.getItem('restaurant_active_tour_city') || '0');
+  let rushQuestions = [];
+  let rushIndex = 0;
+  let rushCorrect = 0;
+  let rushCombo = 0;
+  let rushBestCombo = 0;
+  let rushTimeLeft = 75;
+  let rushTimer = null;
+  let rushAnswered = false;
+  let rushMistakes = [];
+  const rushModes = {
+    warmup:{ label:'WARM-UP', choices:3, questions:5, seconds:90, rate:.68, multiplier:.8 },
+    standard:{ label:'STANDARD', choices:4, questions:5, seconds:75, rate:.82, multiplier:1 },
+    expert:{ label:'EXPERT', choices:6, questions:7, seconds:60, rate:.95, multiplier:1.5 }
+  };
+  let rushMode = 'standard';
+  let rushTotalQuestions = 5;
+  let storedRushBests;
+  try { storedRushBests = JSON.parse(localStorage.getItem('restaurant_lunch_rush_bests') || 'null'); } catch (_) { storedRushBests = null; }
+  const oldRushBest = parseInt(localStorage.getItem('restaurant_lunch_rush_best') || '0');
+  let lunchRushBests = storedRushBests || { warmup:0, standard:oldRushBest, expert:0 };
+  let lunchRushBest = Math.max(lunchRushBests.warmup || 0,lunchRushBests.standard || 0,lunchRushBests.expert || 0);
+  let missionToastTimer = null;
+  let isRecording = false;
+  let recognition;
+  let micPermissionChecked = false;
+  let recognitionHadError = false;
+  let interimTranscript = '';
+  let activeMicStream = null;
+  let micMonitorContext = null;
+  let micMonitorFrame = null;
+  let voiceEnergyFrames = 0;
+  let voiceWasDetected = false;
+  let finalTranscript = ''; // 音声の全文蓄積用変数
+  let currentStep = 1;
+  let insertedMoney = 0;
+  let customerGivenMoney = 0;
+  let customerGreetingPlayed = false;
+  let currentTargetSpeech = "";
+  let currentJpSubtext = "";
+  let isPriceStep = false;
+
+  const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+  function playSound(type) {
+    const osc = audioCtx.createOscillator();
+    const gain = audioCtx.createGain();
+    osc.connect(gain);
+    gain.connect(audioCtx.destination);
+
+    if (type === 'correct') {
+      osc.frequency.setValueAtTime(523.25, audioCtx.currentTime); 
+      osc.frequency.setValueAtTime(659.25, audioCtx.currentTime + 0.15); 
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.4);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.4);
+    } else {
+      osc.type = 'sawtooth';
+      osc.frequency.setValueAtTime(150, audioCtx.currentTime);
+      gain.gain.setValueAtTime(0.3, audioCtx.currentTime);
+      gain.gain.exponentialRampToValueAtTime(0.01, audioCtx.currentTime + 0.3);
+      osc.start();
+      osc.stop(audioCtx.currentTime + 0.3);
+    }
+  }
+
+  window.onload = () => {
+    updatePoints();
+    renderMenu();
+    initSpeechRecognition();
+    initDailyMissions();
+    initWeeklyMissions();
+  };
+
+  function localDateKey() {
+    const now = new Date();
+    return [now.getFullYear(), String(now.getMonth() + 1).padStart(2,'0'), String(now.getDate()).padStart(2,'0')].join('-');
+  }
+
+  function dateOffsetKey(offset) {
+    const date = new Date();
+    date.setDate(date.getDate() + offset);
+    return [date.getFullYear(), String(date.getMonth()+1).padStart(2,'0'), String(date.getDate()).padStart(2,'0')].join('-');
+  }
+
+  function recordTrainingActivity(type, detail) {
+    const key = localDateKey();
+    if (!trainingHistory[key]) trainingHistory[key] = { conversations:0, listening:0, rush:0, words:[] };
+    const day = trainingHistory[key];
+    if (!Array.isArray(day.words)) day.words = [];
+    if (type === 'word' && detail && !day.words.includes(detail)) day.words.push(detail);
+    else if (type !== 'word') day[type] = (day[type] || 0) + 1;
+    const keep = new Set(Array.from({length:21},(_,i)=>dateOffsetKey(-i)));
+    Object.keys(trainingHistory).forEach(date => { if (!keep.has(date)) delete trainingHistory[date]; });
+    localStorage.setItem('restaurant_training_history',JSON.stringify(trainingHistory));
+  }
+
+  function openTrainingReport() {
+    renderTrainingReport();
+    document.getElementById('training-report-modal').style.display = 'flex';
+  }
+
+  function closeTrainingReport() {
+    document.getElementById('training-report-modal').style.display = 'none';
+  }
+
+  function learningRecordData() {
+    const data = {};
+    for (let index = 0; index < localStorage.length; index++) {
+      const key = localStorage.key(index);
+      if (key && key.startsWith('restaurant_')) data[key] = localStorage.getItem(key);
+    }
+    return { app:'rainbow-restaurant-grade5', version:1, savedAt:new Date().toISOString(), data };
+  }
+
+  function downloadLearningRecord() {
+    const record = learningRecordData();
+    const blob = new Blob([JSON.stringify(record,null,2)],{type:'application/json'});
+    const link = document.createElement('a');
+    link.href = URL.createObjectURL(blob);
+    link.download = `rainbow-restaurant-${localDateKey()}.json`;
+    document.body.appendChild(link);
+    link.click();
+    link.remove();
+    setTimeout(() => URL.revokeObjectURL(link.href),1000);
+    const status = document.getElementById('data-safety-status');
+    status.style.color = '';
+    status.innerText = '学習記録を保存しました。ファイルを大切に保管してね。';
+  }
+
+  async function restoreLearningRecord(event) {
+    const input = event.target;
+    const file = input.files && input.files[0];
+    const status = document.getElementById('data-safety-status');
+    if (!file) return;
+    status.style.color = '';
+    try {
+      const record = JSON.parse(await file.text());
+      if (record.app !== 'rainbow-restaurant-grade5' || !record.data || typeof record.data !== 'object') throw new Error('invalid');
+      const entries = Object.entries(record.data).filter(([key,value]) => key.startsWith('restaurant_') && typeof value === 'string');
+      if (!entries.length) throw new Error('empty');
+      if (!confirm('今の学習記録を、選んだファイルの記録に入れ替えます。よろしいですか？')) return;
+      Object.keys(localStorage).filter(key => key.startsWith('restaurant_')).forEach(key => localStorage.removeItem(key));
+      entries.forEach(([key,value]) => localStorage.setItem(key,value));
+      status.innerText = '学習記録を戻しました。画面を更新します。';
+      setTimeout(() => location.reload(),700);
+    } catch (_) {
+      status.style.color = '#c62828';
+      status.innerText = 'このファイルから記録を戻せませんでした。保存した学習記録ファイルを選んでください。';
+    } finally {
+      input.value = '';
+    }
+  }
+
+  function openDeviceCheck() {
+    const supported = !!(window.SpeechRecognition || window.webkitSpeechRecognition);
+    const speechStatus = document.getElementById('speech-check-status');
+    speechStatus.className = `device-status ${supported ? 'good' : 'bad'}`;
+    speechStatus.innerText = supported
+      ? 'OK　このブラウザは発音チェックに対応しています。'
+      : '発音チェックに対応していません。ChromeまたはEdgeで開いてください。';
+    document.getElementById('speaker-check-status').className = 'device-status';
+    document.getElementById('speaker-check-status').innerText = '音声が聞こえたらOKです。';
+    document.getElementById('mic-check-status').className = 'device-status';
+    document.getElementById('mic-check-status').innerText = 'ボタンを押してから、マイクに向かって話してね。';
+    document.getElementById('mic-meter-fill').style.width = '0%';
+    document.getElementById('device-check-modal').style.display = 'flex';
+  }
+
+  function testDeviceSpeaker() {
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance('Hello. Welcome to Rainbow restaurant.');
+    utterance.lang = 'en-US';
+    utterance.rate = 0.82;
+    utterance.onstart = () => {
+      const status = document.getElementById('speaker-check-status');
+      status.className = 'device-status good';
+      status.innerText = '再生中です。英語が聞こえたらスピーカーはOK！';
+    };
+    speechSynthesis.speak(utterance);
+  }
+
+  function stopDeviceMicrophone() {
+    if (deviceMeterFrame) cancelAnimationFrame(deviceMeterFrame);
+    if (deviceMicTimer) clearTimeout(deviceMicTimer);
+    deviceMeterFrame = null;
+    deviceMicTimer = null;
+    if (deviceMicStream) deviceMicStream.getTracks().forEach(track => track.stop());
+    deviceMicStream = null;
+    if (deviceAudioContext) deviceAudioContext.close().catch(() => {});
+    deviceAudioContext = null;
+  }
+
+  async function testDeviceMicrophone() {
+    stopDeviceMicrophone();
+    const status = document.getElementById('mic-check-status');
+    const fill = document.getElementById('mic-meter-fill');
+    if (!navigator.mediaDevices || !navigator.mediaDevices.getUserMedia) {
+      status.className = 'device-status bad';
+      status.innerText = 'このブラウザではマイクを確認できません。';
+      return;
+    }
+    try {
+      deviceMicStream = await navigator.mediaDevices.getUserMedia({audio:true});
+      const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+      deviceAudioContext = new AudioContextClass();
+      const analyser = deviceAudioContext.createAnalyser();
+      analyser.fftSize = 512;
+      deviceAudioContext.createMediaStreamSource(deviceMicStream).connect(analyser);
+      const data = new Uint8Array(analyser.fftSize);
+      let detected = false;
+      status.className = 'device-status';
+      status.innerText = '確認中… 3秒間、マイクに向かって話してね。';
+      const drawMeter = () => {
+        analyser.getByteTimeDomainData(data);
+        let sum = 0;
+        for (const value of data) { const level = (value - 128) / 128; sum += level * level; }
+        const volume = Math.min(100, Math.sqrt(sum / data.length) * 420);
+        if (volume > 10) detected = true;
+        fill.style.width = `${Math.max(2,volume)}%`;
+        deviceMeterFrame = requestAnimationFrame(drawMeter);
+      };
+      drawMeter();
+      deviceMicTimer = setTimeout(() => {
+        stopDeviceMicrophone();
+        fill.style.width = detected ? '100%' : '0%';
+        status.className = `device-status ${detected ? 'good' : 'bad'}`;
+        status.innerText = detected
+          ? 'OK　マイクに声が届いています！'
+          : '声を確認できませんでした。パソコンのマイク設定を確認してください。';
+      },3500);
+    } catch (error) {
+      stopDeviceMicrophone();
+      status.className = 'device-status bad';
+      status.innerText = error && error.name === 'NotAllowedError'
+        ? 'マイクが許可されていません。アドレスバーの鍵マークから許可してください。'
+        : 'マイクを使えませんでした。パソコンのマイク設定を確認してください。';
+    }
+  }
+
+  function closeDeviceCheck() {
+    speechSynthesis.cancel();
+    stopDeviceMicrophone();
+    document.getElementById('device-check-modal').style.display = 'none';
+  }
+
+  function trainingRecommendation() {
+    if (practicedWords.size < 15) return 'まずは単語の練習がおすすめ。絵を見ながら15語まで音声を聞いてみよう。';
+    if (hardWords.size >= 5) return `苦手タグが${hardWords.size}語あります。「苦手だけ」でお手本と自分の録音を聞き比べよう。`;
+    if (listeningBest < 7) return '単語の聞き取りチャレンジに挑戦しよう。まずは10問中7問正解が目標です。';
+    if (clerkClears === 0) return '次は店員役に挑戦しよう。お客さん役と両方できると、会話の流れがよく分かります。';
+    if (customerClears === 0) return '次はお客さん役に挑戦しよう。“I’d like ～.” を使って注文してみよう。';
+    if ((lunchRushBests.expert || 0) === 0) return '聞き取りが伸びています。ランチラッシュのEXPERTに一度挑戦してみよう。';
+    if (noHintClears < 5) return '会話練習の「チャレンジ」で、ヒントなしクリアを目指そう。';
+    return 'バランスよく練習できています。週間チャレンジと世界ツアーを進めよう。';
+  }
+
+  function renderTrainingReport() {
+    document.getElementById('report-vocab').innerText = `${practicedWords.size} / 44`;
+    document.getElementById('report-hard').innerText = hardWords.size;
+    document.getElementById('report-listening').innerText = `${totalListeningCorrect}問`;
+    document.getElementById('report-rush').innerText = lunchRushBest;
+    document.getElementById('report-clerk').innerText = `${clerkClears}回`;
+    document.getElementById('report-customer').innerText = `${customerClears}回`;
+    document.getElementById('coach-message').innerText = trainingRecommendation();
+    const days = Array.from({length:7},(_,i) => dateOffsetKey(i-6));
+    const totals = days.map(key => {
+      const day = trainingHistory[key] || {};
+      return (day.conversations||0) + (day.listening||0) + (day.rush||0) + (Array.isArray(day.words)?day.words.length:0);
+    });
+    const max = Math.max(1,...totals);
+    document.getElementById('activity-chart').innerHTML = days.map((key,index) => {
+      const date = new Date(`${key}T00:00:00`);
+      const label = `${date.getMonth()+1}/${date.getDate()}`;
+      const height = totals[index] ? Math.max(10,Math.round(totals[index]/max*100)) : 3;
+      return `<div class="activity-day"><span>${totals[index]}</span><div class="activity-bar-wrap"><div class="activity-bar" style="height:${height}%"></div></div><span>${label}</span></div>`;
+    }).join('');
+  }
+
+  function localWeekKey() {
+    const now = new Date();
+    const day = (now.getDay() + 6) % 7;
+    const monday = new Date(now.getFullYear(), now.getMonth(), now.getDate() - day);
+    return [monday.getFullYear(), String(monday.getMonth()+1).padStart(2,'0'), String(monday.getDate()).padStart(2,'0')].join('-');
+  }
+
+  function initWeeklyMissions() {
+    const week = localWeekKey();
+    try { weeklyMissionState = JSON.parse(localStorage.getItem('restaurant_weekly_missions') || 'null'); }
+    catch (_) { weeklyMissionState = null; }
+    if (!weeklyMissionState || weeklyMissionState.week !== week) {
+      weeklyMissionState = { week, conversations:0, listeningCorrect:0, vocabWords:[], clerk:0, customer:0, noHint:0, rewards:[false,false,false], allBonus:false, tourReward:false };
+      saveWeeklyMissions();
+    }
+    weeklyMissionState.clerk = weeklyMissionState.clerk || 0;
+    weeklyMissionState.customer = weeklyMissionState.customer || 0;
+    weeklyMissionState.noHint = weeklyMissionState.noHint || 0;
+    weeklyMissionState.tourReward = Boolean(weeklyMissionState.tourReward);
+  }
+
+  function saveWeeklyMissions() {
+    localStorage.setItem('restaurant_weekly_missions', JSON.stringify(weeklyMissionState));
+  }
+
+  function weeklyMissionDefinitions() {
+    return [
+      { text:'会話練習を5回クリア', current:weeklyMissionState.conversations, target:5, reward:300 },
+      { text:'聞き取りで合計35問正解', current:weeklyMissionState.listeningCorrect, target:35, reward:250 },
+      { text:'違う単語を15語練習', current:weeklyMissionState.vocabWords.length, target:15, reward:200 }
+    ];
+  }
+
+  function checkWeeklyMissions() {
+    if (!weeklyMissionState) initWeeklyMissions();
+    weeklyMissionDefinitions().forEach((mission,index) => {
+      if (mission.current >= mission.target && !weeklyMissionState.rewards[index]) {
+        weeklyMissionState.rewards[index] = true;
+        points += mission.reward;
+        showMissionToast(`WEEKLY CLEAR　売上 +${mission.reward} coin`);
+      }
+    });
+    if (weeklyMissionState.rewards.every(Boolean) && !weeklyMissionState.allBonus) {
+      weeklyMissionState.allBonus = true;
+      points += 400;
+      showMissionToast('WEEKLY ALL CLEAR　売上 +400 coin');
+      if (currentCareerLevel() >= careerLevelCount) {
+        worldTourStamps++;
+        localStorage.setItem('restaurant_world_tour_stamps', worldTourStamps);
+        showMissionToast('PASSPORT STAMP GET！ 世界ツアーのスタンプ +1');
+      }
+    }
+    saveWeeklyMissions();
+    updatePoints();
+  }
+
+  function initDailyMissions() {
+    const today = localDateKey();
+    try { dailyMissionState = JSON.parse(localStorage.getItem('restaurant_daily_missions') || 'null'); }
+    catch (_) { dailyMissionState = null; }
+    if (!dailyMissionState || dailyMissionState.date !== today) {
+      dailyMissionState = {
+        date: today,
+        conversations: 0,
+        clerkClears: 0,
+        customerClears: 0,
+        listeningCorrect: 0,
+        vocabWords: [],
+        rewards: [false,false,false],
+        allBonus: false
+      };
+      saveDailyMissions();
+    }
+    if (!Number.isFinite(dailyMissionState.clerkClears)) dailyMissionState.clerkClears = 0;
+    if (!Number.isFinite(dailyMissionState.customerClears)) dailyMissionState.customerClears = 0;
+    saveDailyMissions();
+    renderDailyMissions();
+  }
+
+  function saveDailyMissions() {
+    localStorage.setItem('restaurant_daily_missions', JSON.stringify(dailyMissionState));
+  }
+
+  function dailyMissionDefinitions() {
+    const roleProgress = Math.min(1,dailyMissionState.clerkClears) + Math.min(1,dailyMissionState.customerClears);
+    return [
+      { text:'店員役とお客さん役を1回ずつクリア', current:roleProgress, target:2, reward:100, progressText:`店員 ${Math.min(1,dailyMissionState.clerkClears)} / 1　お客 ${Math.min(1,dailyMissionState.customerClears)} / 1` },
+      { text:'聞き取り問題で合計15問正解', current:dailyMissionState.listeningCorrect, target:15, reward:100 },
+      { text:'違う単語を5語練習', current:dailyMissionState.vocabWords.length, target:5, reward:80 }
+    ];
+  }
+
+  function renderDailyMissions() {
+    if (!dailyMissionState) return;
+    const list = document.getElementById('daily-mission-list');
+    if (!list) return;
+    const missions = dailyMissionDefinitions();
+    list.innerHTML = missions.map((mission,index) => {
+      const done = mission.current >= mission.target;
+      const progress = Math.min(mission.current, mission.target);
+      return `<div class="daily-mission ${done ? 'done' : ''}">
+        <div class="mission-number">${done ? 'OK' : index + 1}</div>
+        <div class="mission-copy"><strong>${mission.text}</strong><span class="mission-progress">${mission.progressText || `${progress} / ${mission.target}`}</span></div>
+        <div class="mission-reward">+${mission.reward} coin</div>
+      </div>`;
+    }).join('');
+    document.getElementById('daily-complete').style.display = dailyMissionState.allBonus ? 'block' : 'none';
+    const clerkStatus = document.getElementById('clerk-daily-status');
+    const customerStatus = document.getElementById('customer-daily-status');
+    if (clerkStatus) {
+      const done = dailyMissionState.clerkClears > 0;
+      clerkStatus.classList.toggle('done',done);
+      clerkStatus.innerText = done ? '今日クリア ✓' : '今日 未クリア';
+    }
+    if (customerStatus) {
+      const done = dailyMissionState.customerClears > 0;
+      customerStatus.classList.toggle('done',done);
+      customerStatus.innerText = done ? '今日クリア ✓' : '今日 未クリア';
+    }
+  }
+
+  function checkDailyMissions() {
+    if (!dailyMissionState) initDailyMissions();
+    const missions = dailyMissionDefinitions();
+    missions.forEach((mission,index) => {
+      if (mission.current >= mission.target && !dailyMissionState.rewards[index]) {
+        dailyMissionState.rewards[index] = true;
+        points += mission.reward;
+        showMissionToast(`MISSION CLEAR　売上 +${mission.reward} coin`);
+      }
+    });
+    if (dailyMissionState.rewards.every(Boolean) && !dailyMissionState.allBonus) {
+      dailyMissionState.allBonus = true;
+      points += 150;
+      showMissionToast('ALL CLEAR　全達成ボーナス +150 coin');
+    }
+    saveDailyMissions();
+    updatePoints();
+    renderDailyMissions();
+  }
+
+  function showMissionToast(message) {
+    const toast = document.getElementById('mission-toast');
+    toast.innerText = message;
+    toast.style.display = 'block';
+    if (missionToastTimer) clearTimeout(missionToastTimer);
+    missionToastTimer = setTimeout(() => { toast.style.display = 'none'; }, 2600);
+  }
+
+  function updatePoints() {
+    document.getElementById('point-display').innerText = `売上 ${points} coin`;
+    localStorage.setItem('restaurant_pts', points);
+  }
+
+  function startGame(role) {
+    currentRole = role;
+    if (role === 'clerk') {
+      const inputName = prompt("あなたが作るお店の名前を自由に入力してね！（英語または日本語）", "Rainbow");
+      restaurantName = inputName ? inputName.trim() : "Rainbow";
+    } else {
+      restaurantName = "Rainbow";
+    }
+
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('game-screen').style.display = 'block';
+
+    selectedItems = [];
+    currentStep = 1;
+    customerGreetingPlayed = false;
+    document.getElementById('chat-container').innerHTML = '';
+    document.getElementById('money-area').style.display = 'none';
+    renderMenu();
+
+    if (role === 'customer') {
+      document.getElementById('role-badge').innerText = "【お客さん役の練習】";
+      const clerkGreeting = `Thank you for coming. This is ${restaurantName} restaurant. What would you like?`;
+      const clerkGreetingJp = `いらっしゃいませ。ここは${restaurantName}レストランです。何にしますか？`;
+      addChatBubble(clerkGreeting, false, "店員", clerkGreetingJp);
+      playSpeech(clerkGreeting);
+      customerGreetingPlayed = true;
+      document.getElementById('guide-msg').innerText = "店員さんの話を聞いてから、好きなメニューを選んでね！";
+      setTargetText("（メニューを選んでね）", "", false);
+    } else {
+      document.getElementById('role-badge').innerText = `【店員さん役の練習】（${restaurantName} レストラン）`;
+
+      selectedItems = [];
+      const itemCount = Math.floor(Math.random() * 2) + 1;
+      let availableMenu = menuData.filter(m => m.price > 0 && m.price < 600);
+      let total = 0;
+      
+      for (let i = 0; i < itemCount; i++) {
+        if (availableMenu.length === 0) break;
+        const randIndex = Math.floor(Math.random() * availableMenu.length);
+        const item = availableMenu[randIndex];
+        if (total + item.price < 950) {
+          selectedItems.push(item);
+          total += item.price;
+          availableMenu.splice(randIndex, 1);
+        }
+      }
+      if(selectedItems.length === 0) selectedItems = [menuData[9]];
+
+      setupStep();
+    }
+    renderStepFlow();
+  }
+
+  function goHome() {
+    document.getElementById('home-screen').style.display = 'block';
+    document.getElementById('game-screen').style.display = 'none';
+  }
+
+  function openVocabulary() {
+    document.getElementById('home-screen').style.display = 'none';
+    document.getElementById('game-screen').style.display = 'none';
+    document.getElementById('vocab-screen').style.display = 'block';
+    vocabFilter = 'all';
+    document.querySelectorAll('.vocab-filter').forEach(button => button.classList.toggle('active', button.dataset.filter === 'all'));
+    renderVocabularyGrid();
+  }
+
+  function closeVocabulary() {
+    closeWordPractice();
+    closeListeningChallenge();
+    document.getElementById('vocab-screen').style.display = 'none';
+    document.getElementById('home-screen').style.display = 'block';
+  }
+
+  function filterVocabulary(filter, button) {
+    vocabFilter = filter;
+    document.querySelectorAll('.vocab-filter').forEach(item => item.classList.remove('active'));
+    button.classList.add('active');
+    renderVocabularyGrid();
+  }
+
+  function wordMasteryCount(name) {
+    return Math.min(3, Array.isArray(wordMastery[name]) ? new Set(wordMastery[name]).size : 0);
+  }
+
+  function recordWordMastery(name) {
+    const today = localDateKey();
+    const dates = Array.isArray(wordMastery[name]) ? [...new Set(wordMastery[name])] : [];
+    if (!dates.includes(today)) dates.push(today);
+    wordMastery[name] = dates.slice(-3);
+    localStorage.setItem('restaurant_word_mastery',JSON.stringify(wordMastery));
+    return wordMasteryCount(name);
+  }
+
+  function renderVocabularyGrid() {
+    const grid = document.getElementById('vocab-grid');
+    const words = vocabFilter === 'all' ? menuData
+      : vocabFilter === 'hard' ? menuData.filter(item => hardWords.has(item.name))
+      : vocabFilter === 'listening-review' ? menuData.filter(item => (listeningReview[item.name] || 0) > 0)
+      : menuData.filter(item => item.cat === vocabFilter);
+    grid.innerHTML = '';
+    words.forEach(item => {
+      const button = document.createElement('button');
+      const mastery = wordMasteryCount(item.name);
+      const reviewLevel = listeningReview[item.name] || 0;
+      button.className = `vocab-tile ${hardWords.has(item.name) ? 'hard' : ''} ${mastery ? 'spoken' : ''} ${mastery >= 3 ? 'mastered' : ''} ${reviewLevel ? 'review' : ''}`;
+      button.setAttribute('aria-label', `${item.name}を練習する`);
+      const masteryLabel = mastery >= 3 ? 'MASTER 3/3' : `✓ ${mastery}/3`;
+      button.innerHTML = `<span class="spoken-badge">${masteryLabel}</span><span class="hard-badge">⭐ 苦手</span>${vocabPicture(item, 'vocab-tile-picture')}<span class="vocab-tile-word">${item.name}</span><span class="listening-review-badge">🎧 復習 ${reviewLevel}</span>`;
+      button.onclick = () => openWordPractice(item);
+      grid.appendChild(button);
+    });
+    const empty = document.getElementById('vocab-empty');
+    empty.style.display = words.length ? 'none' : 'block';
+    empty.innerText = vocabFilter === 'listening-review' ? '聞き取りで復習する単語はありません。' : '苦手タグを付けた単語はまだありません。';
+    const masteredCount = menuData.filter(item => wordMasteryCount(item.name) >= 3).length;
+    const startedCount = menuData.filter(item => wordMasteryCount(item.name) > 0).length;
+    const reviewCount = menuData.filter(item => (listeningReview[item.name] || 0) > 0).length;
+    document.getElementById('vocab-summary').innerText = `${words.length}語を表示　｜　MASTER ${masteredCount}語　｜　練習中 ${startedCount - masteredCount}語　｜　聞き取り復習 ${reviewCount}語　｜　苦手 ${hardWords.size}語`;
+  }
+
+  function startSmartPractice() {
+    const practiceDays = {};
+    Object.values(trainingHistory).forEach(day => {
+      (Array.isArray(day.words) ? day.words : []).forEach(name => {
+        practiceDays[name] = (practiceDays[name] || 0) + 1;
+      });
+    });
+    smartPracticeQueue = menuData.map(item => ({
+      item,
+      priority: (hardWords.has(item.name) ? 100 : 0)
+        + (3 - wordMasteryCount(item.name)) * 25
+        + (listeningReview[item.name] || 0) * 18
+        - (practiceDays[item.name] || 0) * 6
+        + Math.random() * 4
+    })).sort((a,b) => b.priority - a.priority).slice(0,5).map(entry => entry.item);
+    smartPracticeIndex = 0;
+    openWordPractice(smartPracticeQueue[0], true);
+  }
+
+  function updateSmartPracticeUI() {
+    const progress = document.getElementById('smart-practice-progress');
+    const next = document.getElementById('smart-next-button');
+    const active = smartPracticeIndex >= 0 && smartPracticeQueue.length > 0;
+    progress.style.display = active ? 'block' : 'none';
+    next.style.display = active ? 'block' : 'none';
+    if (!active) return;
+    progress.innerText = `今日のおまかせ5語　${smartPracticeIndex + 1} / ${smartPracticeQueue.length}`;
+    next.innerText = smartPracticeIndex === smartPracticeQueue.length - 1 ? '5語の練習を終える' : '次の単語へ ➜';
+  }
+
+  function nextSmartPracticeWord() {
+    if (smartPracticeIndex < 0) return;
+    stopWordRecording(true);
+    speechSynthesis.cancel();
+    if (wordCheckRecognition) {
+      try { wordCheckRecognition.abort(); } catch (_) {}
+      wordCheckRecognition = null;
+    }
+    if (smartPracticeIndex < smartPracticeQueue.length - 1) {
+      smartPracticeIndex += 1;
+      openWordPractice(smartPracticeQueue[smartPracticeIndex], true);
+      return;
+    }
+    const progress = document.getElementById('smart-practice-progress');
+    progress.innerText = '今日のおまかせ5語　COMPLETE！';
+    document.getElementById('smart-next-button').style.display = 'none';
+    const result = document.getElementById('pronunciation-result');
+    result.style.display = 'block';
+    result.className = 'pronunciation-result good';
+    result.innerText = '5語の練習が終わりました。よく頑張ったね！';
+    smartPracticeQueue = [];
+    smartPracticeIndex = -1;
+  }
+
+  function openWordPractice(item, fromSmartPractice = false) {
+    if (!fromSmartPractice) {
+      smartPracticeQueue = [];
+      smartPracticeIndex = -1;
+    }
+    vocabCurrent = item;
+    if (!dailyMissionState) initDailyMissions();
+    if (!dailyMissionState.vocabWords.includes(item.name)) {
+      dailyMissionState.vocabWords.push(item.name);
+      checkDailyMissions();
+    }
+    practicedWords.add(item.name);
+    localStorage.setItem('restaurant_practiced_words', JSON.stringify([...practicedWords]));
+    recordTrainingActivity('word',item.name);
+    if (!weeklyMissionState) initWeeklyMissions();
+    if (!weeklyMissionState.vocabWords.includes(item.name)) {
+      weeklyMissionState.vocabWords.push(item.name);
+      checkWeeklyMissions();
+    }
+    checkTourMission();
+    document.getElementById('practice-word-icon').innerHTML = vocabPicture(item, 'practice-word-picture');
+    document.getElementById('practice-word-text').innerText = item.name;
+    document.getElementById('record-status').innerText = 'お手本を聞いてから、自分の声を録音してみよう。';
+    const pronunciationResult = document.getElementById('pronunciation-result');
+    pronunciationResult.style.display = 'none';
+    pronunciationResult.className = 'pronunciation-result';
+    document.getElementById('play-recording-button').disabled = !wordRecordings.has(item.name);
+    updateHardButton();
+    updateSmartPracticeUI();
+    document.getElementById('word-practice-overlay').style.display = 'flex';
+    document.getElementById('word-practice-overlay').querySelector('.speed-normal').focus();
+  }
+
+  function closeWordPractice(event) {
+    if (event && event.target !== event.currentTarget) return;
+    stopWordRecording(true);
+    if (wordCheckRecognition) {
+      try { wordCheckRecognition.abort(); } catch (_) {}
+      wordCheckRecognition = null;
+    }
+    speechSynthesis.cancel();
+    document.getElementById('word-practice-overlay').style.display = 'none';
+    smartPracticeQueue = [];
+    smartPracticeIndex = -1;
+    updateSmartPracticeUI();
+  }
+
+  function playPracticeWord(rate) {
+    if (!vocabCurrent) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(vocabCurrent.name);
+    utterance.lang = 'en-US';
+    utterance.rate = rate;
+    speechSynthesis.speak(utterance);
+  }
+
+  async function toggleWordRecording() {
+    if (wordRecorder && wordRecorder.state === 'recording') {
+      stopWordRecording(false);
+      return;
+    }
+    if (!navigator.mediaDevices || !window.MediaRecorder) {
+      document.getElementById('record-status').innerText = 'このブラウザでは録音できません。ChromeまたはEdgeで開いてね。';
+      return;
+    }
+    try {
+      wordRecordingStream = await navigator.mediaDevices.getUserMedia({ audio:true });
+      wordRecordingChunks = [];
+      wordRecorder = new MediaRecorder(wordRecordingStream);
+      wordRecorder.wordName = vocabCurrent.name;
+      wordRecorder.datasetDiscard = false;
+      wordRecorder.ondataavailable = event => { if (event.data.size) wordRecordingChunks.push(event.data); };
+      wordRecorder.onstop = saveWordRecording;
+      wordRecorder.start();
+      const button = document.getElementById('record-button');
+      button.classList.add('recording');
+      button.innerText = '■ 録音を止める';
+      document.getElementById('record-status').innerText = '🔴 録音中です。単語を言ってから「録音を止める」を押そう。';
+      wordRecordingTimer = setTimeout(() => stopWordRecording(false), 10000);
+    } catch (_) {
+      document.getElementById('record-status').innerText = 'マイクを使えませんでした。マイクの許可を確認してね。';
+    }
+  }
+
+  function stopWordRecording(discard) {
+    if (wordRecordingTimer) clearTimeout(wordRecordingTimer);
+    wordRecordingTimer = null;
+    if (wordRecorder && wordRecorder.state === 'recording') {
+      wordRecorder.datasetDiscard = discard;
+      wordRecorder.stop();
+    } else if (wordRecordingStream) {
+      wordRecordingStream.getTracks().forEach(track => track.stop());
+      wordRecordingStream = null;
+    }
+    const button = document.getElementById('record-button');
+    if (button) {
+      button.classList.remove('recording');
+      button.innerText = '🔴 録音する';
+    }
+  }
+
+  function saveWordRecording() {
+    if (wordRecordingStream) wordRecordingStream.getTracks().forEach(track => track.stop());
+    wordRecordingStream = null;
+    if (wordRecorder && !wordRecorder.datasetDiscard && wordRecordingChunks.length && wordRecorder.wordName) {
+      const recordingWord = wordRecorder.wordName;
+      const oldUrl = wordRecordings.get(recordingWord);
+      if (oldUrl) URL.revokeObjectURL(oldUrl);
+      const blob = new Blob(wordRecordingChunks, { type: wordRecorder.mimeType || 'audio/webm' });
+      wordRecordings.set(recordingWord, URL.createObjectURL(blob));
+      if (vocabCurrent && vocabCurrent.name === recordingWord && document.getElementById('word-practice-overlay').style.display === 'flex') {
+        document.getElementById('play-recording-button').disabled = false;
+        document.getElementById('record-status').innerText = '録音できました！「自分の声を聞く」を押してみよう。';
+      }
+    }
+    wordRecordingChunks = [];
+    wordRecorder = null;
+  }
+
+  function playWordRecording() {
+    if (!vocabCurrent) return;
+    const url = wordRecordings.get(vocabCurrent.name);
+    if (!url) return;
+    speechSynthesis.cancel();
+    new Audio(url).play();
+    document.getElementById('record-status').innerText = '自分の発音を聞いて、お手本と比べてみよう。';
+  }
+
+  function normalizeWordCheck(text) {
+    return text.toLowerCase().replace(/[^a-z]/g,'');
+  }
+
+  function wordEditDistance(a,b) {
+    const row = Array.from({length:b.length+1},(_,i)=>i);
+    for (let i=1;i<=a.length;i++) {
+      let previous = row[0];
+      row[0] = i;
+      for (let j=1;j<=b.length;j++) {
+        const old = row[j];
+        row[j] = Math.min(row[j]+1,row[j-1]+1,previous+(a[i-1]===b[j-1]?0:1));
+        previous = old;
+      }
+    }
+    return row[b.length];
+  }
+
+  function pronunciationAliases(name) {
+    const aliases = {
+      'donut':['donut','doughnut'],
+      'omelet':['omelet','omelette'],
+      'French fries':['French fries','French fry','fries'],
+      'fried noodles':['fried noodles','fried noodle'],
+      'potato chips':['potato chips','potato chip'],
+      'curry and rice':['curry and rice','curry rice']
+    };
+    return aliases[name] || [name];
+  }
+
+  function wordWasUnderstood(transcripts,targetName) {
+    return pronunciationAliases(targetName).some(alias => {
+      const expected = normalizeWordCheck(alias);
+      return transcripts.some(text => {
+        const heard = normalizeWordCheck(text);
+        if (!heard) return false;
+        if (heard === expected || heard.includes(expected) || expected.includes(heard) && heard.length >= 5) return true;
+        const tolerance = expected.length <= 5 ? 1 : expected.length <= 10 ? 2 : 3;
+        return wordEditDistance(heard,expected) <= tolerance;
+      });
+    });
+  }
+
+  function checkWordPronunciation() {
+    if (!vocabCurrent) return;
+    const SpeechRecognitionClass = window.SpeechRecognition || window.webkitSpeechRecognition;
+    const resultBox = document.getElementById('pronunciation-result');
+    if (!SpeechRecognitionClass) {
+      resultBox.className = 'pronunciation-result retry';
+      resultBox.style.display = 'block';
+      resultBox.innerText = 'このブラウザでは発音チェックを使えません。ChromeまたはEdgeで開いてね。';
+      return;
+    }
+    speechSynthesis.cancel();
+    if (wordCheckRecognition) {
+      try { wordCheckRecognition.abort(); } catch (_) {}
+    }
+    const targetName = vocabCurrent.name;
+    const button = document.getElementById('pronunciation-check-button');
+    wordCheckRecognition = new SpeechRecognitionClass();
+    wordCheckRecognition.lang = 'en-US';
+    wordCheckRecognition.continuous = false;
+    wordCheckRecognition.interimResults = false;
+    wordCheckRecognition.maxAlternatives = 5;
+    let receivedResult = false;
+    button.classList.add('listening');
+    button.innerText = '聞いています…';
+    resultBox.className = 'pronunciation-result';
+    resultBox.style.display = 'block';
+    resultBox.innerText = `「${targetName}」と言ってみよう。`;
+    wordCheckRecognition.onresult = event => {
+      receivedResult = true;
+      const transcripts = Array.from(event.results[0]).map(item => item.transcript.trim());
+      const heard = transcripts[0] || '';
+      if (wordWasUnderstood(transcripts,targetName)) {
+        spokenWords.add(targetName);
+        localStorage.setItem('restaurant_spoken_words',JSON.stringify([...spokenWords]));
+        const mastery = recordWordMastery(targetName);
+        renderVocabularyGrid();
+        resultBox.className = 'pronunciation-result good';
+        resultBox.innerText = mastery >= 3
+          ? `伝わったよ！ MASTER 3/3 達成！\n聞こえた英語：${heard}`
+          : `伝わったよ！ 定着メーター ${mastery}/3\n聞こえた英語：${heard}\n次の段階は、別の日にもう一度チャレンジしよう。`;
+        playSound('correct');
+      } else {
+        resultBox.className = 'pronunciation-result retry';
+        resultBox.innerText = `もう一度、ゆっくり言ってみよう。\n聞こえた英語：${heard || '―'}`;
+      }
+    };
+    wordCheckRecognition.onerror = event => {
+      if (event.error === 'aborted') return;
+      resultBox.className = 'pronunciation-result retry';
+      resultBox.innerText = event.error === 'not-allowed' ? 'マイクの使用を許可してから、もう一度押してね。' : '声を聞き取れませんでした。少し大きな声でもう一度試そう。';
+    };
+    wordCheckRecognition.onend = () => {
+      button.classList.remove('listening');
+      button.innerText = '🎤 発音チェック';
+      if (!receivedResult && resultBox.className === 'pronunciation-result') {
+        resultBox.className = 'pronunciation-result retry';
+        resultBox.innerText = '声を聞き取れませんでした。マイクに近づいて、もう一度試そう。';
+      }
+      wordCheckRecognition = null;
+    };
+    try { wordCheckRecognition.start(); }
+    catch (_) {
+      button.classList.remove('listening');
+      button.innerText = '🎤 発音チェック';
+      resultBox.className = 'pronunciation-result retry';
+      resultBox.innerText = '少し待ってから、もう一度押してね。';
+    }
+  }
+
+  function toggleHardWord() {
+    if (!vocabCurrent) return;
+    if (hardWords.has(vocabCurrent.name)) hardWords.delete(vocabCurrent.name);
+    else hardWords.add(vocabCurrent.name);
+    localStorage.setItem('restaurant_hard_words', JSON.stringify([...hardWords]));
+    updateHardButton();
+    renderVocabularyGrid();
+  }
+
+  function updateHardButton() {
+    const button = document.getElementById('hard-toggle-button');
+    const isHard = vocabCurrent && hardWords.has(vocabCurrent.name);
+    button.classList.toggle('on', !!isHard);
+    button.innerText = isHard ? '⭐ 苦手タグを外す' : '☆ 苦手タグを付ける';
+  }
+
+  function shuffledWords(words) {
+    const copy = [...words];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy;
+  }
+
+  function updateListeningReview(name, wasCorrect) {
+    const current = Number(listeningReview[name]) || 0;
+    const next = wasCorrect ? Math.max(0,current - 1) : Math.min(3,current + 1);
+    if (next) listeningReview[name] = next;
+    else delete listeningReview[name];
+    localStorage.setItem('restaurant_listening_review',JSON.stringify(listeningReview));
+    renderVocabularyGrid();
+    return next;
+  }
+
+  function startListeningChallenge() {
+    closeWordPractice();
+    speechSynthesis.cancel();
+    const reviewWords = shuffledWords(menuData.filter(item => (listeningReview[item.name] || 0) > 0))
+      .sort((a,b) => (listeningReview[b.name] || 0) - (listeningReview[a.name] || 0))
+      .slice(0,5);
+    const freshWords = shuffledWords(menuData.filter(item => !reviewWords.includes(item)))
+      .slice(0,10 - reviewWords.length);
+    listeningQuestions = shuffledWords([...reviewWords,...freshWords]);
+    listeningIndex = 0;
+    listeningCorrect = 0;
+    listeningStreak = 0;
+    listeningAnswered = false;
+    document.getElementById('listening-result').style.display = 'none';
+    document.getElementById('listening-choices').style.display = 'grid';
+    document.getElementById('listening-hear-button').style.display = 'inline-block';
+    document.getElementById('listening-title').innerText = '🎧 聞こえた単語はどれ？';
+    document.getElementById('listening-overlay').style.display = 'flex';
+    showListeningQuestion();
+  }
+
+  function showListeningQuestion() {
+    listeningAnswered = false;
+    const target = listeningQuestions[listeningIndex];
+    const sameCategory = menuData.filter(item => item.cat === target.cat && item.id !== target.id);
+    const others = shuffledWords(sameCategory).slice(0, 3);
+    if (others.length < 3) {
+      const extra = menuData.filter(item => item.id !== target.id && !others.includes(item));
+      others.push(...shuffledWords(extra).slice(0, 3 - others.length));
+    }
+    const choices = shuffledWords([target, ...others]);
+    const box = document.getElementById('listening-choices');
+    box.innerHTML = '';
+    choices.forEach(item => {
+      const button = document.createElement('button');
+      button.className = 'listening-choice';
+      button.dataset.id = item.id;
+      button.setAttribute('aria-label', item.name);
+      button.innerHTML = `${vocabPicture(item, 'listening-picture')}<span>${item.name}</span>`;
+      button.onclick = () => answerListeningQuestion(item, button);
+      box.appendChild(button);
+    });
+    document.getElementById('listening-progress').innerText = `${listeningIndex + 1} / 10`;
+    updateListeningScore();
+    document.getElementById('listening-feedback').innerText = '音声を聞いて、イラストを選ぼう。';
+    document.getElementById('listening-next').style.display = 'none';
+    setTimeout(playListeningWord, 350);
+  }
+
+  function playListeningWord() {
+    if (!listeningQuestions.length || listeningIndex >= listeningQuestions.length) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(listeningQuestions[listeningIndex].name);
+    utterance.lang = 'en-US';
+    utterance.rate = 0.82;
+    speechSynthesis.speak(utterance);
+  }
+
+  function answerListeningQuestion(item, button) {
+    if (listeningAnswered) return;
+    listeningAnswered = true;
+    speechSynthesis.cancel();
+    const target = listeningQuestions[listeningIndex];
+    const buttons = document.querySelectorAll('.listening-choice');
+    buttons.forEach(choice => {
+      choice.disabled = true;
+      if (Number(choice.dataset.id) === target.id) choice.classList.add('correct');
+    });
+    if (item.id === target.id) {
+      listeningCorrect++;
+      listeningStreak++;
+      button.classList.add('correct');
+      const wasReview = (listeningReview[target.name] || 0) > 0;
+      const reviewLevel = updateListeningReview(target.name,true);
+      document.getElementById('listening-feedback').innerText = !wasReview
+        ? `⭕ 正解！ “${target.name}”`
+        : reviewLevel ? `⭕ 正解！ “${target.name}”　復習レベルが下がったよ。`
+        : `⭕ 正解！ “${target.name}”　聞き取り復習クリア！`;
+      playSound('correct');
+    } else {
+      listeningStreak = 0;
+      button.classList.add('wrong');
+      updateListeningReview(target.name,false);
+      document.getElementById('listening-feedback').innerText = `おしい！ 正解は “${target.name}”　聞き取り復習に追加したよ。`;
+      playSound('wrong');
+    }
+    updateListeningScore();
+    const nextButton = document.getElementById('listening-next');
+    nextButton.innerText = listeningIndex === 9 ? '結果を見る ➜' : '次の問題へ ➜';
+    nextButton.style.display = 'block';
+    nextButton.focus();
+  }
+
+  function updateListeningScore() {
+    document.getElementById('listening-score').innerText = `せいかい ${listeningCorrect}　🔥 ${listeningStreak}れんぞく`;
+  }
+
+  function nextListeningQuestion() {
+    listeningIndex++;
+    if (listeningIndex < listeningQuestions.length) {
+      showListeningQuestion();
+      return;
+    }
+    finishListeningChallenge();
+  }
+
+  function finishListeningChallenge() {
+    const earned = listeningCorrect * 5;
+    listeningBest = Math.max(listeningBest, listeningCorrect);
+    localStorage.setItem('restaurant_listening_best', listeningBest);
+    points += earned;
+    totalListeningCorrect += listeningCorrect;
+    recordTrainingActivity('listening');
+    localStorage.setItem('restaurant_listening_total_correct', totalListeningCorrect);
+    if (!dailyMissionState) initDailyMissions();
+    dailyMissionState.listeningCorrect += listeningCorrect;
+    checkDailyMissions();
+    if (!weeklyMissionState) initWeeklyMissions();
+    weeklyMissionState.listeningCorrect += listeningCorrect;
+    checkWeeklyMissions();
+    checkTourMission();
+    document.getElementById('listening-choices').style.display = 'none';
+    document.getElementById('listening-hear-button').style.display = 'none';
+    document.getElementById('listening-next').style.display = 'none';
+    document.getElementById('listening-feedback').innerText = '';
+    document.getElementById('listening-title').innerText = '🎉 チャレンジ終了！';
+    const message = listeningCorrect === 10 ? 'パーフェクト！すばらしい！'
+      : listeningCorrect >= 7 ? 'よく聞き取れたね！'
+      : 'もう一度挑戦すると、もっと聞こえるようになるよ！';
+    const result = document.getElementById('listening-result');
+    const reviewCount = menuData.filter(item => (listeningReview[item.name] || 0) > 0).length;
+    result.innerHTML = `<div style="font-size:2.2rem;font-weight:bold;color:#e65100;">${listeningCorrect} / 10</div><p style="font-weight:bold;">${message}</p><p>聞き取り復習 ${reviewCount}語　｜　売上 ${earned} coin アップ！</p><button class="listening-start" onclick="startListeningChallenge()">もう一度チャレンジ</button>`;
+    result.style.display = 'block';
+  }
+
+  function closeListeningChallenge() {
+    speechSynthesis.cancel();
+    const overlay = document.getElementById('listening-overlay');
+    if (overlay) overlay.style.display = 'none';
+    listeningQuestions = [];
+  }
+
+  function openLunchRush() {
+    speechSynthesis.cancel();
+    if (rushTimer) clearInterval(rushTimer);
+    rushTimer = null;
+    rushQuestions = [];
+    document.getElementById('rush-overlay').style.display = 'flex';
+    document.getElementById('rush-setup').style.display = 'block';
+    document.getElementById('rush-order').style.display = 'none';
+    document.getElementById('rush-choices').style.display = 'none';
+    document.getElementById('rush-hear').style.display = 'none';
+    document.getElementById('rush-result').style.display = 'none';
+    document.getElementById('rush-feedback').innerText = '';
+    document.getElementById('rush-top').style.display = 'none';
+    document.getElementById('rush-title').innerText = 'LUNCH RUSH　コース選択';
+    document.getElementById('rush-best-warmup').innerText = `BEST ${lunchRushBests.warmup || 0}`;
+    document.getElementById('rush-best-standard').innerText = `BEST ${lunchRushBests.standard || 0}`;
+    document.getElementById('rush-best-expert').innerText = `BEST ${lunchRushBests.expert || 0}`;
+  }
+
+  function startLunchRush(mode) {
+    rushMode = mode;
+    const settings = rushModes[mode];
+    rushTotalQuestions = settings.questions;
+    rushQuestions = shuffledWords(menuData).slice(0,settings.questions).map(target => {
+      const others = shuffledWords(menuData.filter(item => item.id !== target.id)).slice(0,settings.choices - 1);
+      return { target, choices:shuffledWords([target,...others]) };
+    });
+    rushIndex = 0; rushCorrect = 0; rushCombo = 0; rushBestCombo = 0; rushTimeLeft = settings.seconds; rushAnswered = false; rushMistakes = [];
+    document.getElementById('rush-title').innerText = `LUNCH RUSH　${settings.label}`;
+    document.getElementById('rush-setup').style.display = 'none';
+    document.getElementById('rush-top').style.display = 'grid';
+    document.getElementById('rush-order').style.display = 'block';
+    document.getElementById('rush-result').style.display = 'none';
+    document.getElementById('rush-choices').style.display = 'grid';
+    document.getElementById('rush-choices').className = `rush-choices choices-${settings.choices}`;
+    document.getElementById('rush-hear').style.display = 'inline-block';
+    updateRushStats();
+    showRushQuestion();
+    clearInterval(rushTimer);
+    rushTimer = setInterval(() => {
+      rushTimeLeft--;
+      document.getElementById('rush-time').innerText = rushTimeLeft;
+      if (rushTimeLeft <= 0) finishLunchRush(true);
+    },1000);
+  }
+
+  function showRushQuestion() {
+    rushAnswered = false;
+    const question = rushQuestions[rushIndex];
+    document.getElementById('rush-order').innerText = 'お客さんの注文を聞こう。';
+    document.getElementById('rush-feedback').innerText = '';
+    document.getElementById('rush-choices').innerHTML = question.choices.map(item =>
+      `<button class="rush-choice" data-id="${item.id}" onclick="answerRush(${item.id},this)">${vocabPicture(item,'rush-picture')}<span>${item.name}</span></button>`
+    ).join('');
+    updateRushStats();
+    setTimeout(playRushOrder,450);
+  }
+
+  function playRushOrder() {
+    if (!rushQuestions.length || rushIndex >= rushQuestions.length) return;
+    speechSynthesis.cancel();
+    const name = rushQuestions[rushIndex].target.name;
+    const utterance = new SpeechSynthesisUtterance(`I'd like ${name}.`);
+    utterance.lang = 'en-US';
+    utterance.rate = rushModes[rushMode].rate;
+    speechSynthesis.speak(utterance);
+  }
+
+  function answerRush(id,button) {
+    if (rushAnswered) return;
+    rushAnswered = true;
+    speechSynthesis.cancel();
+    const target = rushQuestions[rushIndex].target;
+    document.querySelectorAll('.rush-choice').forEach(choice => {
+      choice.disabled = true;
+      if (Number(choice.dataset.id) === target.id) choice.classList.add('correct');
+    });
+    document.getElementById('rush-order').innerText = `I'd like ${target.name}.`;
+    if (id === target.id) {
+      rushCorrect++; rushCombo++; rushBestCombo = Math.max(rushBestCombo,rushCombo);
+      button.classList.add('correct');
+      document.getElementById('rush-feedback').innerText = `正解！ ${rushCombo} COMBO`;
+      playSound('correct');
+    } else {
+      rushCombo = 0;
+      if (!rushMistakes.some(item => item.id === target.id)) rushMistakes.push(target);
+      button.classList.add('wrong');
+      document.getElementById('rush-feedback').innerText = `おしい！ 注文は “${target.name}”`;
+      playSound('wrong');
+    }
+    updateRushStats();
+    setTimeout(() => {
+      rushIndex++;
+      if (rushIndex < rushQuestions.length) showRushQuestion();
+      else finishLunchRush(false);
+    },850);
+  }
+
+  function updateRushStats() {
+    document.getElementById('rush-progress').innerText = `${Math.min(rushIndex+1,rushTotalQuestions)} / ${rushTotalQuestions}`;
+    document.getElementById('rush-time').innerText = rushTimeLeft;
+    document.getElementById('rush-combo').innerText = rushCombo;
+  }
+
+  function rushRewardRate() {
+    let state;
+    try { state = JSON.parse(localStorage.getItem('restaurant_rush_daily') || 'null'); } catch (_) { state = null; }
+    const today = localDateKey();
+    if (!state || state.date !== today) state = { date:today, plays:0 };
+    const rate = state.plays < 3 ? 1 : .35;
+    state.plays++;
+    localStorage.setItem('restaurant_rush_daily',JSON.stringify(state));
+    return rate;
+  }
+
+  function finishLunchRush(timeUp) {
+    if (!rushQuestions.length) return;
+    if (rushTimer) clearInterval(rushTimer);
+    rushTimer = null;
+    speechSynthesis.cancel();
+    document.getElementById('rush-choices').style.display = 'none';
+    document.getElementById('rush-hear').style.display = 'none';
+    const rawScore = rushCorrect * 100 + rushBestCombo * 25 + Math.max(0,rushTimeLeft) * 2;
+    lunchRushBests[rushMode] = Math.max(lunchRushBests[rushMode] || 0,rawScore);
+    lunchRushBest = Math.max(lunchRushBests.warmup || 0,lunchRushBests.standard || 0,lunchRushBests.expert || 0);
+    localStorage.setItem('restaurant_lunch_rush_bests',JSON.stringify(lunchRushBests));
+    localStorage.setItem('restaurant_lunch_rush_best',lunchRushBest);
+    const rate = rushRewardRate();
+    const earned = Math.round((rushCorrect * 20 + rushBestCombo * 5) * rate * rushModes[rushMode].multiplier);
+    points += earned;
+    recordTrainingActivity('rush');
+    totalListeningCorrect += rushCorrect;
+    localStorage.setItem('restaurant_listening_total_correct',totalListeningCorrect);
+    if (!dailyMissionState) initDailyMissions();
+    dailyMissionState.listeningCorrect += rushCorrect;
+    checkDailyMissions();
+    if (!weeklyMissionState) initWeeklyMissions();
+    weeklyMissionState.listeningCorrect += rushCorrect;
+    checkWeeklyMissions();
+    checkTourMission();
+    updatePoints();
+    const title = timeUp ? 'TIME UP！' : rushCorrect === rushTotalQuestions ? 'PERFECT SERVICE！' : 'LUNCH RUSH CLEAR！';
+    const rewardNote = rate < 1 ? '<br><small>今日は4回目以降なので、売上報酬は控えめです。</small>' : '';
+    const result = document.getElementById('rush-result');
+    const review = rushMistakes.length ? `<div class="rush-review"><h3>まちがえた注文を聞き直そう</h3><div class="rush-review-list">${rushMistakes.map(item => `<button class="rush-review-word" onclick="playRushReview(${item.id})">${vocabPicture(item,'rush-review-picture')}<span>${item.name}<br><small>音声を聞く</small></span></button>`).join('')}</div></div>` : '<div class="rush-review"><h3>全問聞き取れました！</h3></div>';
+    result.innerHTML = `<h2 style="color:#bf360c;margin:0 0 8px;">${title}</h2><div style="font-size:2rem;font-weight:bold;">${rushCorrect} / ${rushTotalQuestions}</div><p>${rushModes[rushMode].label}　｜　BEST COMBO ${rushBestCombo}　｜　SCORE ${rawScore}</p><p>このコースの自己ベスト ${lunchRushBests[rushMode]}　｜　売上 +${earned} coin${rewardNote}</p>${review}<button class="listening-start" onclick="startLunchRush('${rushMode}')">同じコースに再挑戦</button> <button class="practice-close" onclick="openLunchRush()">コースを選び直す</button>`;
+    result.style.display = 'block';
+    rushQuestions = [];
+  }
+
+  function playRushReview(id) {
+    const item = menuData.find(word => word.id === id);
+    if (!item) return;
+    speechSynthesis.cancel();
+    const utterance = new SpeechSynthesisUtterance(`I'd like ${item.name}.`);
+    utterance.lang = 'en-US';
+    utterance.rate = .72;
+    speechSynthesis.speak(utterance);
+  }
+
+  function closeLunchRush() {
+    if (rushTimer) clearInterval(rushTimer);
+    rushTimer = null;
+    speechSynthesis.cancel();
+    rushQuestions = [];
+    document.getElementById('rush-overlay').style.display = 'none';
+  }
+
+  function switchCategory(cat) {
+    currentCategory = cat;
+    document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+    event.target.classList.add('active');
+    renderMenu();
+  }
+
+  function renderMenu() {
+    const grid = document.getElementById('menu-grid');
+    grid.innerHTML = '';
+    const filtered = menuData.filter(m => m.cat === currentCategory);
+    filtered.forEach((item) => {
+      const card = document.createElement('div');
+      card.className = `menu-card ${selectedItems.includes(item) ? 'selected' : ''}`;
+      card.onclick = () => selectItem(item, card);
+      card.innerHTML = `
+        ${vocabPicture(item, 'menu-picture')}
+        <div class="menu-name">${item.name}</div>
+        <div class="menu-price">${item.price} yen</div>
+      `;
+      grid.appendChild(card);
+    });
+  }
+
+  function formatItemList(items) {
+    if (items.length === 0) return "";
+    if (items.length === 1) return items[0].name;
+    if (items.length === 2) return `${items[0].name} and ${items[1].name}`;
+    const names = items.map(i => i.name);
+    const last = names.pop();
+    return `${names.join(', ')}, and ${last}`;
+  }
+
+  function formatItemListJp(items) {
+    if (items.length === 0) return "";
+    const names = items.map(i => i.name);
+    return names.join('と');
+  }
+
+  function setTargetText(eng, jp, isPrice = false) {
+    currentTargetSpeech = eng;
+    currentJpSubtext = jp;
+    isPriceStep = isPrice;
+    document.getElementById('target-text').innerText = eng;
+    document.getElementById('jp-subtext').innerText = jp ? `（${jp}）` : '';
+  }
+
+  function selectItem(item, card) {
+    if (currentRole === 'clerk') return;
+
+    if (selectedItems.includes(item)) {
+      selectedItems = selectedItems.filter(i => i !== item);
+      card.classList.remove('selected');
+    } else {
+      const currentTotal = selectedItems.reduce((sum, i) => sum + i.price, 0);
+      if (currentTotal + item.price >= 1000) {
+        alert("合計が1,000円未満になるように選んでね！");
+        return;
+      }
+      selectedItems.push(item);
+      card.classList.add('selected');
+    }
+
+    if(selectedItems.length > 0 && currentStep === 1) {
+      setupStep();
+    }
+  }
+
+  function playSpeech(text) {
+    const uttr = new SpeechSynthesisUtterance(text);
+    uttr.lang = 'en-US';
+    uttr.rate = 0.6;
+    speechSynthesis.speak(uttr);
+  }
+
+  function playCurrentTargetHint() {
+    if (currentTargetSpeech && !currentTargetSpeech.includes("（")) {
+      playSpeech(currentTargetSpeech);
+    }
+  }
+
+  // 修改：相手（コンピュータ）の発話に日本語訳を追加表示するよう拡張
+  function addChatBubble(text, isUser, roleLabel, jpText = "") {
+    const container = document.getElementById('chat-container');
+    const bubble = document.createElement('div');
+    bubble.className = `chat-bubble ${isUser ? 'user' : 'opponent'}`;
+    
+    let htmlContent = `<span class="chat-role">${roleLabel}</span>${text}`;
+    if (!isUser && jpText) {
+      htmlContent += `<div class="chat-jp-translation">（${jpText}）</div>`;
+    }
+    
+    bubble.innerHTML = htmlContent;
+    container.appendChild(bubble);
+    container.scrollTop = container.scrollHeight;
+  }
+
+  function renderStepFlow() {
+    const box = document.getElementById('step-flow-box');
+    box.innerHTML = '';
+
+    const stepsCustomer = [
+      { step: 1, left: `Thank you for coming. This is ${restaurantName} restaurant. What would you like?`, right: "I'd like ... ." },
+      { step: 2, left: "OK, ... .", right: "How much is it?" },
+      { step: 3, left: "It's ... yen.", right: "Here you are. (お金を払う)" },
+      { step: 4, left: "Your change is ... yen.", right: "Thank you." },
+      { step: 5, left: "", right: "Thank you. ➔ 🎉 クリア！" }
+    ];
+
+    const stepsClerk = [
+      { step: 1, left: `Thank you for coming. This is ${restaurantName} restaurant. What would you like?`, right: "I'd like ... ." },
+      { step: 2, left: "It's ... yen.", right: "How much is it?" },
+      { step: 3, left: "Your change is ... yen.", right: "Here you are." },
+      { step: 4, left: "Please come again!", right: "Thank you. ➔ 🎉 クリア！" }
+    ];
+
+    const flowData = currentRole === 'customer' ? stepsCustomer : stepsClerk;
+
+    flowData.forEach(s => {
+      const row = document.createElement('div');
+      row.className = `step-row ${s.step === currentStep ? 'active' : ''}`;
+      row.innerHTML = `
+        <div class="step-col left">🧑‍🍳 ${s.left}</div>
+        <div class="step-col right">😋 ${s.right}</div>
+      `;
+      box.appendChild(row);
+    });
+  }
+
+  function generateCustomerPayment(totalPrice) {
+    const patterns = [];
+    patterns.push(1000);
+    if (totalPrice < 500) patterns.push(500);
+
+    let minPayment;
+    if (totalPrice % 100 !== 0) {
+      minPayment = Math.ceil(totalPrice / 10) * 10;
+    } else {
+      minPayment = Math.ceil(totalPrice / 100) * 100;
+    }
+    if (minPayment === totalPrice) minPayment += 100;
+    if (minPayment < 1000) patterns.push(minPayment);
+
+    const chosen = patterns[Math.floor(Math.random() * patterns.length)];
+    return chosen;
+  }
+
+  function setupStep() {
+    renderStepFlow();
+    const total = selectedItems.reduce((sum, i) => sum + i.price, 0);
+    const itemText = formatItemList(selectedItems);
+    const itemJpText = formatItemListJp(selectedItems);
+
+    if (currentRole === 'customer') {
+      if (currentStep === 1) {
+        const clerkGreeting = `Thank you for coming. This is ${restaurantName} restaurant. What would you like?`;
+        const clerkGreetingJp = `いらっしゃいませ。ここは${restaurantName}レストランです。何にしますか？`;
+        if (!customerGreetingPlayed) {
+          addChatBubble(clerkGreeting, false, "店員", clerkGreetingJp);
+          playSpeech(clerkGreeting);
+          customerGreetingPlayed = true;
+        }
+        setTargetText(`I'd like ${itemText}.`, `${itemJpText}をお願いします`, false);
+        document.getElementById('guide-msg').innerText = "店員さんが聞いてくれたよ！マイクを押して注文しよう！";
+      } else if (currentStep === 2) {
+        addChatBubble(`OK, ${itemText}.`, false, "店員", `かしこまりました。${itemJpText}ですね。`);
+        playSpeech(`OK, ${itemText}.`);
+        setTargetText("How much is it?", "いくらですか？", false);
+        document.getElementById('guide-msg').innerText = "いくらか尋ねてみよう！";
+      } else if (currentStep === 3) {
+        addChatBubble(`It's ${total} yen.`, false, "店員", `${total}円です。`);
+        playSpeech(`It's ${total} yen.`);
+        setTargetText("Here you are.", "どうぞ（お金を払う）", false);
+        document.getElementById('guide-msg').innerText = "お金ボタンでお金を合わせて「払う」を押してね！";
+        document.getElementById('money-area').style.display = 'flex';
+        insertedMoney = 0;
+        document.getElementById('inserted-money-text').innerText = "0";
+      } else if (currentStep === 4) {
+        setTargetText("Here you are.", "はい、どうぞ", false);
+        document.getElementById('guide-msg').innerText = "マイクを押して「Here you are.」と言おう！";
+      } else if (currentStep === 5) {
+        const change = insertedMoney - total;
+        addChatBubble(`Your change is ${change} yen.`, false, "店員", `${change}円のおつりです。`);
+        playSpeech(`Your change is ${change} yen.`);
+        setTargetText("Thank you.", "ありがとうございます", false);
+        document.getElementById('guide-msg').innerText = "最後に「Thank you.」とお礼を言おう！";
+      } else if (currentStep === 6) {
+        finishPractice();
+      }
+    } else {
+      // 店員役
+      if (currentStep === 1) {
+        setTargetText(`Thank you for coming. This is ${restaurantName} restaurant. What would you like?`, "いらっしゃいませ。何にしますか？", false);
+        document.getElementById('guide-msg').innerText = "お店のあいさつと注文を聞こう！";
+      } else if (currentStep === 2) {
+        addChatBubble(`I'd like ${itemText}.`, false, "お客", `${itemJpText}をお願いします。`);
+        playSpeech(`I'd like ${itemText}.`);
+
+        setTimeout(() => {
+          addChatBubble("How much is it?", false, "お客", "いくらですか？");
+          playSpeech("How much is it?");
+          setTargetText(`It's ${total} yen.`, `${total}円です`, true);
+          document.getElementById('guide-msg').innerText = `「It's ${total} yen.」と最後まで言って、代金を伝えよう！`;
+        }, 1000);
+      } else if (currentStep === 3) {
+        customerGivenMoney = generateCustomerPayment(total);
+
+        addChatBubble(`Here you are. (${customerGivenMoney} yen)`, false, "お客", `どうぞ。（${customerGivenMoney}円渡す）`);
+        playSpeech("Here you are.");
+
+        const change = customerGivenMoney - total;
+        setTargetText(`Your change is ${change} yen.`, `おつりは${change}円です`, true);
+        document.getElementById('guide-msg').innerText = `客が${customerGivenMoney}円出しました！「Your change is ${change} yen.」と最後まで言おう！`;
+      } else if (currentStep === 4) {
+        addChatBubble("Thank you.", false, "お客", "ありがとうございます。");
+        playSpeech("Thank you.");
+        setTimeout(() => {
+          setTargetText("Please come again!", "またお越しください！", false);
+          document.getElementById('guide-msg').innerText = "「Please come again!」と言って見送ろう！";
+        }, 800);
+      } else if (currentStep === 5) {
+        finishPractice();
+      }
+    }
+  }
+
+  /* 修改：児童の発話を途中で切らず最後までよく聞いて判定する音声認識ロジック */
+  function initSpeechRecognition() {
+    const SpeechRecognition = window.SpeechRecognition || window.webkitSpeechRecognition;
+    if (!SpeechRecognition) {
+      const status = document.getElementById('mic-status');
+      status.innerText = "このブラウザは音声認識に対応していません。ChromeまたはEdgeで開いてください。";
+      status.classList.add('error');
+      document.getElementById('mic-btn').disabled = true;
+      return;
+    }
+    recognition = new SpeechRecognition();
+    recognition.lang = 'en-US';
+    recognition.continuous = false;    // 1文ごとに自動で終了（Edgeで安定しやすい方式）
+    recognition.interimResults = true;  // 途中の暫定テキストも保持
+    recognition.maxAlternatives = 3;
+
+    recognition.onstart = () => {
+      document.getElementById('mic-status').innerText = "🎙️ 聞いています。今、英文を話してください。";
+      document.getElementById('mic-btn').innerText = "🎙️ 話してください（自動判定）";
+    };
+
+    recognition.onaudiostart = () => {
+      document.getElementById('mic-status').innerText = "🎤 マイクの音を受け取っています。英文を話してください。";
+    };
+
+    recognition.onspeechstart = () => {
+      document.getElementById('mic-status').innerText = "✨ 声をキャッチしました。そのまま話してね。";
+    };
+
+    recognition.onspeechend = () => {
+      document.getElementById('mic-status').innerText = "英語を確認しています…";
+    };
+
+    recognition.onresult = (event) => {
+      let currentInterim = '';
+      for (let i = event.resultIndex; i < event.results.length; ++i) {
+        if (event.results[i].isFinal) {
+          finalTranscript += event.results[i][0].transcript + ' ';
+        } else {
+          currentInterim += event.results[i][0].transcript;
+        }
+      }
+      interimTranscript = currentInterim;
+      const liveText = `${finalTranscript} ${interimTranscript}`.trim();
+      if (liveText) {
+        document.getElementById('heard-box').style.display = 'block';
+        document.getElementById('heard-text').innerText = liveText;
+        document.getElementById('mic-status').innerText = '🎙️ 聞き取っています。話し終わったらボタンを押してね。';
+      }
+    };
+
+    recognition.onend = () => {
+      const hadDetectedVoice = voiceWasDetected;
+      stopMicMonitor();
+      // マイク停止（タップまたは自動停止）時に蓄積した文章全体で判定
+      if (isRecording) {
+        stopMicControls();
+      }
+      if (recognitionHadError) return;
+      const speechToCheck = finalTranscript.trim() || interimTranscript.trim();
+      if (speechToCheck.length > 0) {
+        document.getElementById('mic-status').innerText = "英語を確認しています…";
+        checkSpeechFlex(speechToCheck.toLowerCase());
+      } else if (hadDetectedVoice) {
+        document.getElementById('mic-status').innerText = "声はマイクに届きましたが、Edgeが英語を文字にできませんでした。";
+        document.getElementById('voice-fallback-btn').style.display = 'block';
+      } else {
+        document.getElementById('mic-status').innerText = "マイクに声が届きませんでした。緑のメーターが動くか確認して、もう一度話してみよう。";
+      }
+    };
+
+    recognition.onerror = (event) => {
+      console.error("音声認識エラー:", event.error);
+      const status = document.getElementById('mic-status');
+      const newTab = document.getElementById('btn-new-tab');
+      if (event.error === 'no-speech') {
+        recognitionHadError = false;
+        status.innerText = "英語を確認しています…";
+        return;
+      }
+      recognitionHadError = true;
+      stopMicControls();
+      stopMicMonitor();
+      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
+        status.innerText = "マイクが許可されていません。ブラウザのマイクを許可してください。";
+        status.classList.add('error');
+        newTab.style.display = 'block';
+      } else {
+        status.innerText = "マイクを開始できませんでした。もう一度押してみてください。";
+        status.classList.add('error');
+      }
+    };
+  }
+
+  async function toggleMic() {
+    if (audioCtx.state === 'suspended') audioCtx.resume();
+    const status = document.getElementById('mic-status');
+    const micButton = document.getElementById('mic-btn');
+    const newTab = document.getElementById('btn-new-tab');
+
+    if (!recognition) {
+      status.innerText = "音声認識を利用できません。ChromeまたはEdgeで開いてください。";
+      status.classList.add('error');
+      return;
+    }
+
+    if (isRecording) {
+      status.innerText = "英語を確認しています…";
+      recognition.stop();
+      stopMicControls();
+    } else {
+      status.classList.remove('error');
+      newTab.style.display = 'none';
+      micButton.innerText = "⏳ マイクを準備中…";
+      status.innerText = "マイクの使用を確認しています…";
+
+      finalTranscript = ''; // 前回の結果をクリア
+      interimTranscript = '';
+      recognitionHadError = false;
+      document.getElementById('voice-fallback-btn').style.display = 'none';
+      document.getElementById('heard-box').style.display = 'none';
+      document.getElementById('heard-text').innerText = '';
+      try {
+        await startMicMonitor();
+        isRecording = true;
+        micButton.classList.add('recording');
+        micButton.innerText = "🎙️ マイクを開始中…";
+        recognition.start();
+      } catch (error) {
+        stopMicControls();
+        stopMicMonitor();
+        status.innerText = error && error.name === 'NotAllowedError'
+          ? "マイクが許可されていません。アドレスバー左の鍵マークからマイクを許可してください。"
+          : "マイクを開始できませんでした。少し待ってから、もう一度押してください。";
+        status.classList.add('error');
+      }
+    }
+  }
+
+  async function startMicMonitor() {
+    stopMicMonitor();
+    voiceEnergyFrames = 0;
+    voiceWasDetected = false;
+    activeMicStream = await navigator.mediaDevices.getUserMedia({
+      audio: { echoCancellation:true, noiseSuppression:true, autoGainControl:true }
+    });
+    const MonitorAudioContext = window.AudioContext || window.webkitAudioContext;
+    micMonitorContext = new MonitorAudioContext();
+    if (micMonitorContext.state === 'suspended') await micMonitorContext.resume();
+    const source = micMonitorContext.createMediaStreamSource(activeMicStream);
+    const analyser = micMonitorContext.createAnalyser();
+    analyser.fftSize = 1024;
+    analyser.smoothingTimeConstant = 0.55;
+    source.connect(analyser);
+    const samples = new Uint8Array(analyser.fftSize);
+    const wrap = document.getElementById('mic-level-wrap');
+    const bar = document.getElementById('mic-level-bar');
+    wrap.style.display = 'block';
+
+    const measure = () => {
+      analyser.getByteTimeDomainData(samples);
+      let sum = 0;
+      for (const sample of samples) {
+        const centered = (sample - 128) / 128;
+        sum += centered * centered;
+      }
+      const rms = Math.sqrt(sum / samples.length);
+      const level = Math.min(100, Math.max(2, rms * 900));
+      bar.style.width = `${level}%`;
+      if (rms > 0.018) {
+        voiceEnergyFrames++;
+        if (voiceEnergyFrames >= 4 && !voiceWasDetected) {
+          voiceWasDetected = true;
+          document.getElementById('mic-status').innerText = "✨ 声がマイクに届いています。そのまま英文を話してね。";
+        }
+      }
+      micMonitorFrame = requestAnimationFrame(measure);
+    };
+    measure();
+  }
+
+  function stopMicMonitor() {
+    if (micMonitorFrame) cancelAnimationFrame(micMonitorFrame);
+    micMonitorFrame = null;
+    if (activeMicStream) activeMicStream.getTracks().forEach(track => track.stop());
+    activeMicStream = null;
+    if (micMonitorContext && micMonitorContext.state !== 'closed') micMonitorContext.close().catch(() => {});
+    micMonitorContext = null;
+    const wrap = document.getElementById('mic-level-wrap');
+    const bar = document.getElementById('mic-level-bar');
+    if (wrap) wrap.style.display = 'none';
+    if (bar) bar.style.width = '0';
+  }
+
+  function acceptDetectedVoice() {
+    const button = document.getElementById('voice-fallback-btn');
+    button.style.display = 'none';
+    document.getElementById('mic-status').innerText = "お手本を聞いたら、もう一度マイクで話してみよう。";
+    playCurrentTargetHint();
+  }
+
+  function stopMicControls() {
+    isRecording = false;
+    document.getElementById('mic-btn').classList.remove('recording');
+    document.getElementById('mic-btn').innerText = "🎤 マイクで話す";
+  }
+
+  function showJudge(isMaru) {
+    const elem = document.getElementById(isMaru ? 'judge-maru' : 'judge-batsu');
+    playSound(isMaru ? 'correct' : 'incorrect');
+    elem.style.display = 'block';
+    setTimeout(() => { elem.style.display = 'none'; }, 1000);
+  }
+
+  function addMoney(amount) {
+    insertedMoney += amount;
+    document.getElementById('inserted-money-text').innerText = insertedMoney;
+  }
+
+  function payMoney() {
+    const total = selectedItems.reduce((sum, i) => sum + i.price, 0);
+    if (insertedMoney < total) {
+      alert("お金が足りないよ！");
+      return;
+    }
+    document.getElementById('money-area').style.display = 'none';
+    currentStep = 4;
+    setupStep();
+  }
+
+  function finishPractice() {
+    points += 100;
+    completedConversations++;
+    localStorage.setItem('restaurant_completed', completedConversations);
+    if (!dailyMissionState) initDailyMissions();
+    dailyMissionState.conversations++;
+    if (currentRole === 'clerk') dailyMissionState.clerkClears++;
+    else dailyMissionState.customerClears++;
+    checkDailyMissions();
+    playSound('correct');
+    alert("おめでとう！やりとり完了！ 売上100 coinアップ！");
+    goHome();
+  }
+
+  function careerRequirements(level) {
+    if (level <= 1) return [];
+    const n = level - 1;
+    const requirements = [
+      { label:'売上', current:points, target:Math.round(95 * Math.pow(n,1.55)), unit:' coin' },
+      { label:'会話成功', current:completedConversations, target:Math.ceil(n * .75), unit:'回' },
+      { label:'聞き取り正解', current:totalListeningCorrect, target:n * 5, unit:'問' },
+      { label:'練習した単語', current:practicedWords.size, target:Math.min(44, Math.ceil(n * 1.5)), unit:'語' }
+    ];
+    if (level >= 7) requirements.push({ label:'店員役・お客さん役', current:Math.min(clerkClears,customerClears), target:Math.max(1,Math.floor(n/8)), unit:'回ずつ' });
+    if (level >= 11) requirements.push({ label:'ヒントなし会話', current:noHintClears, target:Math.floor(n/4), unit:'回' });
+    return requirements;
+  }
+
+  function currentCareerLevel() {
+    let level = 1;
+    for (let candidate=2; candidate<=careerLevelCount; candidate++) {
+      if (careerRequirements(candidate).every(req => req.current >= req.target)) level = candidate;
+      else break;
+    }
+    return level;
+  }
+
+  function tourCityUnlocked(index) {
+    return currentCareerLevel() >= careerLevelCount && worldTourStamps >= worldTourCities[index].stamps;
+  }
+
+  function selectTourCity(index) {
+    if (!tourCityUnlocked(index)) return;
+    activeTourCity = index;
+    localStorage.setItem('restaurant_active_tour_city', activeTourCity);
+    renderWorldTour();
+  }
+
+  function activeTourMissionProgress() {
+    const w = weeklyMissionState;
+    const data = [
+      { current:w.conversations, target:8, unit:'回' },
+      { current:w.listeningCorrect, target:50, unit:'問' },
+      { current:w.vocabWords.length, target:25, unit:'語' },
+      { current:Math.min(w.clerk,w.customer), target:4, unit:'回ずつ' },
+      { current:w.noHint, target:5, unit:'回' }
+    ];
+    return data[activeTourCity];
+  }
+
+  function checkTourMission() {
+    if (currentCareerLevel() < careerLevelCount || !tourCityUnlocked(activeTourCity) || weeklyMissionState.tourReward) return;
+    const progress = activeTourMissionProgress();
+    if (progress.current >= progress.target) {
+      weeklyMissionState.tourReward = true;
+      points += 500;
+      saveWeeklyMissions();
+      updatePoints();
+      showMissionToast(`${worldTourCities[activeTourCity].name} MISSION CLEAR　+500 coin`);
+    }
+  }
+
+  function renderWorldTour() {
+    const level = currentCareerLevel();
+    const passport = document.getElementById('tour-passport');
+    const grid = document.getElementById('tour-grid');
+    if (level < careerLevelCount) passport.innerText = `LEVEL 30で世界ツアーがオープン（現在 LEVEL ${level}）`;
+    else passport.innerText = `PASSPORT STAMPS　${worldTourStamps} / 12`;
+    grid.innerHTML = worldTourCities.map((city,index) => {
+      const unlocked = tourCityUnlocked(index);
+      return `<button class="tour-city ${unlocked?'available':'locked'} ${unlocked&&index===activeTourCity?'active':''}" onclick="selectTourCity(${index})" ${unlocked?'':'disabled'}>
+        <img src="${city.image}" alt="${city.jp}のレストラン風景">
+        ${city.name}<span class="tour-lock">${unlocked?(index===activeTourCity?'旅行中':'選べます'):`スタンプ ${city.stamps}個で開放`}</span>
+      </button>`;
+    }).join('');
+    const mission = document.getElementById('tour-mission');
+    if (level < careerLevelCount) mission.innerText = '30レベルを達成すると、5都市の特別ミッションに挑戦できます。';
+    else {
+      if (!tourCityUnlocked(activeTourCity)) activeTourCity = 0;
+      const city = worldTourCities[activeTourCity];
+      const progress = activeTourMissionProgress();
+      mission.innerHTML = `<strong>${city.name} SPECIAL MISSION</strong><br>${city.mission}<br>${Math.min(progress.current,progress.target)} / ${progress.target}${progress.unit}${weeklyMissionState.tourReward?'　CLEAR！':'　｜　報酬 +500 coin'}`;
+    }
+  }
+
+  function openMyRestaurant() {
+    renderMyRestaurant();
+    document.getElementById('restaurant-modal').style.display = 'flex';
+  }
+
+  function closeMyRestaurant() {
+    document.getElementById('restaurant-modal').style.display = 'none';
+  }
+
+  function renderMyRestaurant() {
+    if (!weeklyMissionState) initWeeklyMissions();
+    const level = currentCareerLevel();
+    const stageIndex = Math.min(restaurantStages.length - 1, Math.floor((level - 1) / 5));
+    const stage = restaurantStages[stageIndex];
+    const rank = careerRankNames[(level - 1) % 5];
+    document.getElementById('restaurant-level-label').innerText = `RESTAURANT LEVEL ${level} / ${careerLevelCount}`;
+    document.getElementById('restaurant-rank-name').innerText = `${stage.name}　${rank}`;
+    document.getElementById('restaurant-stage-image').src = stage.image;
+    document.getElementById('restaurant-stage-image').alt = `${stage.name}のイラスト`;
+    document.getElementById('restaurant-coins').innerText = points;
+    document.getElementById('conversation-count').innerText = completedConversations;
+    document.getElementById('listening-best').innerText = `${listeningBest} / 10`;
+    document.getElementById('rush-best').innerText = lunchRushBest;
+    const road = document.getElementById('stage-road');
+    road.innerHTML = restaurantStages.map((item, index) =>
+      `<div class="stage-step ${index <= stageIndex ? 'reached' : ''} ${index === stageIndex ? 'current' : ''}">Lv.${index*5+1}–${index*5+5}<br>${item.name}</div>`
+    ).join('');
+    const requirementBox = document.getElementById('promotion-requirements');
+    if (level < careerLevelCount) {
+      const requirements = careerRequirements(level + 1);
+      const doneCount = requirements.filter(req => req.current >= req.target).length;
+      document.getElementById('growth-fill').style.width = `${Math.round(doneCount / requirements.length * 100)}%`;
+      document.getElementById('growth-message').innerText = `LEVEL ${level + 1}へ　あと${requirements.length - doneCount}条件`;
+      requirementBox.innerHTML = requirements.map(req => {
+        const done = req.current >= req.target;
+        return `<div class="requirement ${done?'done':''}"><span class="requirement-mark">${done?'OK':'・'}</span><span>${req.label}</span><span class="requirement-progress">${Math.min(req.current,req.target)} / ${req.target}${req.unit}</span></div>`;
+      }).join('');
+    } else {
+      document.getElementById('growth-fill').style.width = '100%';
+      document.getElementById('growth-message').innerText = 'RESTAURANT CAREER COMPLETE！';
+      requirementBox.innerHTML = '<div class="requirement done"><span class="requirement-mark">OK</span><span>全30レベル達成！週間チャレンジで記録を伸ばそう。</span></div>';
+    }
+    document.getElementById('career-summary').innerText = `建物ステージ ${stageIndex+1} / 6　｜　ランク ${rank}`;
+    const weekly = weeklyMissionDefinitions();
+    document.getElementById('weekly-challenge-list').innerHTML = weekly.map((mission,index) => {
+      const done = mission.current >= mission.target;
+      return `<div class="weekly-item ${done?'done':''}"><span class="requirement-mark">${done?'OK':index+1}</span><span>${mission.text}<br><small>${Math.min(mission.current,mission.target)} / ${mission.target}</small></span><span class="weekly-reward">+${mission.reward} coin</span></div>`;
+    }).join('');
+    document.getElementById('weekly-complete').style.display = weeklyMissionState.allBonus ? 'block' : 'none';
+    renderWorldTour();
+  }
+</script>
+<script>
+  // Grade 5 learning layer: scaffolded hints, missions, natural order phrases and fairer feedback.
+  let practiceLevel = localStorage.getItem('restaurant_level') || 'easy';
+  let hintUsedThisRound = false;
+  let retryCountThisRound = 0;
+  let currentGuest = null;
+  let currentMission = null;
+
+  const guests = [
+    { name:'Sota', note:'おなかがぺこぺこ' },
+    { name:'Mia', note:'デザートが大好き' },
+    { name:'Alex', note:'元気なスポーツ選手' },
+    { name:'Ninja Kai', note:'しずかに注文する忍者' },
+    { name:'Lumi', note:'地球の料理に興味しんしん' }
+  ];
+
+  const missionsByRole = {
+    customer: [
+      '好きな料理を1品以上、英語で注文しよう。',
+      '料理と飲み物を組み合わせて注文しよう。',
+      '合計500円以内になるように注文しよう。',
+      '最後まで笑顔でやり取りを続けよう。'
+    ],
+    clerk: [
+      'お客さんの注文を聞き、代金を英語で伝えよう。',
+      'おつりを正しく計算して英語で伝えよう。',
+      '最初のあいさつからお見送りまでやり切ろう。',
+      'お手本を1回以内にして接客しよう。'
+    ]
+  };
+
+  function setLevel(level, button) {
+    practiceLevel = level;
+    localStorage.setItem('restaurant_level', level);
+    document.querySelectorAll('.level-btn').forEach(b => b.classList.toggle('active', b.dataset.level === level));
+    if (button) button.blur();
+  }
+
+  function levelLabel(){ return practiceLevel === 'easy' ? 'やさしい' : practiceLevel === 'normal' ? 'ふつう' : 'チャレンジ'; }
+
+  formatItemList = function(items) {
+    const names = items.map(i => i.name);
+    if (!names.length) return '';
+    if (names.length === 1) return names[0];
+    if (names.length === 2) return `${names[0]} and ${names[1]}`;
+    return `${names.slice(0,-1).join(', ')}, and ${names[names.length-1]}`;
+  };
+
+  const baseSetTargetText = setTargetText;
+  setTargetText = function(eng, jp, price) {
+    baseSetTargetText(eng, jp, price);
+    if (eng.includes('（')) return;
+    const target = document.getElementById('target-text');
+    const sub = document.getElementById('jp-subtext');
+    if (practiceLevel === 'normal') {
+      const words = eng.split(' ');
+      target.innerText = words.map((w,i) => (i > 0 && i % 3 === 1) ? '______' : w).join(' ');
+    } else if (practiceLevel === 'challenge') {
+      target.innerText = '自分の言葉で伝えてみよう！';
+    }
+    sub.innerText = jp ? `（${jp}）` : '';
+  };
+
+  const baseStartGame = startGame;
+  startGame = function(role) {
+    hintUsedThisRound = false;
+    retryCountThisRound = 0;
+    currentGuest = guests[Math.floor(Math.random() * guests.length)];
+    const missions = missionsByRole[role];
+    currentMission = missions[Math.floor(Math.random() * missions.length)];
+    baseStartGame(role);
+    document.getElementById('mission-card').style.display = 'block';
+    document.getElementById('mission-text').innerText = currentMission;
+    document.getElementById('customer-chip').innerText = `TODAY'S GUEST：${currentGuest.name}（${currentGuest.note}）`;
+    document.getElementById('role-badge').innerText += `　${levelLabel()}`;
+  };
+
+  const baseHint = playCurrentTargetHint;
+  playCurrentTargetHint = function() {
+    hintUsedThisRound = true;
+    baseHint();
+  };
+
+  function normalizeSpeech(text) {
+    return text.toLowerCase()
+      .replace(/[’]/g,"'")
+      .replace(/[^a-z0-9' ]/g,' ')
+      .replace(/\bi would\b/g,"i'd")
+      .replace(/\bid\b/g,"i'd")
+      .replace(/\bit is\b/g,"it's")
+      .replace(/\byou are welcome\b/g,"you're welcome")
+      .replace(/\s+/g,' ').trim();
+  }
+
+  function normalizeVocabAnswer(text) {
+    return normalizeSpeech(text)
+      .replace(/^a /, '')
+      .replace(/^an /, '')
+      .replace(/\bfrench fry$/, 'french fries')
+      .replace(/\bpotato chip$/, 'potato chips')
+      .replace(/\bcream puffs$/, 'cream puff');
+  }
+
+  function importantWords(target) {
+    const stop = new Set(['a','an','the','is','it','this','of','some']);
+    return normalizeSpeech(target).split(' ').filter(w => w.length > 1 && !stop.has(w));
+  }
+
+  function checkSpeechFlex(userText) {
+    const user = normalizeSpeech(userText);
+    const target = normalizeSpeech(currentTargetSpeech);
+    const userWords = user.split(' ').filter(Boolean);
+    document.getElementById('heard-box').style.display = 'block';
+    document.getElementById('heard-text').innerText = userText;
+
+    let ok = false;
+    let finishHint = 'お手本を聞いて、文の最後までゆっくり言ってみよう。';
+    if (target.startsWith("i'd like")) {
+      const itemWords = selectedItems.flatMap(i => normalizeSpeech(i.name).split(' ')).filter(Boolean);
+      const hasOpening = userWords.includes("i'd") && userWords.includes('like');
+      const hasEveryItemWord = itemWords.every(word => userWords.includes(word));
+      ok = hasOpening && hasEveryItemWord;
+      if (!hasEveryItemWord) finishHint = '選んだ料理の名前を最後まで全部言ってみよう。';
+      else if (!hasOpening) finishHint = '最初の「I’d like」から言ってみよう。';
+    } else if (target.includes('how much')) {
+      ok = ['how','much','is','it'].every(word => userWords.includes(word));
+      finishHint = '「How much is it?」と最後の「it」まで言ってみよう。';
+    } else if (target.includes('here you are')) {
+      ok = ['here','you','are'].every(word => userWords.includes(word));
+      finishHint = '「Here you are.」と最後の「are」まで言ってみよう。';
+    } else if (target.includes('what would you like')) {
+      const keys = ['thank','you','for','coming','this','is','restaurant','what','would','you','like'];
+      const matched = keys.filter(k => userWords.includes(k)).length;
+      ok = matched === keys.length && ['what','would','you','like'].every(word => userWords.includes(word));
+      finishHint = '店員のせりふを、最後の「What would you like?」まで言ってみよう。';
+    } else if (target.includes('thank you')) {
+      ok = ['thank','you'].every(word => userWords.includes(word));
+    } else if (target.includes('please come again')) {
+      ok = ['please','come','again'].every(word => userWords.includes(word));
+      finishHint = '「Please come again!」まで言ってみよう。';
+    } else if (isPriceStep || target.includes('your change')) {
+      const nums = target.match(/\d+/g) || [];
+      const hasNumber = nums.length > 0 && nums.every(n => userWords.includes(n));
+      if (target.includes('your change')) {
+        ok = hasNumber && ['your','change','is','yen'].every(word => userWords.includes(word));
+        finishHint = '「Your change is ～ yen.」と最後まで言ってみよう。';
+      } else {
+        ok = hasNumber && userWords.includes("it's") && userWords.includes('yen');
+        finishHint = '数字だけでなく、「It’s ～ yen.」と最後まで言ってみよう。';
+      }
+    } else {
+      const keys = importantWords(target);
+      ok = keys.length > 0 && keys.every(k => userWords.includes(k));
+    }
+
+    if (ok) {
+      showJudge(true);
+      addChatBubble(userText, true, 'あなた');
+      currentStep++;
+      setTimeout(setupStep, 750);
+    } else {
+      retryCountThisRound++;
+      showJudge(false);
+      document.getElementById('mic-status').innerText = `もう少し！${finishHint}`;
+      setTimeout(() => alert(`もう少し！\n${finishHint}`), 300);
+    }
+  }
+
+  finishPractice = function() {
+    const bonus = hintUsedThisRound ? 0 : 50;
+    const retryBonus = retryCountThisRound === 0 ? 50 : 0;
+    const earned = 100 + bonus + retryBonus;
+    points += earned;
+    completedConversations++;
+    recordTrainingActivity('conversations');
+    localStorage.setItem('restaurant_completed', completedConversations);
+    if (currentRole === 'clerk') clerkClears++;
+    else customerClears++;
+    localStorage.setItem('restaurant_clerk_clears', clerkClears);
+    localStorage.setItem('restaurant_customer_clears', customerClears);
+    if (!hintUsedThisRound) {
+      noHintClears++;
+      localStorage.setItem('restaurant_no_hint_clears', noHintClears);
+    }
+    if (!dailyMissionState) initDailyMissions();
+    dailyMissionState.conversations++;
+    if (currentRole === 'clerk') dailyMissionState.clerkClears++;
+    else dailyMissionState.customerClears++;
+    checkDailyMissions();
+    if (!dailyMissionState.rewards[0]) {
+      showMissionToast(currentRole === 'clerk' ? '次はお客さん役をクリアしよう！' : '次は店員役をクリアしよう！');
+    }
+    if (!weeklyMissionState) initWeeklyMissions();
+    weeklyMissionState.conversations++;
+    if (currentRole === 'clerk') weeklyMissionState.clerk++;
+    else weeklyMissionState.customer++;
+    if (!hintUsedThisRound) weeklyMissionState.noHint++;
+    checkWeeklyMissions();
+    checkTourMission();
+    playSound('correct');
+    const grade = retryCountThisRound === 0 && !hintUsedThisRound ? 'S' : retryCountThisRound <= 1 ? 'A' : 'B';
+    alert(`やり取りクリア！\nサービス評価 ${grade}\n売上 ${earned} coin アップ！${bonus ? '\nヒントなしボーナス +50 coin' : ''}`);
+    goHome();
+  };
+
+  window.addEventListener('load', () => {
+    document.querySelectorAll('.level-btn').forEach(b => b.classList.toggle('active', b.dataset.level === practiceLevel));
+  });
+</script>
+</body>
+</html>
