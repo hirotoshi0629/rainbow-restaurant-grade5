@@ -457,6 +457,9 @@
 
     .btn-mic { background: #4caf50; color: white; }
     .btn-mic.recording { background: #f44336; animation: pulse 1s infinite; }
+    .btn-speech-finish { display:none; margin:0 auto 8px; padding:13px 24px; background:#ff7043; color:#fff; border:3px solid #fff; box-shadow:0 4px 0 #d84315; }
+    .btn-speech-finish:disabled { opacity:.65; cursor:wait; }
+    .speech-finish-help { display:none; margin:-4px auto 10px; text-align:center; color:#795548; font-size:.9rem; font-weight:bold; }
     .btn-hint { background: #00bcd4; color: white; }
     .btn-money { background: #ffca28; color: #333; padding: 6px 12px; }
     .btn-stamp { background: #6a1b9a; color: white; }
@@ -757,6 +760,8 @@
       <button class="btn-hint" onclick="playCurrentTargetHint()">🔊 お手本を聞く (ゆっくり)</button>
       <button class="btn-mic" id="mic-btn" onclick="toggleMic()">🎤 マイクで話す</button>
     </div>
+    <button class="btn-speech-finish" id="speech-finish-btn" onclick="finishSpeechInput()">✅ 話し終わった・判定する</button>
+    <div class="speech-finish-help" id="speech-finish-help">文と文の間で少し止まっても大丈夫。全部言い終えてから押してね。</div>
     <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
     <div class="mic-level-wrap" id="mic-level-wrap" aria-label="マイクの音量"><div class="mic-level-bar" id="mic-level-bar"></div></div>
     <button class="btn-voice-fallback" id="voice-fallback-btn" onclick="acceptDetectedVoice()">🔊 お手本を聞いて、もう一度</button>
@@ -1019,6 +1024,9 @@
   let recognition;
   let micPermissionChecked = false;
   let recognitionHadError = false;
+  let manualSpeechFinishRequested = false;
+  let speechCompletionHandled = false;
+  let recognitionRestartTimer = null;
   let interimTranscript = '';
   let activeMicStream = null;
   let micMonitorContext = null;
@@ -2423,13 +2431,13 @@
     }
     recognition = new SpeechRecognition();
     recognition.lang = 'en-US';
-    recognition.continuous = false;    // 1文ごとに自動で終了（Edgeで安定しやすい方式）
+    recognition.continuous = true;     // 文と文の間が空いても、話し終わるまで聞き続ける
     recognition.interimResults = true;  // 途中の暫定テキストも保持
     recognition.maxAlternatives = 3;
 
     recognition.onstart = () => {
       document.getElementById('mic-status').innerText = "🎙️ 聞いています。今、英文を話してください。";
-      document.getElementById('mic-btn').innerText = "🎙️ 話してください（自動判定）";
+      document.getElementById('mic-btn').innerText = "🎙️ 聞いています";
     };
 
     recognition.onaudiostart = () => {
@@ -2441,7 +2449,7 @@
     };
 
     recognition.onspeechend = () => {
-      document.getElementById('mic-status').innerText = "英語を確認しています…";
+      document.getElementById('mic-status').innerText = "少し間が空いても大丈夫。そのまま続きを話せます。";
     };
 
     recognition.onresult = (event) => {
@@ -2463,23 +2471,13 @@
     };
 
     recognition.onend = () => {
-      const hadDetectedVoice = voiceWasDetected;
-      stopMicMonitor();
-      // マイク停止（タップまたは自動停止）時に蓄積した文章全体で判定
-      if (isRecording) {
-        stopMicControls();
+      // Edgeが短い無音で認識を区切ることがあるため、児童が「話し終わった」を
+      // 押すまでは自動判定せず、認識をつなぎ直して全文をためる。
+      if (isRecording && !manualSpeechFinishRequested && !recognitionHadError) {
+        restartRecognitionAfterPause();
+        return;
       }
-      if (recognitionHadError) return;
-      const speechToCheck = finalTranscript.trim() || interimTranscript.trim();
-      if (speechToCheck.length > 0) {
-        document.getElementById('mic-status').innerText = "英語を確認しています…";
-        checkSpeechFlex(speechToCheck.toLowerCase());
-      } else if (hadDetectedVoice) {
-        document.getElementById('mic-status').innerText = "声はマイクに届きましたが、Edgeが英語を文字にできませんでした。";
-        document.getElementById('voice-fallback-btn').style.display = 'block';
-      } else {
-        document.getElementById('mic-status').innerText = "マイクに声が届きませんでした。緑のメーターが動くか確認して、もう一度話してみよう。";
-      }
+      completeSpeechRecognition();
     };
 
     recognition.onerror = (event) => {
@@ -2488,7 +2486,7 @@
       const newTab = document.getElementById('btn-new-tab');
       if (event.error === 'no-speech') {
         recognitionHadError = false;
-        status.innerText = "英語を確認しています…";
+        status.innerText = "まだ話せます。全部言い終えてから「話し終わった」を押してね。";
         return;
       }
       recognitionHadError = true;
@@ -2518,9 +2516,7 @@
     }
 
     if (isRecording) {
-      status.innerText = "英語を確認しています…";
-      recognition.stop();
-      stopMicControls();
+      finishSpeechInput();
     } else {
       status.classList.remove('error');
       newTab.style.display = 'none';
@@ -2530,6 +2526,10 @@
       finalTranscript = ''; // 前回の結果をクリア
       interimTranscript = '';
       recognitionHadError = false;
+      manualSpeechFinishRequested = false;
+      speechCompletionHandled = false;
+      if (recognitionRestartTimer) clearTimeout(recognitionRestartTimer);
+      recognitionRestartTimer = null;
       document.getElementById('voice-fallback-btn').style.display = 'none';
       document.getElementById('heard-box').style.display = 'none';
       document.getElementById('heard-text').innerText = '';
@@ -2538,6 +2538,10 @@
         isRecording = true;
         micButton.classList.add('recording');
         micButton.innerText = "🎙️ マイクを開始中…";
+        document.getElementById('speech-finish-btn').style.display = 'block';
+        document.getElementById('speech-finish-btn').disabled = false;
+        document.getElementById('speech-finish-btn').innerText = '✅ 話し終わった・判定する';
+        document.getElementById('speech-finish-help').style.display = 'block';
         recognition.start();
       } catch (error) {
         stopMicControls();
@@ -2547,6 +2551,54 @@
           : "マイクを開始できませんでした。少し待ってから、もう一度押してください。";
         status.classList.add('error');
       }
+    }
+  }
+
+  function finishSpeechInput() {
+    if (!isRecording || manualSpeechFinishRequested) return;
+    manualSpeechFinishRequested = true;
+    if (recognitionRestartTimer) clearTimeout(recognitionRestartTimer);
+    recognitionRestartTimer = null;
+    const finishButton = document.getElementById('speech-finish-btn');
+    finishButton.disabled = true;
+    finishButton.innerText = '⏳ 英語を確認中…';
+    document.getElementById('mic-status').innerText = '英語を確認しています…';
+    try {
+      recognition.stop();
+    } catch (_) {
+      completeSpeechRecognition();
+    }
+  }
+
+  function restartRecognitionAfterPause() {
+    if (recognitionRestartTimer || !isRecording || manualSpeechFinishRequested || recognitionHadError) return;
+    document.getElementById('mic-status').innerText = '少し間が空いても大丈夫。続きを話してね。終わったら下のボタンを押そう。';
+    recognitionRestartTimer = setTimeout(() => {
+      recognitionRestartTimer = null;
+      if (!isRecording || manualSpeechFinishRequested || recognitionHadError) return;
+      try { recognition.start(); }
+      catch (_) { restartRecognitionAfterPause(); }
+    }, 260);
+  }
+
+  function completeSpeechRecognition() {
+    if (speechCompletionHandled) return;
+    speechCompletionHandled = true;
+    const hadDetectedVoice = voiceWasDetected;
+    if (recognitionRestartTimer) clearTimeout(recognitionRestartTimer);
+    recognitionRestartTimer = null;
+    stopMicMonitor();
+    stopMicControls();
+    if (recognitionHadError) return;
+    const speechToCheck = finalTranscript.trim() || interimTranscript.trim();
+    if (speechToCheck.length > 0) {
+      document.getElementById('mic-status').innerText = '英語を確認しています…';
+      checkSpeechFlex(speechToCheck.toLowerCase());
+    } else if (hadDetectedVoice) {
+      document.getElementById('mic-status').innerText = '声はマイクに届きましたが、Edgeが英語を文字にできませんでした。';
+      document.getElementById('voice-fallback-btn').style.display = 'block';
+    } else {
+      document.getElementById('mic-status').innerText = 'マイクに声が届きませんでした。緑のメーターが動くか確認して、もう一度話してみよう。';
     }
   }
 
@@ -2616,6 +2668,8 @@
     isRecording = false;
     document.getElementById('mic-btn').classList.remove('recording');
     document.getElementById('mic-btn').innerText = "🎤 マイクで話す";
+    document.getElementById('speech-finish-btn').style.display = 'none';
+    document.getElementById('speech-finish-help').style.display = 'none';
   }
 
   function showJudge(isMaru) {
