@@ -912,6 +912,28 @@
  outline:0!important;box-shadow:none!important;
 }
 
+
+/* FINAL difficulty UI: cover the baked-in buttons completely, then render one true selectable row */
+.image-home .home-level-picker{
+ left:31.35%!important;top:72.30%!important;width:17.55%!important;height:3.70%!important;
+ display:grid!important;grid-template-columns:1fr 1fr 1.28fr!important;gap:4px!important;
+ z-index:100!important;padding:0!important;background:#fff!important;border:0!important;border-radius:7px!important;
+ overflow:hidden!important;
+}
+.image-home .home-level-picker .level-btn{
+ opacity:1!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ width:100%!important;height:100%!important;min-height:0!important;margin:0!important;padding:0 2px!important;
+ background:#fff!important;color:#4d4038!important;border:1.5px solid #f3b7c8!important;border-radius:6px!important;
+ outline:0!important;box-shadow:none!important;font-family:inherit!important;font-size:clamp(.52rem,.78vw,.82rem)!important;
+ font-weight:900!important;line-height:1!important;cursor:pointer!important;position:relative!important;
+}
+.image-home .home-level-picker .level-btn.active{
+ background:#ffb23f!important;color:#4b3200!important;border-color:#f28a00!important;
+ outline:0!important;box-shadow:none!important;
+}
+.image-home .home-level-picker .level-btn::before,
+.image-home .home-level-picker .level-btn::after{content:none!important;display:none!important}
+
 </style>
 </head>
 <body>
@@ -944,9 +966,9 @@
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
       <div class="home-level-picker" aria-label="難易度を選ぶ">
-        <button class="level-btn" data-level="easy" onpointerdown="chooseHomeLevel('easy',this,event)" aria-label="やさしい"></button>
-        <button class="level-btn" data-level="normal" onpointerdown="chooseHomeLevel('normal',this,event)" aria-label="ふつう"></button>
-        <button class="level-btn" data-level="challenge" onpointerdown="chooseHomeLevel('challenge',this,event)" aria-label="チャレンジ"></button>
+        <button class="level-btn" data-level="easy" onpointerdown="chooseHomeLevel('easy',this,event)" aria-label="やさしい">やさしい</button>
+        <button class="level-btn" data-level="normal" onpointerdown="chooseHomeLevel('normal',this,event)" aria-label="ふつう">ふつう</button>
+        <button class="level-btn" data-level="challenge" onpointerdown="chooseHomeLevel('challenge',this,event)" aria-label="チャレンジ">チャレンジ</button>
       </div>
 </div>
   </div>
