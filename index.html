@@ -859,6 +859,17 @@
  outline:3px solid rgba(255,152,0,.9)!important;outline-offset:-3px!important;
 }
 
+
+.image-home .home-level-picker{
+ left:31.15%!important;top:72.35%!important;width:17.85%!important;height:4.15%!important;
+ z-index:100!important;pointer-events:auto!important;
+}
+.image-home .home-level-picker .level-btn{pointer-events:auto!important;touch-action:manipulation!important}
+.image-home .home-level-picker .level-btn.active{
+ background:rgba(255,193,7,.22)!important;
+ outline:4px solid #ff9800!important;outline-offset:-4px!important;
+}
+
 </style>
 </head>
 <body>
@@ -891,9 +902,9 @@
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
       <div class="home-level-picker" aria-label="難易度を選ぶ">
-        <button class="level-btn" data-level="easy" onclick="setLevel('easy',this)" aria-label="やさしい"></button>
-        <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)" aria-label="ふつう"></button>
-        <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)" aria-label="チャレンジ"></button>
+        <button class="level-btn" data-level="easy" onpointerdown="chooseHomeLevel('easy',this,event)" aria-label="やさしい"></button>
+        <button class="level-btn" data-level="normal" onpointerdown="chooseHomeLevel('normal',this,event)" aria-label="ふつう"></button>
+        <button class="level-btn" data-level="challenge" onpointerdown="chooseHomeLevel('challenge',this,event)" aria-label="チャレンジ"></button>
       </div>
 </div>
   </div>
@@ -3342,5 +3353,19 @@
   });
 })();
 </script>
+
+<script>
+function chooseHomeLevel(level, button, ev){
+  if(ev){ ev.preventDefault(); ev.stopPropagation(); }
+  try{
+    practiceLevel = level;
+    localStorage.setItem('restaurant_level', level);
+  }catch(e){}
+  document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.level === level);
+  });
+}
+</script>
+
 </body>
 </html>
