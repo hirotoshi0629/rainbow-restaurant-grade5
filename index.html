@@ -841,6 +841,24 @@
   cursor:pointer!important;
 }
 
+
+/* exact clickable regions for the three difficulty buttons in the approved image */
+.image-home .home-level-picker{
+ display:grid!important;grid-template-columns:1fr 1fr 1.35fr!important;gap:.35%!important;
+ position:absolute!important;left:31.25%!important;top:72.30%!important;width:17.15%!important;height:3.75%!important;
+ z-index:30!important;background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;
+}
+.image-home .home-level-picker .level-btn{
+ display:block!important;width:100%!important;height:100%!important;min-height:0!important;
+ margin:0!important;padding:0!important;background:transparent!important;border:0!important;border-radius:7px!important;
+ opacity:1!important;cursor:pointer!important;box-shadow:none!important;color:transparent!important;
+ -webkit-tap-highlight-color:rgba(255,193,7,.22)!important;
+}
+.image-home .home-level-picker .level-btn.active{
+ background:rgba(255,193,7,.12)!important;
+ outline:3px solid rgba(255,152,0,.9)!important;outline-offset:-3px!important;
+}
+
 </style>
 </head>
 <body>
@@ -873,10 +891,9 @@
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
       <div class="home-level-picker" aria-label="難易度を選ぶ">
-        <span>難易度</span>
-        <button class="level-btn" data-level="easy" onclick="setLevel('easy',this)">やさしい</button>
-        <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)">ふつう</button>
-        <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button>
+        <button class="level-btn" data-level="easy" onclick="setLevel('easy',this)" aria-label="やさしい"></button>
+        <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)" aria-label="ふつう"></button>
+        <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)" aria-label="チャレンジ"></button>
       </div>
 </div>
   </div>
