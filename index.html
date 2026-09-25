@@ -783,6 +783,14 @@
 .image-home .strengths-label-fix b{background:#1179ca!important;color:#fff!important;padding:2px 3px!important}
 .image-home .ref-book-icon,.image-home .ref-chart-icon,.image-home .css-book,.image-home .css-chart{display:none!important}
 
+
+/* approved image masters */
+.help-overlay{padding:10px!important;overflow:auto!important;align-items:flex-start!important}
+.help-image-shell{position:relative;width:min(1536px,100%);margin:0 auto;background:transparent!important;border:0!important;box-shadow:none!important;max-height:none!important;overflow:visible!important}
+.help-master-image{display:block;width:100%;height:auto}
+.help-image-close{position:absolute;right:.6%;top:.7%;width:6.4%;height:10%;z-index:20;border:0;background:transparent;cursor:pointer;border-radius:18px}
+.help-image-close:focus-visible{outline:5px solid #fff;box-shadow:0 0 0 8px #1565c0}
+
 </style>
 </head>
 <body>
@@ -799,7 +807,7 @@
   <!-- 1. ホーム画面 -->
   <div class="home-screen image-home" id="home-screen">
     <div class="home-design-wrap">
-      <img class="home-design-image" src="rainbow-restaurant-home-final.webp?v=20260925-final" alt="Rainbow Restaurant ホーム画面">
+      <img class="home-design-image" src="rainbow-home-kanji.webp?v=20260926-master" alt="Rainbow Restaurant ホーム画面">
       <button class="home-hotspot hs-sound" onclick="speakText('Welcome to Rainbow Restaurant!')" aria-label="音声"></button>
       <button class="home-hotspot hs-settings" onclick="openDeviceCheck()" aria-label="設定"></button>
       <button class="home-hotspot hs-help-top" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
@@ -814,30 +822,20 @@
       <button class="home-hotspot hs-achievements" onclick="openTrainingReport()" aria-label="実せき"></button>
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
-
-      <button class="home-label-fix vocab-label-fix" onclick="openVocabulary()" aria-label="単語練習を始める"><span>単語練習を始める</span></button>
       <div class="home-level-picker" aria-label="難易度を選ぶ">
         <span>難易度</span>
         <button class="level-btn" data-level="easy" onclick="setLevel('easy',this)">やさしい</button>
         <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)">ふつう</button>
         <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button>
       </div>
-      <button class="home-label-fix strengths-label-fix" onclick="openTrainingReport()" aria-label="得意・苦手"><span>得意・苦手</span><b>›</b></button>
     </div>
   </div>
 
-  <div class="help-overlay" id="app-help-overlay" role="dialog" aria-modal="true" aria-labelledby="app-help-title">
-    <div class="help-panel"><h2 id="app-help-title">📖 Rainbow Restaurant の使い方</h2><p class="help-lead">英語を「聞く・話す・やり取りする」練習を、自分のペースで進めよう！</p>
-      <div class="help-grid">
-        <div class="help-card"><strong>① まずは単語を練習</strong>料理や飲み物の英語を聞いたり、自分の声を録音したりできます。苦手な単語は何度でも練習しよう。</div>
-        <div class="help-card"><strong>② 英単語を練習しよう</strong>料理や飲み物の英単語を、絵を見ながら聞いたり、声に出したりして練習できます。録音して自分の発音を聞いたり、苦手な単語をあとでまとめて練習したりできます。</div>
-        <div class="help-card"><strong>③ 練習する役を選ぼう</strong>店員として練習するか、お客さんとして練習するかを選びます。お手本を聞いてまねして言い、慣れたら両方の役に挑戦しよう。</div>
-        <div class="help-card"><strong>④ マイクで話す</strong>表示されたせりふを最後まで、ゆっくり・はっきり話そう。うまくいかないときはお手本をもう一度聞こう。</div>
-        <div class="help-card"><strong>⑤ LUNCH RUSH</strong>英語の注文を聞いて正しい料理を選ぶゲーム。聞き取る力を使って記録更新を目指そう。</div>
-        <div class="help-card"><strong>⑥ TODAY'S MISSIONS</strong>その日のミッションに挑戦すると売上 coin が増えます。店員とお客さん、両方の練習も大切です。</div>
-        <div class="help-card"><strong>⑦ マイレストラン</strong>練習を続けるとレストランが成長。レベルや記録、世界ツアーなど自分の成長を確かめられます。</div>
-        <div class="help-card"><strong>⑧ 困ったとき</strong>声が聞こえない・マイクが反応しないときは「授業前の音声・マイクチェック」で確認しよう。</div>
-      </div><div class="help-tip">💡 おすすめ：最初は「やさしい」で店員とお客さんを1回ずつ → 慣れたら「ふつう」「チャレンジ」へ！</div><button class="help-close" onclick="closeAppHelp()">ホームにもどる</button></div>
+  <div class="help-overlay" id="app-help-overlay" role="dialog" aria-modal="true" aria-label="詳しい使い方" onclick="if(event.target===this)closeAppHelp()">
+    <div class="help-image-shell">
+      <img src="rainbow-help-final.webp?v=20260926-master" class="help-master-image" alt="Rainbow Restaurant 詳しい使い方">
+      <button class="help-image-close" onclick="closeAppHelp()" aria-label="閉じる"></button>
+    </div>
   </div>
 
   <!-- 単語練習画面 -->
