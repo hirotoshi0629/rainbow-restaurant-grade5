@@ -823,6 +823,24 @@
 .image-home .home-label-fix.vocab-label-fix,
 .image-home .home-label-fix.strengths-label-fix{display:none!important}
 
+
+/* EXACT HOME ARTWORK: no visual HTML overlays; image is the single source of truth */
+.image-home .kanji-mask,
+.image-home .vocab-kanji-mask,
+.image-home .strengths-kanji-mask,
+.image-home .home-label-fix{display:none!important}
+.image-home .home-level-picker{
+  display:flex!important;position:absolute!important;left:25.9%!important;top:72.15%!important;
+  width:23.0%!important;height:4.55%!important;z-index:14!important;
+  background:transparent!important;border:0!important;box-shadow:none!important;padding:0!important;gap:0!important;
+}
+.image-home .home-level-picker span{width:24%!important;opacity:0!important;pointer-events:none!important}
+.image-home .home-level-picker .level-btn{
+  flex:1!important;height:100%!important;margin:0!important;padding:0!important;
+  opacity:0!important;background:transparent!important;border:0!important;box-shadow:none!important;
+  cursor:pointer!important;
+}
+
 </style>
 </head>
 <body>
@@ -839,7 +857,7 @@
   <!-- 1. ホーム画面 -->
   <div class="home-screen image-home" id="home-screen">
     <div class="home-design-wrap">
-      <img class="home-design-image" src="rainbow-restaurant-home-final.webp?v=20260926-clean" alt="Rainbow Restaurant ホーム画面">
+      <img class="home-design-image" src="rainbow-home-kanji.webp?v=20260926-exact-home" alt="Rainbow Restaurant ホーム画面">
       <button class="home-hotspot hs-sound" onclick="speakText('Welcome to Rainbow Restaurant!')" aria-label="音声"></button>
       <button class="home-hotspot hs-settings" onclick="openDeviceCheck()" aria-label="設定"></button>
       <button class="home-hotspot hs-help-top" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
