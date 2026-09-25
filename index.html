@@ -815,6 +815,14 @@
  box-shadow:none!important;font-size:clamp(.66rem,1.08vw,.98rem)!important;
 }
 
+
+/* final cleanup requested: difficulty stays; vocabulary/strength correction rectangles are removed */
+.image-home .kanji-mask,
+.image-home .vocab-kanji-mask,
+.image-home .strengths-kanji-mask,
+.image-home .home-label-fix.vocab-label-fix,
+.image-home .home-label-fix.strengths-label-fix{display:none!important}
+
 </style>
 </head>
 <body>
@@ -846,6 +854,12 @@
       <button class="home-hotspot hs-achievements" onclick="openTrainingReport()" aria-label="実せき"></button>
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
+      <div class="home-level-picker" aria-label="難易度を選ぶ">
+        <span>難易度</span>
+        <button class="level-btn" data-level="easy" onclick="setLevel('easy',this)">やさしい</button>
+        <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)">ふつう</button>
+        <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button>
+      </div>
 </div>
   </div>
 
