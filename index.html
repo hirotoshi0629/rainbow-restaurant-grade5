@@ -137,11 +137,15 @@
     .daily-role-status { width:max-content; margin:8px auto 0; padding:4px 9px; border-radius:999px; background:#eceff1; color:#546e7a; font-size:.8rem; font-weight:bold; }
     .daily-role-status.done { background:#e8f5e9; color:#2e7d32; }
 
-    .role-icon {
-      font-size: 4.5rem;
-      margin-bottom: 10px;
-      filter: drop-shadow(0 4px 4px rgba(0,0,0,0.15));
-    }
+    .role-icon { width:150px; height:130px; margin:0 auto 10px; border-radius:16px; overflow:hidden; background:#fff8e1; box-shadow:0 4px 10px rgba(0,0,0,.12); }
+    .role-icon img { width:100%; height:100%; object-fit:cover; display:block; }
+    .help-entry-btn { margin:14px 6px 0; min-width:260px; padding:14px 18px; border:3px solid #ec407a; border-radius:16px; background:#fce4ec; color:#ad1457; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #f8bbd0; }
+    .help-entry-btn:hover { background:#ec407a; color:#fff; transform:translateY(-2px); }
+    .help-overlay { display:none; position:fixed; inset:0; z-index:95; padding:16px; background:rgba(48,35,30,.72); align-items:center; justify-content:center; }
+    .help-panel { width:min(760px,96vw); max-height:92vh; overflow:auto; padding:22px; border:5px solid #ec407a; border-radius:24px; background:#fffdf7; box-shadow:0 18px 55px rgba(0,0,0,.3); text-align:left; }
+    .help-panel h2 { margin:0 0 8px; color:#ad1457; text-align:center; }.help-lead{text-align:center;font-weight:bold;color:#5d4037}
+    .help-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; margin:16px 0; }.help-card{padding:14px;border:2px solid #f8bbd0;border-radius:16px;background:#fff;line-height:1.65}.help-card strong{display:block;margin-bottom:4px;color:#c2185b;font-size:1.05rem}.help-tip{padding:12px;border-radius:14px;background:#fff3e0;color:#6d4c41;font-weight:bold;line-height:1.65}.help-close{display:block;margin:16px auto 0;padding:11px 26px;border:0;border-radius:999px;background:#ec407a;color:#fff;font:inherit;font-weight:bold;cursor:pointer}
+    @media(max-width:650px){.help-grid{grid-template-columns:1fr}.role-icon{width:135px;height:118px}}
 
     .game-screen { display: none; }
     .vocab-entry-btn { margin-top:24px; min-width:260px; padding:16px; border:3px solid #8e24aa; border-radius:16px; background:#f3e5f5; color:#4527a0; font-size:1.05rem; font-weight:bold; cursor:pointer; }
@@ -607,14 +611,14 @@
 
     <div class="role-buttons">
       <div class="role-card clerk-card" onclick="startGame('clerk')">
-        <div class="role-icon">🧑‍🍳</div>
+        <div class="role-icon"><img src="assets/role-clerk.png" alt="店員役の小学5年生"></div>
         <h3 style="margin:5px 0; color:#1565c0;">店員さんになろう！</h3>
         <p style="margin:0; color:#555; font-weight:bold;">Clerk Mode</p>
         <div class="daily-role-status" id="clerk-daily-status">今日 未クリア</div>
       </div>
 
       <div class="role-card" onclick="startGame('customer')">
-        <div class="role-icon">😋</div>
+        <div class="role-icon"><img src="assets/role-customer.png" alt="お客さん役の小学5年生"></div>
         <h3 style="margin:5px 0; color:#e65100;">お客さんになろう！</h3>
         <p style="margin:0; color:#555; font-weight:bold;">Customer Mode</p>
         <div class="daily-role-status" id="customer-daily-status">今日 未クリア</div>
@@ -624,12 +628,27 @@
     <button class="rush-entry-btn" onclick="openLunchRush()">LUNCH RUSH　注文を聞き取れ！</button>
     <button class="report-entry-btn" onclick="openTrainingReport()">MY TRAINING REPORT　成長を確認</button>
     <button class="device-entry-btn" onclick="openDeviceCheck()">授業前の音声・マイクチェック</button>
+    <button class="help-entry-btn" onclick="openAppHelp()">📖 詳しい使い方</button>
     <section class="daily-board" aria-labelledby="daily-board-title">
       <h3 id="daily-board-title">TODAY'S MISSIONS</h3>
       <p class="daily-board-sub">3つの仕事を達成して、お店の売上を伸ばそう。</p>
       <div class="daily-mission-list" id="daily-mission-list"></div>
       <div class="daily-complete" id="daily-complete">ALL CLEAR　全ミッション達成ボーナス +150 coin</div>
     </section>
+  </div>
+
+  <div class="help-overlay" id="app-help-overlay" role="dialog" aria-modal="true" aria-labelledby="app-help-title">
+    <div class="help-panel"><h2 id="app-help-title">📖 Rainbow Restaurant の使い方</h2><p class="help-lead">英語を「聞く・話す・やり取りする」練習を、自分のペースで進めよう！</p>
+      <div class="help-grid">
+        <div class="help-card"><strong>① まずは単語を練習</strong>料理や飲み物の英語を聞いたり、自分の声を録音したりできます。苦手な単語は何度でも練習しよう。</div>
+        <div class="help-card"><strong>② ヒントの量を選ぶ</strong>「やさしい」は英文＋日本語、「ふつう」は穴あき英文、「チャレンジ」は日本語だけ。慣れてきたらレベルアップ！</div>
+        <div class="help-card"><strong>③ 店員・お客さんを練習</strong>練習したい役を選び、お手本を聞いてからマイクで話そう。両方の役に挑戦できます。</div>
+        <div class="help-card"><strong>④ マイクで話す</strong>表示されたせりふを最後まで、ゆっくり・はっきり話そう。うまくいかないときはお手本をもう一度聞こう。</div>
+        <div class="help-card"><strong>⑤ LUNCH RUSH</strong>英語の注文を聞いて正しい料理を選ぶゲーム。聞き取る力を使って記録更新を目指そう。</div>
+        <div class="help-card"><strong>⑥ TODAY'S MISSIONS</strong>その日のミッションに挑戦すると売上 coin が増えます。店員とお客さん、両方の練習も大切です。</div>
+        <div class="help-card"><strong>⑦ マイレストラン</strong>練習を続けるとレストランが成長。レベルや記録、世界ツアーなど自分の成長を確かめられます。</div>
+        <div class="help-card"><strong>⑧ 困ったとき</strong>声が聞こえない・マイクが反応しないときは「授業前の音声・マイクチェック」で確認しよう。</div>
+      </div><div class="help-tip">💡 おすすめ：最初は「やさしい」で店員とお客さんを1回ずつ → 慣れたら「ふつう」「チャレンジ」へ！</div><button class="help-close" onclick="closeAppHelp()">ホームにもどる</button></div>
   </div>
 
   <!-- 単語練習画面 -->
@@ -3054,5 +3073,6 @@
     document.querySelectorAll('.level-btn').forEach(b => b.classList.toggle('active', b.dataset.level === practiceLevel));
   });
 </script>
+<script>function openAppHelp(){document.getElementById('app-help-overlay').style.display='flex'}function closeAppHelp(){document.getElementById('app-help-overlay').style.display='none'}</script>
 </body>
 </html>
