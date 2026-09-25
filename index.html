@@ -887,6 +887,15 @@
 }
 .image-home .home-level-picker .level-btn{position:relative!important}
 
+
+/* selected difficulty: orange fill only, no check mark and no extra border */
+.image-home .home-level-picker .level-btn.active{
+ background:rgba(255,152,0,.34)!important;
+ outline:0!important;
+ box-shadow:none!important;
+}
+.image-home .home-level-picker .level-btn.active::after{content:none!important;display:none!important}
+
 </style>
 </head>
 <body>
