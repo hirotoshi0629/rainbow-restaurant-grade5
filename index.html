@@ -1005,7 +1005,7 @@
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
       <div class="home-level-picker" aria-label="難易度を選ぶ">
-        <button class="level-btn" data-level="easy" onpointerdown="chooseHomeLevel('easy',this,event)" aria-label="やさしい">やさしい</button>
+        <button class="level-btn active" data-level="easy" onpointerdown="chooseHomeLevel('easy',this,event)" aria-label="やさしい">やさしい</button>
         <button class="level-btn" data-level="normal" onpointerdown="chooseHomeLevel('normal',this,event)" aria-label="ふつう">ふつう</button>
         <button class="level-btn" data-level="challenge" onpointerdown="chooseHomeLevel('challenge',this,event)" aria-label="チャレンジ">チャレンジ</button>
       </div>
@@ -3234,7 +3234,7 @@
 </script>
 <script>
   // Grade 5 learning layer: scaffolded hints, missions, natural order phrases and fairer feedback.
-  let practiceLevel = localStorage.getItem('restaurant_level') || 'easy';
+  let practiceLevel = 'easy';
   let hintUsedThisRound = false;
   let retryCountThisRound = 0;
   let currentGuest = null;
@@ -3445,7 +3445,7 @@
 <script>
 (function(){
   function syncHomeLevel(){
-    var level = localStorage.getItem('restaurant_level') || 'easy';
+    var level = 'easy';
     document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
       b.classList.toggle('active', b.dataset.level === level);
     });
