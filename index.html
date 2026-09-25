@@ -950,6 +950,29 @@
  background:#ffb23f!important;border-color:#f28a00!important;color:#4b3200!important;
 }
 
+
+/* definitive difficulty strip: fully cover original artwork including its outer border */
+.image-home .home-level-picker{
+ left:26.15%!important;top:71.55%!important;width:23.15%!important;height:5.15%!important;
+ display:grid!important;grid-template-columns:.92fr 1fr 1fr 1.28fr!important;gap:4px!important;
+ padding:5px!important;box-sizing:border-box!important;
+ background:#fff7f9!important;border:2px solid #ef5d91!important;border-radius:9px!important;
+ box-shadow:none!important;overflow:hidden!important;z-index:100!important;
+}
+.image-home .home-level-picker::before{
+ content:"難易度"!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ color:#d81b60!important;font-size:clamp(.48rem,.72vw,.76rem)!important;font-weight:900!important;
+}
+.image-home .home-level-picker .level-btn{
+ box-sizing:border-box!important;opacity:1!important;display:flex!important;align-items:center!important;justify-content:center!important;
+ width:100%!important;height:100%!important;min-height:0!important;margin:0!important;padding:0 2px!important;
+ background:#fff!important;color:#4d4038!important;border:1px solid #efb6c5!important;border-radius:5px!important;
+ outline:0!important;box-shadow:none!important;font-family:inherit!important;font-size:clamp(.50rem,.75vw,.80rem)!important;
+ font-weight:900!important;line-height:1!important;cursor:pointer!important;
+}
+.image-home .home-level-picker .level-btn.active{background:#ffb23f!important;border-color:#f28a00!important;color:#4b3200!important}
+.image-home .home-level-picker .level-btn::before,.image-home .home-level-picker .level-btn::after{content:none!important;display:none!important}
+
 </style>
 </head>
 <body>
@@ -3454,6 +3477,17 @@ window.addEventListener('DOMContentLoaded', function(){
   try{ lv=localStorage.getItem('restaurant_level')||'easy'; }catch(e){}
   document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
     b.classList.toggle('active', b.dataset.level===lv);
+  });
+});
+</script>
+
+
+<script>
+window.addEventListener('load', function(){
+  practiceLevel='easy';
+  try{ localStorage.setItem('restaurant_level','easy'); }catch(e){}
+  document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
+    b.classList.toggle('active', b.dataset.level==='easy');
   });
 });
 </script>
