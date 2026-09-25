@@ -3442,55 +3442,27 @@
   });
 </script>
 <script>function openAppHelp(){document.getElementById('app-help-overlay').style.display='flex'}function closeAppHelp(){document.getElementById('app-help-overlay').style.display='none'}</script>
-<script>
-(function(){
-  function syncHomeLevel(){
-    var level = 'easy';
-    document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
-      b.classList.toggle('active', b.dataset.level === level);
-    });
-  }
-  syncHomeLevel();
-  document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
-    b.addEventListener('click', function(){ setTimeout(syncHomeLevel,0); });
-  });
-})();
-</script>
+
 
 <script>
 function chooseHomeLevel(level, button, ev){
   if(ev){ ev.preventDefault(); ev.stopPropagation(); }
-  try{
-    practiceLevel = level;
-    localStorage.setItem('restaurant_level', level);
-  }catch(e){}
-  document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
-    b.classList.toggle('active', b.dataset.level === level);
-  });
+  setLevel(level, button);
 }
 </script>
 
 
 <script>
 window.addEventListener('DOMContentLoaded', function(){
-  var lv='easy';
-  try{ lv=localStorage.getItem('restaurant_level')||'easy'; }catch(e){}
+  practiceLevel = 'easy';
   document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
-    b.classList.toggle('active', b.dataset.level===lv);
+    b.classList.toggle('active', b.dataset.level === 'easy');
   });
 });
 </script>
 
 
-<script>
-window.addEventListener('load', function(){
-  practiceLevel='easy';
-  try{ localStorage.setItem('restaurant_level','easy'); }catch(e){}
-  document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
-    b.classList.toggle('active', b.dataset.level==='easy');
-  });
-});
-</script>
+
 
 </body>
 </html>
