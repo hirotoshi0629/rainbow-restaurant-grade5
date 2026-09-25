@@ -716,6 +716,36 @@
   font-size:clamp(.7rem,1.25vw,1.08rem);
 }
 
+
+/* final alignment fixes: vocab, level picker, strengths */
+.image-home .vocab-label-fix{
+  left:2.95%; top:75.75%; width:21.75%; height:8.75%;
+  border-radius:20px; background:#ffd21a!important; box-shadow:inset 0 -4px 0 #e8ad00!important;
+  display:flex;align-items:center;justify-content:center;gap:10px;
+  color:#12346d!important;font-size:clamp(.72rem,1.42vw,1.22rem)!important;
+}
+.css-book{position:relative;width:34px;height:25px;display:inline-block;flex:0 0 34px}
+.css-book:before,.css-book:after{content:"";position:absolute;top:2px;width:15px;height:20px;background:#fff;border:3px solid #173f82}
+.css-book:before{left:1px;border-radius:8px 2px 2px 5px;transform:skewY(5deg)}
+.css-book:after{right:1px;border-radius:2px 8px 5px 2px;transform:skewY(-5deg)}
+.css-book{border-bottom:3px solid #173f82}
+.image-home .home-level-picker{
+  left:26.55%; top:73.35%; width:23.25%; height:4.55%;
+  grid-template-columns:.95fr 1fr 1fr 1.25fr;gap:5px;padding:3px 5px;
+  border:2px solid #f06292;border-radius:10px;background:#fff9fcf7;box-sizing:border-box;
+}
+.image-home .home-level-picker span{font-size:clamp(.46rem,.68vw,.69rem)!important;white-space:nowrap}
+.image-home .home-level-picker button{min-width:0;height:100%;padding:0 2px!important;font-size:clamp(.44rem,.65vw,.68rem)!important;line-height:1!important;white-space:nowrap!important;overflow:hidden!important}
+.image-home .strengths-label-fix{
+  left:59.0%;top:89.05%;width:19.45%;height:8.65%;
+  border-radius:14px;background:#1179ca!important;box-shadow:none!important;
+  display:flex;align-items:center;justify-content:center;gap:9px;
+  color:#fff!important;font-size:clamp(.7rem,1.22vw,1.06rem)!important;
+}
+.image-home .strengths-label-fix b{font-size:1.45em;line-height:1}
+.css-chart{width:29px;height:27px;display:flex;align-items:flex-end;gap:3px;padding:2px 3px;border-left:3px solid #fff;border-bottom:3px solid #fff;box-sizing:border-box}
+.css-chart i{display:block;width:5px;border-radius:2px 2px 0 0;background:#fff}.css-chart i:nth-child(1){height:8px}.css-chart i:nth-child(2){height:14px}.css-chart i:nth-child(3){height:20px}
+
 </style>
 </head>
 <body>
@@ -748,14 +778,14 @@
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
 
-      <button class="home-label-fix vocab-label-fix" onclick="openVocabulary()" aria-label="単語練習を始める">📖 単語練習を始める</button>
+      <button class="home-label-fix vocab-label-fix" onclick="openVocabulary()" aria-label="単語練習を始める"><span class="css-book" aria-hidden="true"></span><span>単語練習を始める</span></button>
       <div class="home-level-picker" aria-label="難易度を選ぶ">
         <span>難易度</span>
         <button class="level-btn" data-level="easy" onclick="setLevel('easy',this)">やさしい</button>
         <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)">ふつう</button>
         <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button>
       </div>
-      <button class="home-label-fix strengths-label-fix" onclick="openTrainingReport()" aria-label="得意・苦手">📊 得意・苦手 ›</button>
+      <button class="home-label-fix strengths-label-fix" onclick="openTrainingReport()" aria-label="得意・苦手"><span class="css-chart" aria-hidden="true"><i></i><i></i><i></i></span><span>得意・苦手</span><b>›</b></button>
     </div>
   </div>
 
