@@ -678,6 +678,16 @@
 .hs-help-bottom{left:79.8%;top:89.0%;width:19.0%;height:9.5%}
 @media(max-width:700px){.image-home .home-design-wrap{min-width:680px}.image-home{overflow-x:auto!important}}
 
+
+/* text corrections + difficulty selector on final image home */
+.image-home .home-label-fix{position:absolute;z-index:14;border:0;cursor:pointer;font-family:inherit;font-weight:900;text-align:center}
+.image-home .vocab-label-fix{left:3.0%;top:76.4%;width:21.5%;height:8.2%;border-radius:22px;background:#ffd21a;color:#12346d;font-size:clamp(.75rem,1.55vw,1.35rem);box-shadow:inset 0 -4px 0 #e9ad00}
+.image-home .strengths-label-fix{left:59.2%;top:89.0%;width:20.2%;height:9.2%;border-radius:14px;background:#1179ca;color:#fff;font-size:clamp(.75rem,1.45vw,1.25rem)}
+.image-home .home-level-picker{position:absolute;z-index:15;left:26.2%;top:70.1%;width:23.8%;height:5.2%;display:grid;grid-template-columns:.9fr 1fr 1fr 1.25fr;gap:4px;align-items:center;padding:4px;border:2px solid #f06292;border-radius:12px;background:#fff9fcf2;line-height:1}
+.image-home .home-level-picker span{font-size:clamp(.55rem,.9vw,.9rem);font-weight:900;color:#ad1457}
+.image-home .home-level-picker button{height:100%;min-height:30px;border:2px solid #f8bbd0;border-radius:8px;background:#fff;color:#5d4037;font-family:inherit;font-size:clamp(.55rem,.82vw,.85rem);font-weight:900;cursor:pointer}
+.image-home .home-level-picker button.active{background:#ffe082;border-color:#ff9800;color:#6d4c00;box-shadow:inset 0 -2px 0 #ffb300}
+
 </style>
 </head>
 <body>
@@ -709,6 +719,15 @@
       <button class="home-hotspot hs-achievements" onclick="openTrainingReport()" aria-label="実せき"></button>
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
+
+      <button class="home-label-fix vocab-label-fix" onclick="openVocabulary()" aria-label="単語練習を始める">📖 単語練習を始める</button>
+      <div class="home-level-picker" aria-label="難易度を選ぶ">
+        <span>難易度</span>
+        <button class="level-btn" data-level="easy" onclick="setLevel('easy',this)">やさしい</button>
+        <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)">ふつう</button>
+        <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button>
+      </div>
+      <button class="home-label-fix strengths-label-fix" onclick="openTrainingReport()" aria-label="得意・苦手">📊 得意・苦手 ›</button>
     </div>
   </div>
 
@@ -3149,5 +3168,19 @@
   });
 </script>
 <script>function openAppHelp(){document.getElementById('app-help-overlay').style.display='flex'}function closeAppHelp(){document.getElementById('app-help-overlay').style.display='none'}</script>
+<script>
+(function(){
+  function syncHomeLevel(){
+    var level = localStorage.getItem('restaurant_level') || 'easy';
+    document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
+      b.classList.toggle('active', b.dataset.level === level);
+    });
+  }
+  syncHomeLevel();
+  document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b){
+    b.addEventListener('click', function(){ setTimeout(syncHomeLevel,0); });
+  });
+})();
+</script>
 </body>
 </html>
