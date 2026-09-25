@@ -572,6 +572,40 @@
     .judge-batsu { color:#ef6c00!important; }
     @media (max-width:650px){ body{padding:6px}.container{padding:12px}.level-buttons{grid-template-columns:1fr}.step-row{font-size:.75rem}.hero-visual{max-height:180px}.restaurant-sign h1{font-size:1.35rem}.role-card{width:46%;padding:12px}.role-icon{font-size:3rem}.menu-grid{grid-template-columns:repeat(2,1fr)}.vocab-grid{grid-template-columns:repeat(2,1fr)}.practice-actions{grid-template-columns:1fr}.hard-toggle{grid-column:auto}.word-practice-panel{padding:17px}.listening-panel{padding:14px}.listening-choice{min-height:145px}.listening-picture{height:88px}.rush-choices,.rush-choices.choices-3,.rush-choices.choices-6{grid-template-columns:repeat(2,1fr)}.rush-choice img{height:90px}.rush-top{gap:4px}.rush-stat{font-size:.78rem;padding:7px}.rush-course-grid{grid-template-columns:1fr}.rush-course{min-height:0}.report-stats{grid-template-columns:repeat(2,1fr)}.activity-chart{gap:3px;padding:7px}.activity-bar-wrap{width:82%} }
     @media (max-width:650px){ .restaurant-stage-image{height:210px}.management-stats{grid-template-columns:1fr}.stage-road{grid-template-columns:repeat(3,1fr)}header{align-items:flex-start;gap:6px}header>div{display:flex;flex-direction:column;gap:6px}.point-badge{font-size:.9rem;padding:7px 11px}.btn-stamp{padding:7px 11px;font-size:.9rem}.daily-board{padding:12px}.daily-mission{grid-template-columns:36px 1fr}.mission-reward{grid-column:2}.tour-grid{grid-template-columns:repeat(2,1fr)}.tour-city:last-child{grid-column:1/-1} }
+  
+    /* 2026-09-25 新ホーム画面 */
+    body{padding:0;background:#dff3ff;}
+    .container{max-width:1180px;padding:0;border:0;border-radius:0;box-shadow:0 8px 30px rgba(0,0,0,.18);overflow:hidden;background:#fff;}
+    .container>header{display:none}
+    .home-screen{padding:0;background:#f8fcff;border:0;border-radius:0;overflow:hidden}
+    .new-home-hero{position:relative;height:355px;background:url('assets/restaurant-hero.png') center 42%/cover no-repeat;border-bottom:6px solid #b9e8ff}
+    .new-home-title{position:absolute;left:28px;top:18px;text-align:left;color:#fff;text-shadow:0 3px 5px rgba(0,0,0,.55)}
+    .new-home-title .rainbow{font-size:clamp(2.1rem,5vw,4.1rem);font-weight:900;letter-spacing:-2px}
+    .new-home-title .jp{display:inline-block;margin-left:115px;padding:4px 24px;border-radius:8px;background:#9a572c;border:3px solid #6d3a1e;font-weight:bold;font-size:1.1rem}
+    .new-home-grade{position:absolute;right:305px;top:18px;background:#a86432;color:#fff;border:4px solid #75401e;border-radius:9px;padding:7px 20px;font-size:1.55rem;font-weight:bold;transform:rotate(-2deg);box-shadow:0 4px 6px #0004}
+    .new-home-actions{position:absolute;right:20px;top:18px;display:flex;gap:10px}
+    .round-top,.help-top{border:3px solid #fff;box-shadow:0 3px 7px #0004;color:#fff;font-weight:bold;cursor:pointer}
+    .round-top{width:55px;height:55px;border-radius:50%;background:#19aee8;font-size:1.5rem}.round-top.settings{background:#777}
+    .help-top{height:55px;border-radius:18px;background:#ec407a;padding:0 18px;font-size:1rem}
+    .hero-message{position:absolute;left:45px;bottom:18px;background:#fff;border:3px solid #2f8be8;border-radius:28px;padding:10px 24px;font-size:1.25rem;font-weight:bold;color:#173b75}
+    .stage-summary{position:absolute;right:25px;top:90px;width:300px;background:#fff9e7eF;border:3px solid #9b5b2d;border-radius:20px;padding:10px;box-shadow:0 5px 12px #0003}
+    .stage-summary h3{margin:0 0 8px;background:#9a572c;color:#fff;border-radius:8px;padding:5px}
+    .stage-row{display:grid;grid-template-columns:86px 1fr;gap:10px;align-items:center;text-align:left}.stage-row img{width:86px;height:82px;object-fit:cover;border-radius:10px}.stage-row b{color:#173b75}
+    .stage-stats{font-weight:bold;line-height:1.7}.grow-btn{width:100%;margin-top:8px;border:0;border-radius:14px;background:#16ad4c;color:#fff;padding:10px;font:inherit;font-weight:bold;font-size:1.05rem;cursor:pointer}
+    .home-cards{display:grid;grid-template-columns:repeat(4,1fr);gap:9px;padding:10px;background:linear-gradient(#f5fcff,#e5f7ff)}
+    .home-card{min-width:0;border-radius:18px;background:#fff;padding:9px;border:3px solid #ddd;box-shadow:0 4px 9px #0001;display:flex;flex-direction:column}
+    .home-card.c1{border-color:#ffd54f}.home-card.c2{border-color:#f06292}.home-card.c3{border-color:#81c784}.home-card.c4{border-color:#b388ff}
+    .card-heading{display:flex;align-items:center;gap:8px;min-height:54px;text-align:left;font-size:1.15rem;font-weight:900;color:#142a60}.num{display:grid;place-items:center;flex:0 0 45px;height:45px;border-radius:50%;color:#fff;font-size:1.6rem}.c1 .num{background:#ffc400}.c2 .num{background:#ec407a}.c3 .num{background:#2eb65f}.c4 .num{background:#7e57c2}
+    .card-visual{height:175px;border-radius:14px;background:#fff8d7;overflow:hidden;position:relative}
+    .vocab-mini{display:flex;align-items:center;justify-content:center;gap:5px;height:100%}.vocab-mini span{width:30%;height:115px;border:2px solid #ffe082;border-radius:8px;background:#fff;display:flex;align-items:flex-end;justify-content:center;padding:8px 2px;font-size:.78rem;font-weight:bold;color:#1a237e}.vocab-mini span:nth-child(1){background:#fff url('assets/vocab-v2/hamburger.webp') center 20%/80% auto no-repeat}.vocab-mini span:nth-child(2){background:#fff url('assets/vocab-v2/spaghetti.webp') center 20%/80% auto no-repeat}.vocab-mini span:nth-child(3){background:#fff url('assets/vocab-v2/juice.webp') center 20%/80% auto no-repeat}
+    .role-mini{display:grid;grid-template-columns:1fr 1fr;gap:6px;height:100%}.role-mini button{border:0;padding:0;background:#eef8ff;cursor:pointer;overflow:hidden;border-radius:12px;font:inherit;font-weight:bold;color:#075bb5}.role-mini button:last-child{background:#fff0f5;color:#ad1457}.role-photo{height:120px;background-image:url('assets/restaurant-hero.png');background-size:470px auto;background-repeat:no-repeat}.role-clerk-photo{background-position:16% 62%}.role-customer-photo{background-position:43% 62%}
+    .mission-mini{height:100%;padding:10px;background:#fff6dc;border-radius:12px;text-align:left}.mission-mini h3{margin:0 0 7px;color:#f44336;text-align:center}.mission-mini p{margin:6px 0;font-weight:bold;font-size:.9rem}.rush-mini{height:100%;background:url('assets/restaurant-hero.png') center/cover no-repeat;position:relative}.rush-mini:after{content:'LUNCH RUSH';position:absolute;inset:auto 8px 8px;background:#ffffffdd;border-radius:10px;padding:8px;color:#6a1b9a;font-weight:900}
+    .card-btn{margin-top:8px;border:0;border-radius:15px;padding:11px 7px;color:#fff;font:inherit;font-weight:bold;font-size:1rem;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.18)}.c1 .card-btn{background:#ffc400;color:#142a60}.c2 .card-btn{background:#168df0}.c3 .card-btn{background:#16ad4c}.c4 .card-btn{background:#7e43e5}
+    .level-compact{display:flex;gap:4px;margin-top:7px}.level-compact button{flex:1;border:2px solid #f8bbd0;border-radius:8px;background:#fff;padding:5px 2px;font:inherit;font-size:.72rem;font-weight:bold;cursor:pointer}.level-compact button.active{background:#ffe082;border-color:#ff9800}
+    .home-bottom-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;background:#168be0;padding:10px}.home-bottom-nav button{border:0;background:#1178c9;color:#fff;border-radius:14px;padding:13px 6px;font:inherit;font-weight:bold;font-size:.95rem;cursor:pointer;box-shadow:inset 0 0 0 2px #ffffff12}.home-bottom-nav button:hover{background:#0d68b1}
+    @media(max-width:900px){.new-home-hero{height:320px}.stage-summary{width:270px}.new-home-grade{right:285px}.home-cards{grid-template-columns:repeat(2,1fr)}}
+    @media(max-width:650px){.new-home-hero{height:300px}.new-home-title .rainbow{font-size:2rem}.new-home-title .jp{margin-left:20px}.new-home-grade{display:none}.stage-summary{right:8px;top:90px;width:235px}.new-home-actions{right:8px}.round-top{display:none}.help-top{height:45px}.hero-message{left:12px;bottom:10px;font-size:.9rem;padding:7px 12px}.home-cards{grid-template-columns:1fr 1fr;padding:6px}.card-visual{height:150px}.home-bottom-nav{grid-template-columns:repeat(2,1fr)}}
+
   </style>
 </head>
 <body>
@@ -587,59 +621,21 @@
 
   <!-- 1. ホーム画面 -->
   <div class="home-screen" id="home-screen">
-    <div class="garland-banner">
-      <div class="flag"></div><div class="flag"></div><div class="flag"></div>
-      <div class="flag"></div><div class="flag"></div><div class="flag"></div>
-      <div class="flag"></div><div class="flag"></div>
-    </div>
-
-    <div class="restaurant-sign">
-      <h1>WELCOME TO OUR RESTAURANT</h1>
-    </div>
-
-    <img class="hero-visual" src="assets/restaurant-hero.png" alt="レストランで英語のやり取りをする小学生">
-
-    <p style="font-size: 1.25rem; font-weight:bold; color: #5d4037; margin-top:5px;">
-      英語で注文＆接客の練習をしよう！役割を選んでね！
-    </p>
-
-    <div class="level-picker" aria-label="ヒントの量を選ぶ">
-      <h3>① ヒントの量を選ぼう</h3>
-      <div class="level-buttons">
-        <button class="level-btn active" data-level="easy" onclick="setLevel('easy',this)">🌱 やさしい<br><small>英文＋日本語</small></button>
-        <button class="level-btn" data-level="normal" onclick="setLevel('normal',this)">⭐ ふつう<br><small>穴あき英文</small></button>
-        <button class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">🔥 チャレンジ<br><small>日本語だけ</small></button>
-      </div>
-    </div>
-
-    <h3 style="margin:18px 0 0;color:#5d4037;">② 練習する役を選ぼう</h3>
-
-    <div class="role-buttons">
-      <div class="role-card clerk-card" onclick="startGame('clerk')">
-        <div class="role-icon role-clerk-art" aria-label="店員役の小学5年生"><span class="role-head">☺</span><span class="role-body">▰</span><span class="role-prop">▤</span></div>
-        <h3 style="margin:5px 0; color:#1565c0;">店員さんになろう！</h3>
-        <p style="margin:0; color:#555; font-weight:bold;">Clerk Mode</p>
-        <div class="daily-role-status" id="clerk-daily-status">今日 未クリア</div>
-      </div>
-
-      <div class="role-card" onclick="startGame('customer')">
-        <div class="role-icon role-customer-art" aria-label="お客さん役の小学5年生"><span class="role-head">☺</span><span class="role-body">●</span><span class="role-prop">MENU</span></div>
-        <h3 style="margin:5px 0; color:#e65100;">お客さんになろう！</h3>
-        <p style="margin:0; color:#555; font-weight:bold;">Customer Mode</p>
-        <div class="daily-role-status" id="customer-daily-status">今日 未クリア</div>
-      </div>
-    </div>
-    <button class="vocab-entry-btn" onclick="openVocabulary()">🔤 単語の練習</button>
-    <button class="rush-entry-btn" onclick="openLunchRush()">LUNCH RUSH　注文を聞き取れ！</button>
-    <button class="report-entry-btn" onclick="openTrainingReport()">MY TRAINING REPORT　成長を確認</button>
-    <button class="device-entry-btn" onclick="openDeviceCheck()">授業前の音声・マイクチェック</button>
-    <button class="help-entry-btn" onclick="openAppHelp()">📖 詳しい使い方</button>
-    <section class="daily-board" aria-labelledby="daily-board-title">
-      <h3 id="daily-board-title">TODAY'S MISSIONS</h3>
-      <p class="daily-board-sub">3つの仕事を達成して、お店の売上を伸ばそう。</p>
-      <div class="daily-mission-list" id="daily-mission-list"></div>
-      <div class="daily-complete" id="daily-complete">ALL CLEAR　全ミッション達成ボーナス +150 coin</div>
+    <section class="new-home-hero">
+      <div class="new-home-title"><div class="rainbow">Rainbow Restaurant</div><div class="jp">レインボー・レストラン</div></div>
+      <div class="new-home-grade">Grade 5</div>
+      <div class="new-home-actions"><button class="round-top" onclick="speakText('Welcome to Rainbow Restaurant!')">♪</button><button class="round-top settings" onclick="openDeviceCheck()">⚙</button><button class="help-top" onclick="openAppHelp()">📖 詳しい使い方</button></div>
+      <div class="hero-message">英語で注文して<br>レストランを大きくしよう！</div>
+      <div class="stage-summary"><h3>レストランのようす</h3><div class="stage-row"><img src="assets/restaurant-stages/stage-00.webp" alt=""><div><b>レインボー・レストラン</b><div class="stage-stats">🪙 <span id="home-coin-display">0</span> coin<br>⭐ <span id="home-clear-display">0</span> / 30 クリア</div></div></div><button class="grow-btn" onclick="openMyRestaurant()">🗺 レストランを大きくする</button></div>
     </section>
+    <section class="home-cards">
+      <div class="home-card c1"><div class="card-heading"><span class="num">1</span>英単語を練習しよう</div><div class="card-visual"><div class="vocab-mini"><span>hamburger</span><span>spaghetti</span><span>juice</span></div></div><button class="card-btn" onclick="openVocabulary()">📖 単語れん習を始める</button></div>
+      <div class="home-card c2"><div class="card-heading"><span class="num">2</span>練習する役を選ぼう</div><div class="card-visual role-mini"><button onclick="startGame('clerk')"><div class="role-photo role-clerk-photo"></div>店員として<br>練習する</button><button onclick="startGame('customer')"><div class="role-photo role-customer-photo"></div>お客さんとして<br>練習する</button></div><div class="level-compact"><button class="active" data-level="easy" onclick="setLevel('easy',this)">やさしい</button><button data-level="normal" onclick="setLevel('normal',this)">ふつう</button><button data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button></div></div>
+      <div class="home-card c3"><div class="card-heading"><span class="num">3</span>ミッションに挑戦しよう</div><div class="card-visual"><div class="mission-mini"><h3>今日のミッション</h3><p>⭐ 店員のせりふを言う</p><p>⭐ お客さんのせりふを言う</p><p>⭐ 注文を1つ成功させる</p></div></div><button class="card-btn" onclick="document.querySelector('.daily-board-hidden').scrollIntoView({behavior:'smooth'})">⭐ 今日のミッションに挑戦</button></div>
+      <div class="home-card c4"><div class="card-heading"><span class="num">4</span>ランチラッシュに挑戦</div><div class="card-visual rush-mini"></div><button class="card-btn" onclick="openLunchRush()">🍴 ランチラッシュを始める</button></div>
+    </section>
+    <nav class="home-bottom-nav"><button onclick="openTrainingReport()">📖 学習の記録</button><button onclick="openMyRestaurant()">🏠 レストラン</button><button onclick="document.querySelector('.daily-board-hidden').scrollIntoView({behavior:'smooth'})">🏆 実せき</button><button onclick="openTrainingReport()">📊 とくい・にがて</button><button onclick="openAppHelp()">❓ 詳しい使い方</button></nav>
+    <section class="daily-board daily-board-hidden" aria-labelledby="daily-board-title" style="margin:12px"><h3 id="daily-board-title">TODAY'S MISSIONS</h3><p class="daily-board-sub">3つの仕事を達成して、お店の売上を伸ばそう。</p><div class="daily-mission-list" id="daily-mission-list"></div><div class="daily-complete" id="daily-complete">ALL CLEAR　全ミッション達成ボーナス +150 coin</div></section>
   </div>
 
   <div class="help-overlay" id="app-help-overlay" role="dialog" aria-modal="true" aria-labelledby="app-help-title">
@@ -3079,5 +3075,12 @@
   });
 </script>
 <script>function openAppHelp(){document.getElementById('app-help-overlay').style.display='flex'}function closeAppHelp(){document.getElementById('app-help-overlay').style.display='none'}</script>
+<script>
+(function(){
+ const p=document.getElementById('point-display'), hc=document.getElementById('home-coin-display');
+ if(p&&hc){const sync=()=>{const m=(p.textContent||'').match(/(\d+)/);hc.textContent=m?m[1]:'0'};sync();new MutationObserver(sync).observe(p,{childList:true,subtree:true,characterData:true});}
+ const hs=document.getElementById('home-clear-display'); if(hs){try{const h=JSON.parse(localStorage.getItem('restaurant_training_history')||'[]');hs.textContent=Math.min(30,Array.isArray(h)?h.length:0)}catch(e){}}
+})();
+</script>
 </body>
 </html>
