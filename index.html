@@ -606,7 +606,27 @@
     @media(max-width:900px){.new-home-hero{height:320px}.stage-summary{width:270px}.new-home-grade{right:285px}.home-cards{grid-template-columns:repeat(2,1fr)}}
     @media(max-width:650px){.new-home-hero{height:300px}.new-home-title .rainbow{font-size:2rem}.new-home-title .jp{margin-left:20px}.new-home-grade{display:none}.stage-summary{right:8px;top:90px;width:235px}.new-home-actions{right:8px}.round-top{display:none}.help-top{height:45px}.hero-message{left:12px;bottom:10px;font-size:.9rem;padding:7px 12px}.home-cards{grid-template-columns:1fr 1fr;padding:6px}.card-visual{height:150px}.home-bottom-nav{grid-template-columns:repeat(2,1fr)}}
 
-  </style>
+  
+/* target mockup fidelity pass */
+.container{max-width:1536px;width:100%;min-height:100vh}
+.new-home-hero{height:465px;background-image:linear-gradient(90deg,rgba(255,255,255,.04),rgba(255,255,255,.02)),url('assets/restaurant-stages/stage-05.webp');background-size:cover;background-position:center}
+.new-home-title{left:36px;top:26px}.new-home-title .rainbow{font-size:0;text-shadow:none;white-space:nowrap}
+.new-home-title .rainbow::before{content:"Rainbow Restaurant";font-size:clamp(3rem,5.8vw,5.4rem);font-weight:900;letter-spacing:-4px;background:linear-gradient(90deg,#ef233c 0 12%,#ff9800 12% 23%,#ffd600 23% 34%,#36b44a 34% 45%,#00a8e8 45% 56%,#275dad 56% 68%,#7b2cbf 68% 79%,#ef476f 79%);-webkit-background-clip:text;background-clip:text;color:transparent;-webkit-text-stroke:2px #fff;filter:drop-shadow(0 4px 1px #315b9a)}
+.new-home-title .jp{margin-left:190px;margin-top:4px;padding:5px 28px;font-size:1.3rem}
+.new-home-grade{right:515px;top:25px;font-size:1.8rem;padding:8px 25px}
+.new-home-actions{right:22px;top:20px}.round-top{width:64px;height:64px;font-size:1.8rem}.help-top{height:64px;font-size:1.3rem;padding:0 24px}
+.stage-summary{right:25px;top:105px;width:430px;padding:13px;border-width:4px}.stage-summary h3{font-size:1.45rem}.stage-row{grid-template-columns:130px 1fr}.stage-row img{width:130px;height:125px}.stage-row b{font-size:1.25rem}.stage-stats{font-size:1.15rem}.grow-btn{font-size:1.25rem;padding:13px}
+.hero-message{left:80px;bottom:20px;font-size:1.45rem;padding:12px 35px}
+.home-cards{grid-template-columns:repeat(4,1fr);gap:10px;padding:12px 18px 10px}.home-card{padding:10px}.card-heading{font-size:1.35rem;min-height:62px}.num{flex-basis:52px;height:52px;font-size:1.8rem}.card-visual{height:225px}
+.vocab-mini span{height:165px;font-size:.95rem;background-size:88% auto!important}
+.role-mini{gap:8px}.role-mini button{font-size:1.1rem;display:flex;flex-direction:column;justify-content:center;align-items:center}.role-mini button::before{display:block;width:105px;height:105px;border-radius:50%;margin-bottom:8px;display:grid;place-items:center;font-size:3.2rem;font-weight:900}.role-mini button:first-child::before{content:"店員";background:#dff1ff;color:#0878d1}.role-mini button:last-child::before{content:"客";background:#ffe3ee;color:#d81b60}.role-photo{display:none}
+.mission-mini{padding:20px 16px}.mission-mini h3{font-size:1.4rem}.mission-mini p{font-size:1.05rem;margin:12px 0}.rush-mini{background-image:url('assets/restaurant-stages/stage-04.webp');background-size:cover}
+.card-btn{font-size:1.15rem;padding:14px 8px}.level-compact button{font-size:.82rem;padding:7px 2px}
+.home-bottom-nav{padding:12px 18px;gap:8px}.home-bottom-nav button{font-size:1.15rem;padding:16px 8px}
+.daily-board-hidden{display:none!important}
+@media(max-width:1100px){.new-home-hero{height:390px}.stage-summary{width:330px}.new-home-grade{right:390px}.new-home-title .rainbow::before{font-size:4rem}.card-heading{font-size:1.05rem}.card-visual{height:190px}}
+
+</style>
 </head>
 <body>
 
@@ -631,10 +651,10 @@
     <section class="home-cards">
       <div class="home-card c1"><div class="card-heading"><span class="num">1</span>英単語を練習しよう</div><div class="card-visual"><div class="vocab-mini"><span>hamburger</span><span>spaghetti</span><span>juice</span></div></div><button class="card-btn" onclick="openVocabulary()">📖 単語れん習を始める</button></div>
       <div class="home-card c2"><div class="card-heading"><span class="num">2</span>練習する役を選ぼう</div><div class="card-visual role-mini"><button onclick="startGame('clerk')"><div class="role-photo role-clerk-photo"></div>店員として<br>練習する</button><button onclick="startGame('customer')"><div class="role-photo role-customer-photo"></div>お客さんとして<br>練習する</button></div><div class="level-compact"><button class="active" data-level="easy" onclick="setLevel('easy',this)">やさしい</button><button data-level="normal" onclick="setLevel('normal',this)">ふつう</button><button data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button></div></div>
-      <div class="home-card c3"><div class="card-heading"><span class="num">3</span>ミッションに挑戦しよう</div><div class="card-visual"><div class="mission-mini"><h3>今日のミッション</h3><p>⭐ 店員のせりふを言う</p><p>⭐ お客さんのせりふを言う</p><p>⭐ 注文を1つ成功させる</p></div></div><button class="card-btn" onclick="document.querySelector('.daily-board-hidden').scrollIntoView({behavior:'smooth'})">⭐ 今日のミッションに挑戦</button></div>
+      <div class="home-card c3"><div class="card-heading"><span class="num">3</span>ミッションに挑戦しよう</div><div class="card-visual"><div class="mission-mini"><h3>今日のミッション</h3><p>⭐ 店員のせりふを言う</p><p>⭐ お客さんのせりふを言う</p><p>⭐ 注文を1つ成功させる</p></div></div><button class="card-btn" onclick="openTrainingReport()">⭐ 今日のミッションに挑戦</button></div>
       <div class="home-card c4"><div class="card-heading"><span class="num">4</span>ランチラッシュに挑戦</div><div class="card-visual rush-mini"></div><button class="card-btn" onclick="openLunchRush()">🍴 ランチラッシュを始める</button></div>
     </section>
-    <nav class="home-bottom-nav"><button onclick="openTrainingReport()">📖 学習の記録</button><button onclick="openMyRestaurant()">🏠 レストラン</button><button onclick="document.querySelector('.daily-board-hidden').scrollIntoView({behavior:'smooth'})">🏆 実せき</button><button onclick="openTrainingReport()">📊 とくい・にがて</button><button onclick="openAppHelp()">❓ 詳しい使い方</button></nav>
+    <nav class="home-bottom-nav"><button onclick="openTrainingReport()">📖 ストーリー</button><button onclick="openMyRestaurant()">🏠 レストランコレクション</button><button onclick="openTrainingReport()">🏆 実せき</button><button onclick="openTrainingReport()">📊 とくい・にがて</button><button onclick="openAppHelp()">❓ 詳しい使い方</button></nav>
     <section class="daily-board daily-board-hidden" aria-labelledby="daily-board-title" style="margin:12px"><h3 id="daily-board-title">TODAY'S MISSIONS</h3><p class="daily-board-sub">3つの仕事を達成して、お店の売上を伸ばそう。</p><div class="daily-mission-list" id="daily-mission-list"></div><div class="daily-complete" id="daily-complete">ALL CLEAR　全ミッション達成ボーナス +150 coin</div></section>
   </div>
 
