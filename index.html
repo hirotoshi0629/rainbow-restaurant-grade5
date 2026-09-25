@@ -653,6 +653,31 @@
 @media(max-width:1100px){.ref-hero{height:400px}.ref-logo{font-size:3.6rem}.ref-grade{right:385px}.ref-status{width:330px}.ref-status-main{grid-template-columns:95px 1fr}.ref-status-main img{width:95px;height:92px}.ref-main-grid{grid-template-columns:repeat(2,1fr)}}
 @media(max-width:700px){.ref-hero{height:360px}.ref-logo{font-size:2.5rem;letter-spacing:-3px}.ref-jp{margin-left:30px;font-size:.95rem}.ref-grade{display:none}.ref-status{right:8px;top:95px;width:250px}.ref-status-main{grid-template-columns:75px 1fr}.ref-status-main img{width:75px;height:72px}.ref-top-actions{right:8px}.ref-round{display:none}.ref-help{height:48px;font-size:.9rem;padding:0 12px}.ref-message{left:10px;bottom:8px;font-size:.9rem;padding:7px 12px}.ref-main-grid{grid-template-columns:1fr 1fr;padding:6px}.ref-card h2{font-size:1rem}.ref-vocab,.ref-roles,.ref-mission,.ref-rush{height:170px}.ref-role-pic{height:115px}.ref-bottom{grid-template-columns:1fr 1fr}.ref-bottom button{font-size:.9rem}}
 
+
+/* ===== FINAL IMAGE-BASED HOME ===== */
+#home-screen.image-home{padding:0!important;margin:0!important;background:#dff4ff!important;border:0!important;border-radius:0!important;overflow:hidden!important}
+.image-home .home-design-wrap{position:relative;width:100%;max-width:1536px;margin:0 auto;line-height:0;background:#dff4ff}
+.image-home .home-design-image{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.image-home .home-hotspot{position:absolute;z-index:10;border:0;background:transparent;color:transparent;cursor:pointer;border-radius:16px;padding:0;outline:none;-webkit-tap-highlight-color:transparent}
+.image-home .home-hotspot:focus-visible{outline:5px solid #1565c0;outline-offset:-4px;background:#ffffff22}
+.image-home .home-hotspot:active{background:#ffffff30;transform:scale(.985)}
+/* Coordinates are percentages of the approved 1536x1024 design image. */
+.hs-sound{left:72.7%;top:1.2%;width:5.2%;height:7.5%}
+.hs-settings{left:78.0%;top:1.2%;width:5.2%;height:7.5%}
+.hs-help-top{left:83.5%;top:1.2%;width:15.0%;height:7.8%}
+.hs-grow{left:70.8%;top:32.3%;width:26.2%;height:10.5%}
+.hs-vocab{left:2.0%;top:77.0%;width:22.8%;height:9.0%}
+.hs-clerk{left:27.0%;top:76.8%;width:10.6%;height:9.0%}
+.hs-customer{left:38.4%;top:76.8%;width:10.9%;height:9.0%}
+.hs-mission{left:51.8%;top:77.2%;width:22.3%;height:9.0%}
+.hs-rush{left:76.2%;top:77.2%;width:22.0%;height:9.0%}
+.hs-story{left:1.2%;top:89.0%;width:16.4%;height:9.5%}
+.hs-collection{left:18.0%;top:89.0%;width:25.3%;height:9.5%}
+.hs-achievements{left:43.7%;top:89.0%;width:15.0%;height:9.5%}
+.hs-strengths{left:59.0%;top:89.0%;width:20.5%;height:9.5%}
+.hs-help-bottom{left:79.8%;top:89.0%;width:19.0%;height:9.5%}
+@media(max-width:700px){.image-home .home-design-wrap{min-width:680px}.image-home{overflow-x:auto!important}}
+
 </style>
 </head>
 <body>
@@ -667,74 +692,24 @@
   </header>
 
   <!-- 1. ホーム画面 -->
-  <div class="home-screen ref-home" id="home-screen">
-    <section class="ref-hero">
-      <div class="ref-brand" aria-label="Rainbow Restaurant">
-        <div class="ref-logo"><span class="r1">R</span><span class="r2">a</span><span class="r3">i</span><span class="r4">n</span><span class="r5">b</span><span class="r6">o</span><span class="r7">w</span> <span class="r8">R</span><span class="r1">e</span><span class="r2">s</span><span class="r3">t</span><span class="r4">a</span><span class="r5">u</span><span class="r6">r</span><span class="r7">a</span><span class="r8">n</span><span class="r1">t</span></div>
-        <div class="ref-jp">レインボー・レストラン</div>
-      </div>
-      <div class="ref-grade">Grade 5</div>
-      <div class="ref-top-actions">
-        <button class="ref-round ref-sound" onclick="speakText('Welcome to Rainbow Restaurant!')" aria-label="音声">♪</button>
-        <button class="ref-round ref-setting" onclick="openDeviceCheck()" aria-label="設定">⚙</button>
-        <button class="ref-help" onclick="openAppHelp()">📖 詳しい使い方</button>
-      </div>
-      <div class="ref-message">英語で注文して<br>レストランを大きくしよう！</div>
-      <aside class="ref-status">
-        <div class="ref-status-title">レストランのようす</div>
-        <div class="ref-status-main">
-          <img src="assets/restaurant-stages/stage-00.webp" alt="レインボー・レストラン">
-          <div><strong>レインボー・レストラン</strong><small>（はじまりのまち）</small>
-            <div class="ref-stat">🪙 <span id="home-coin-display">0</span> coin</div>
-            <div class="ref-stat">⭐ <span id="home-clear-display">0</span> / 30 クリア</div>
-          </div>
-        </div>
-        <button onclick="openMyRestaurant()">🗺️ レストランを大きくする<br><small>（まちをえらぶ）</small></button>
-      </aside>
-    </section>
-
-    <section class="ref-main-grid">
-      <article class="ref-card ref-yellow">
-        <h2><b>1</b><span>英単語を練習しよう</span></h2>
-        <div class="ref-vocab">
-          <div><img src="assets/vocab-v2/food-00.webp" alt=""><span>hamburger</span></div>
-          <div><img src="assets/vocab-v2/food-01.webp" alt=""><span>spaghetti</span></div>
-          <div><img src="assets/vocab-v2/drinks-00.webp" alt=""><span>juice</span></div>
-        </div>
-        <button class="ref-action" onclick="openVocabulary()">📖 単語れん習を始める</button>
-      </article>
-
-      <article class="ref-card ref-pink">
-        <h2><b>2</b><span>練習する役を選ぼう</span></h2>
-        <div class="ref-roles">
-          <button onclick="startGame('clerk')"><div class="ref-role-pic clerk"></div><strong>店員として<br>練習する</strong></button>
-          <button onclick="startGame('customer')"><div class="ref-role-pic customer"></div><strong>お客さんとして<br>練習する</strong></button>
-        </div>
-      </article>
-
-      <article class="ref-card ref-green">
-        <h2><b>3</b><span>ミッションに挑戦しよう</span></h2>
-        <div class="ref-mission">
-          <div class="ref-note-title">今日のミッション</div>
-          <p>⭐ 店員のせりふを言う</p><p>⭐ お客さんのせりふを言う</p><p>⭐ 注文を1つ成功させる</p>
-        </div>
-        <button class="ref-action" onclick="openTrainingReport()">⭐ 今日のミッションに挑戦</button>
-      </article>
-
-      <article class="ref-card ref-purple">
-        <h2><b>4</b><span>ランチラッシュに挑戦</span></h2>
-        <div class="ref-rush"><div>LUNCH RUSH</div></div>
-        <button class="ref-action" onclick="openLunchRush()">🍴 ランチラッシュを始める</button>
-      </article>
-    </section>
-
-    <nav class="ref-bottom">
-      <button onclick="openTrainingReport()">📖 <span>ストーリー</span> ›</button>
-      <button onclick="openMyRestaurant()">🏠 <span>レストランコレクション</span> ›</button>
-      <button onclick="openTrainingReport()">🏆 <span>実せき</span> ›</button>
-      <button onclick="openTrainingReport()">📊 <span>とくい・にがて</span> ›</button>
-      <button onclick="openAppHelp()">❓ <span>詳しい使い方</span> ›</button>
-    </nav>
+  <div class="home-screen image-home" id="home-screen">
+    <div class="home-design-wrap">
+      <img class="home-design-image" src="rainbow-restaurant-home-final.webp?v=20260925-final" alt="Rainbow Restaurant ホーム画面">
+      <button class="home-hotspot hs-sound" onclick="speakText('Welcome to Rainbow Restaurant!')" aria-label="音声"></button>
+      <button class="home-hotspot hs-settings" onclick="openDeviceCheck()" aria-label="設定"></button>
+      <button class="home-hotspot hs-help-top" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
+      <button class="home-hotspot hs-grow" onclick="openMyRestaurant()" aria-label="レストランを大きくする"></button>
+      <button class="home-hotspot hs-vocab" onclick="openVocabulary()" aria-label="単語練習を始める"></button>
+      <button class="home-hotspot hs-clerk" onclick="startGame('clerk')" aria-label="店員として練習する"></button>
+      <button class="home-hotspot hs-customer" onclick="startGame('customer')" aria-label="お客さんとして練習する"></button>
+      <button class="home-hotspot hs-mission" onclick="openTrainingReport()" aria-label="今日のミッションに挑戦"></button>
+      <button class="home-hotspot hs-rush" onclick="openLunchRush()" aria-label="ランチラッシュを始める"></button>
+      <button class="home-hotspot hs-story" onclick="openTrainingReport()" aria-label="ストーリー"></button>
+      <button class="home-hotspot hs-collection" onclick="openMyRestaurant()" aria-label="レストランコレクション"></button>
+      <button class="home-hotspot hs-achievements" onclick="openTrainingReport()" aria-label="実せき"></button>
+      <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
+      <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
+    </div>
   </div>
 
   <div class="help-overlay" id="app-help-overlay" role="dialog" aria-modal="true" aria-labelledby="app-help-title">
@@ -3174,12 +3149,5 @@
   });
 </script>
 <script>function openAppHelp(){document.getElementById('app-help-overlay').style.display='flex'}function closeAppHelp(){document.getElementById('app-help-overlay').style.display='none'}</script>
-<script>
-(function(){
- const p=document.getElementById('point-display'), hc=document.getElementById('home-coin-display');
- if(p&&hc){const sync=()=>{const m=(p.textContent||'').match(/(\d+)/);hc.textContent=m?m[1]:'0'};sync();new MutationObserver(sync).observe(p,{childList:true,subtree:true,characterData:true});}
- const hs=document.getElementById('home-clear-display'); if(hs){try{const h=JSON.parse(localStorage.getItem('restaurant_training_history')||'[]');hs.textContent=Math.min(30,Array.isArray(h)?h.length:0)}catch(e){}}
-})();
-</script>
 </body>
 </html>
