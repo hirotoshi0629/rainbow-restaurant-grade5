@@ -791,6 +791,17 @@
 .help-image-close{position:absolute;right:.6%;top:.7%;width:6.4%;height:10%;z-index:20;border:0;background:transparent;cursor:pointer;border-radius:18px}
 .help-image-close:focus-visible{outline:5px solid #fff;box-shadow:0 0 0 8px #1565c0}
 
+
+/* text-only corrections on the clean master image: never redraw borders or icons */
+.image-home .kanji-mask{position:absolute;z-index:13;border:0!important;box-shadow:none!important;pointer-events:none;font-family:inherit;font-weight:900;display:flex;align-items:center;justify-content:center;white-space:nowrap}
+.image-home .vocab-kanji-mask{left:8.15%;top:78.05%;width:15.55%;height:4.35%;background:#ffd51d;color:#12346d;font-size:clamp(.72rem,1.35vw,1.2rem)}
+.image-home .strengths-kanji-mask{left:67.0%;top:91.0%;width:10.0%;height:4.15%;background:#1587d5;color:#fff;font-size:clamp(.65rem,1.05vw,.98rem)}
+/* force the image-based help design above every legacy help rule */
+#app-help-overlay{display:none;position:fixed!important;inset:0!important;z-index:9999!important;padding:0!important;background:rgba(0,0,0,.62)!important;align-items:flex-start!important;justify-content:center!important;overflow:auto!important}
+#app-help-overlay .help-image-shell{position:relative!important;width:min(1536px,100vw)!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;max-height:none!important;overflow:visible!important}
+#app-help-overlay .help-master-image{display:block!important;width:100%!important;height:auto!important;max-width:none!important;border:0!important;border-radius:0!important}
+#app-help-overlay .help-image-close{position:absolute!important;right:.65%!important;top:.7%!important;width:6.2%!important;height:9.8%!important;z-index:10001!important;border:0!important;background:transparent!important;cursor:pointer!important}
+
 </style>
 </head>
 <body>
@@ -807,7 +818,7 @@
   <!-- 1. ホーム画面 -->
   <div class="home-screen image-home" id="home-screen">
     <div class="home-design-wrap">
-      <img class="home-design-image" src="rainbow-home-kanji.webp?v=20260926-master" alt="Rainbow Restaurant ホーム画面">
+      <img class="home-design-image" src="rainbow-restaurant-home-final.webp?v=20260926-clean" alt="Rainbow Restaurant ホーム画面">
       <button class="home-hotspot hs-sound" onclick="speakText('Welcome to Rainbow Restaurant!')" aria-label="音声"></button>
       <button class="home-hotspot hs-settings" onclick="openDeviceCheck()" aria-label="設定"></button>
       <button class="home-hotspot hs-help-top" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
@@ -822,6 +833,8 @@
       <button class="home-hotspot hs-achievements" onclick="openTrainingReport()" aria-label="実せき"></button>
       <button class="home-hotspot hs-strengths" onclick="openTrainingReport()" aria-label="とくい・にがて"></button>
       <button class="home-hotspot hs-help-bottom" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
+      <div class="kanji-mask vocab-kanji-mask">単語練習を始める</div>
+      <div class="kanji-mask strengths-kanji-mask">得意・苦手</div>
       <div class="home-level-picker" aria-label="難易度を選ぶ">
         <span>難易度</span>
         <button class="level-btn" data-level="easy" onclick="setLevel('easy',this)">やさしい</button>
@@ -833,7 +846,7 @@
 
   <div class="help-overlay" id="app-help-overlay" role="dialog" aria-modal="true" aria-label="詳しい使い方" onclick="if(event.target===this)closeAppHelp()">
     <div class="help-image-shell">
-      <img src="rainbow-help-final.webp?v=20260926-master" class="help-master-image" alt="Rainbow Restaurant 詳しい使い方">
+      <img src="rainbow-help-final.webp?v=20260926-help2" class="help-master-image" alt="Rainbow Restaurant 詳しい使い方">
       <button class="help-image-close" onclick="closeAppHelp()" aria-label="閉じる"></button>
     </div>
   </div>
