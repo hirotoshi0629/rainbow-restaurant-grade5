@@ -896,6 +896,22 @@
 }
 .image-home .home-level-picker .level-btn.active::after{content:none!important;display:none!important}
 
+
+/* definitive difficulty state: NO checkmark; selected button itself changes color */
+.image-home .home-level-picker .level-btn::before,
+.image-home .home-level-picker .level-btn::after,
+.image-home .home-level-picker .level-btn.active::before,
+.image-home .home-level-picker .level-btn.active::after{
+ content:none!important;display:none!important;
+}
+.image-home .home-level-picker .level-btn{
+ background:transparent!important;outline:0!important;box-shadow:none!important;
+}
+.image-home .home-level-picker .level-btn.active{
+ background:rgba(255,152,0,.48)!important;
+ outline:0!important;box-shadow:none!important;
+}
+
 </style>
 </head>
 <body>
