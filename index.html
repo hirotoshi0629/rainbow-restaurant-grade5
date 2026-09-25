@@ -139,6 +139,11 @@
 
     .role-icon { width:150px; height:130px; margin:0 auto 10px; border-radius:16px; overflow:hidden; background:#fff8e1; box-shadow:0 4px 10px rgba(0,0,0,.12); }
     .role-icon img { width:100%; height:100%; object-fit:cover; display:block; }
+    .role-clerk-art,.role-customer-art{position:relative;display:flex;align-items:center;justify-content:center;font-family:Arial,sans-serif}
+    .role-clerk-art{background:linear-gradient(#dff3ff,#f5fbff)} .role-customer-art{background:linear-gradient(#ffe8f0,#fff7fa)}
+    .role-head{position:absolute;top:13px;font-size:52px;line-height:1;color:#5d4037}
+    .role-body{position:absolute;bottom:8px;font-size:64px;line-height:1;color:#37474f}
+    .role-customer-art .role-body{color:#ec407a}.role-prop{position:absolute;bottom:18px;right:20px;padding:3px 6px;border-radius:5px;background:#8d6e63;color:#fff;font-size:13px;font-weight:bold;transform:rotate(-5deg)}
     .help-entry-btn { margin:14px 6px 0; min-width:260px; padding:14px 18px; border:3px solid #ec407a; border-radius:16px; background:#fce4ec; color:#ad1457; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 4px 0 #f8bbd0; }
     .help-entry-btn:hover { background:#ec407a; color:#fff; transform:translateY(-2px); }
     .help-overlay { display:none; position:fixed; inset:0; z-index:95; padding:16px; background:rgba(48,35,30,.72); align-items:center; justify-content:center; }
@@ -611,14 +616,14 @@
 
     <div class="role-buttons">
       <div class="role-card clerk-card" onclick="startGame('clerk')">
-        <div class="role-icon"><img src="assets/role-clerk.png" alt="店員役の小学5年生"></div>
+        <div class="role-icon role-clerk-art" aria-label="店員役の小学5年生"><span class="role-head">☺</span><span class="role-body">▰</span><span class="role-prop">▤</span></div>
         <h3 style="margin:5px 0; color:#1565c0;">店員さんになろう！</h3>
         <p style="margin:0; color:#555; font-weight:bold;">Clerk Mode</p>
         <div class="daily-role-status" id="clerk-daily-status">今日 未クリア</div>
       </div>
 
       <div class="role-card" onclick="startGame('customer')">
-        <div class="role-icon"><img src="assets/role-customer.png" alt="お客さん役の小学5年生"></div>
+        <div class="role-icon role-customer-art" aria-label="お客さん役の小学5年生"><span class="role-head">☺</span><span class="role-body">●</span><span class="role-prop">MENU</span></div>
         <h3 style="margin:5px 0; color:#e65100;">お客さんになろう！</h3>
         <p style="margin:0; color:#555; font-weight:bold;">Customer Mode</p>
         <div class="daily-role-status" id="customer-daily-status">今日 未クリア</div>
@@ -641,8 +646,8 @@
     <div class="help-panel"><h2 id="app-help-title">📖 Rainbow Restaurant の使い方</h2><p class="help-lead">英語を「聞く・話す・やり取りする」練習を、自分のペースで進めよう！</p>
       <div class="help-grid">
         <div class="help-card"><strong>① まずは単語を練習</strong>料理や飲み物の英語を聞いたり、自分の声を録音したりできます。苦手な単語は何度でも練習しよう。</div>
-        <div class="help-card"><strong>② ヒントの量を選ぶ</strong>「やさしい」は英文＋日本語、「ふつう」は穴あき英文、「チャレンジ」は日本語だけ。慣れてきたらレベルアップ！</div>
-        <div class="help-card"><strong>③ 店員・お客さんを練習</strong>練習したい役を選び、お手本を聞いてからマイクで話そう。両方の役に挑戦できます。</div>
+        <div class="help-card"><strong>② 英単語を練習しよう</strong>料理や飲み物の英単語を、絵を見ながら聞いたり、声に出したりして練習できます。録音して自分の発音を聞いたり、苦手な単語をあとでまとめて練習したりできます。</div>
+        <div class="help-card"><strong>③ 練習する役を選ぼう</strong>店員として練習するか、お客さんとして練習するかを選びます。お手本を聞いてまねして言い、慣れたら両方の役に挑戦しよう。</div>
         <div class="help-card"><strong>④ マイクで話す</strong>表示されたせりふを最後まで、ゆっくり・はっきり話そう。うまくいかないときはお手本をもう一度聞こう。</div>
         <div class="help-card"><strong>⑤ LUNCH RUSH</strong>英語の注文を聞いて正しい料理を選ぶゲーム。聞き取る力を使って記録更新を目指そう。</div>
         <div class="help-card"><strong>⑥ TODAY'S MISSIONS</strong>その日のミッションに挑戦すると売上 coin が増えます。店員とお客さん、両方の練習も大切です。</div>
