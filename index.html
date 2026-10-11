@@ -2049,13 +2049,47 @@
     updateSmartPracticeUI();
   }
 
+  // 端末やブラウザによって音声リストの読み込みタイミングが異なるため、
+  // 英語音声を明示してから再生する共通処理にする。
+  function speakEnglishText(text, rate = 0.9, statusElement = null) {
+    const synth = window.speechSynthesis;
+    if (!synth || typeof window.SpeechSynthesisUtterance !== 'function') {
+      if (statusElement) statusElement.innerText = 'この端末では音声を再生できません。';
+      return false;
+    }
+    const utterance = new SpeechSynthesisUtterance(String(text || ''));
+    const voices = synth.getVoices ? synth.getVoices() : [];
+    const englishVoice = voices.find(voice => /^en(?:-|_)/i.test(voice.lang))
+      || voices.find(voice => /english|英語/i.test(`${voice.name} ${voice.lang}`));
+    if (englishVoice) {
+      utterance.voice = englishVoice;
+      utterance.lang = englishVoice.lang;
+    } else {
+      utterance.lang = 'en-US';
+    }
+    utterance.rate = Math.max(0.1, Math.min(2, Number(rate) || 0.9));
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    utterance.onstart = () => {
+      if (statusElement) statusElement.innerText = '🔊 お手本を再生中…';
+    };
+    utterance.onend = () => {
+      if (statusElement) statusElement.innerText = 'お手本を聞いてから、自分の声を録音してみよう。';
+    };
+    utterance.onerror = () => {
+      if (statusElement) statusElement.innerText = '音声を再生できませんでした。端末の音量・消音設定を確認してね。';
+    };
+    synth.cancel();
+    // 一時停止状態が残るブラウザでも、必ず再開してから発話する。
+    if (typeof synth.resume === 'function') synth.resume();
+    synth.speak(utterance);
+    setTimeout(() => { if (typeof synth.resume === 'function' && synth.paused) synth.resume(); }, 80);
+    return true;
+  }
+
   function playPracticeWord(rate) {
     if (!vocabCurrent) return;
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(vocabCurrent.name);
-    utterance.lang = 'en-US';
-    utterance.rate = rate;
-    speechSynthesis.speak(utterance);
+    speakEnglishText(vocabCurrent.name, rate, document.getElementById('record-status'));
   }
 
   async function toggleWordRecording() {
@@ -2328,11 +2362,7 @@
 
   function playListeningWord() {
     if (!listeningQuestions.length || listeningIndex >= listeningQuestions.length) return;
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(listeningQuestions[listeningIndex].name);
-    utterance.lang = 'en-US';
-    utterance.rate = 0.82;
-    speechSynthesis.speak(utterance);
+    speakEnglishText(listeningQuestions[listeningIndex].name, 0.82);
   }
 
   function answerListeningQuestion(item, button) {
@@ -2479,12 +2509,8 @@
 
   function playRushOrder() {
     if (!rushQuestions.length || rushIndex >= rushQuestions.length) return;
-    speechSynthesis.cancel();
     const name = rushQuestions[rushIndex].target.name;
-    const utterance = new SpeechSynthesisUtterance(`I'd like ${name}.`);
-    utterance.lang = 'en-US';
-    utterance.rate = rushModes[rushMode].rate;
-    speechSynthesis.speak(utterance);
+    speakEnglishText(`I'd like ${name}.`, rushModes[rushMode].rate);
   }
 
   function answerRush(id,button) {
@@ -2572,11 +2598,7 @@
   function playRushReview(id) {
     const item = menuData.find(word => word.id === id);
     if (!item) return;
-    speechSynthesis.cancel();
-    const utterance = new SpeechSynthesisUtterance(`I'd like ${item.name}.`);
-    utterance.lang = 'en-US';
-    utterance.rate = .72;
-    speechSynthesis.speak(utterance);
+    speakEnglishText(`I'd like ${item.name}.`, .72);
   }
 
   function closeLunchRush() {
@@ -2656,10 +2678,7 @@
   }
 
   function playSpeech(text) {
-    const uttr = new SpeechSynthesisUtterance(text);
-    uttr.lang = 'en-US';
-    uttr.rate = 0.6;
-    speechSynthesis.speak(uttr);
+    speakEnglishText(text, 0.6);
   }
 
   function playCurrentTargetHint() {
