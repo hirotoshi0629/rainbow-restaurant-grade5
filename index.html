@@ -200,6 +200,8 @@
     .listening-start:hover { transform:translateY(-2px); }
     .conversation-listening-start { margin:12px 5px 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#00838f,#1565c0); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(21,101,192,.25); }
     .conversation-listening-start:hover { transform:translateY(-2px); }
+    .number-pointing-start { margin:12px 5px 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#ef6c00,#c62828); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(198,40,40,.25); }
+    .number-pointing-start:hover { transform:translateY(-2px); }
     .smart-practice-start { margin:12px 5px 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#7b1fa2,#3949ab); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(69,39,160,.25); }
     .smart-practice-start:hover { transform:translateY(-2px); }
     .smart-practice-progress { display:none; margin:0 0 10px; padding:9px 12px; border-radius:12px; background:#ede7f6; color:#4527a0; font-weight:bold; }
@@ -228,6 +230,18 @@
     .conversation-listening-choice.wrong { border-color:#c62828; background:#ffebee; }
     .conversation-listening-feedback { min-height:32px; margin:10px 0; color:#00695c; font-size:1.05rem; font-weight:bold; }
     .conversation-listening-result { display:none; margin-top:14px; padding:16px; border-radius:16px; background:#e0f2f1; color:#004d40; font-weight:bold; }
+    .number-pointing-overlay { display:none; position:fixed; inset:0; z-index:85; padding:16px; background:rgba(191,54,12,.72); align-items:center; justify-content:center; }
+    .number-pointing-panel { width:min(700px,100%); max-height:96vh; overflow:auto; padding:20px; border:5px solid #ef6c00; border-radius:24px; background:linear-gradient(180deg,#fff3e0,#fff); text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.32); }
+    .number-pointing-panel h2 { margin:10px 0 8px; color:#bf360c; font-size:1.35rem; }
+    .number-pointing-help { margin:4px 0 10px; color:#6d4c41; font-weight:bold; }
+    .number-pointing-spoken { min-height:56px; display:flex; align-items:center; justify-content:center; margin:8px auto 12px; padding:10px 16px; border:3px solid #ffb74d; border-radius:16px; background:#fff; color:#bf360c; font-size:1.35rem; font-weight:bold; }
+    .number-pointing-choices { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
+    .number-pointing-choice { min-height:88px; padding:12px; border:4px solid #ffb74d; border-radius:18px; background:#fff; color:#4e342e; font:inherit; font-size:1.8rem; font-weight:bold; cursor:pointer; box-shadow:0 3px 0 #ffe0b2; }
+    .number-pointing-choice:hover,.number-pointing-choice:focus-visible { border-color:#e65100; outline:none; transform:translateY(-2px); }
+    .number-pointing-choice.correct { border-color:#43a047; background:#e8f5e9; }
+    .number-pointing-choice.wrong { border-color:#e53935; background:#ffebee; }
+    .number-pointing-feedback { min-height:32px; margin:10px 0; color:#bf360c; font-size:1.05rem; font-weight:bold; }
+    .number-pointing-result { display:none; margin-top:14px; padding:16px; border-radius:16px; background:#fff3e0; color:#8d2800; font-weight:bold; }
     .rush-overlay { display:none; position:fixed; inset:0; z-index:70; padding:14px; background:rgba(38,20,12,.78); align-items:center; justify-content:center; }
     .rush-panel { width:min(820px,96vw); max-height:92vh; overflow-y:auto; padding:20px; border:5px solid #ff8f00; border-radius:24px; background:linear-gradient(180deg,#fff8e1,#fff); text-align:center; box-shadow:0 18px 55px rgba(0,0,0,.35); }
     .rush-top { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; margin-bottom:10px; }
@@ -590,7 +604,7 @@
     .stars { color:#ffb300; letter-spacing:2px; font-size:1.2rem; }
     .judge-overlay { font-family:inherit; width:auto!important; font-size:3rem!important; padding:24px 34px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:24px; background:rgba(255,255,255,.96); box-shadow:0 14px 40px rgba(0,0,0,.24); }
     .judge-batsu { color:#ef6c00!important; }
-    @media (max-width:650px){ body{padding:6px}.container{padding:12px}.level-buttons{grid-template-columns:1fr}.step-row{font-size:.75rem}.hero-visual{max-height:180px}.restaurant-sign h1{font-size:1.35rem}.role-card{width:46%;padding:12px}.role-icon{font-size:3rem}.menu-grid{grid-template-columns:repeat(2,1fr)}.vocab-grid{grid-template-columns:repeat(2,1fr)}.practice-actions{grid-template-columns:1fr}.hard-toggle{grid-column:auto}.word-practice-panel{padding:17px}.listening-panel{padding:14px}.listening-choice{min-height:145px}.listening-picture{height:88px}.conversation-listening-panel{padding:14px}.conversation-listening-text{font-size:1.05rem;min-height:72px}.conversation-listening-choices{grid-template-columns:1fr}.rush-choices,.rush-choices.choices-3,.rush-choices.choices-6{grid-template-columns:repeat(2,1fr)}.rush-choice img{height:90px}.rush-top{gap:4px}.rush-stat{font-size:.78rem;padding:7px}.rush-course-grid{grid-template-columns:1fr}.rush-course{min-height:0}.report-stats{grid-template-columns:repeat(2,1fr)}.activity-chart{gap:3px;padding:7px}.activity-bar-wrap{width:82%} }
+    @media (max-width:650px){ body{padding:6px}.container{padding:12px}.level-buttons{grid-template-columns:1fr}.step-row{font-size:.75rem}.hero-visual{max-height:180px}.restaurant-sign h1{font-size:1.35rem}.role-card{width:46%;padding:12px}.role-icon{font-size:3rem}.menu-grid{grid-template-columns:repeat(2,1fr)}.vocab-grid{grid-template-columns:repeat(2,1fr)}.practice-actions{grid-template-columns:1fr}.hard-toggle{grid-column:auto}.word-practice-panel{padding:17px}.listening-panel{padding:14px}.listening-choice{min-height:145px}.listening-picture{height:88px}.conversation-listening-panel{padding:14px}.conversation-listening-text{font-size:1.05rem;min-height:72px}.conversation-listening-choices{grid-template-columns:1fr}.number-pointing-panel{padding:14px}.number-pointing-choice{min-height:74px;font-size:1.45rem}.rush-choices,.rush-choices.choices-3,.rush-choices.choices-6{grid-template-columns:repeat(2,1fr)}.rush-choice img{height:90px}.rush-top{gap:4px}.rush-stat{font-size:.78rem;padding:7px}.rush-course-grid{grid-template-columns:1fr}.rush-course{min-height:0}.report-stats{grid-template-columns:repeat(2,1fr)}.activity-chart{gap:3px;padding:7px}.activity-bar-wrap{width:82%} }
     @media (max-width:650px){ .restaurant-stage-image{height:210px}.management-stats{grid-template-columns:1fr}.stage-road{grid-template-columns:repeat(3,1fr)}header{align-items:flex-start;gap:6px}header>div{display:flex;flex-direction:column;gap:6px}.point-badge{font-size:.9rem;padding:7px 11px}.btn-stamp{padding:7px 11px;font-size:.9rem}.daily-board{padding:12px}.daily-mission{grid-template-columns:36px 1fr}.mission-reward{grid-column:2}.tour-grid{grid-template-columns:repeat(2,1fr)}.tour-city:last-child{grid-column:1/-1} }
   
     /* 2026-09-25 新ホーム画面 */
@@ -995,7 +1009,7 @@
 
 /* 画面オーバーレイを開いたとき、ホーム画面の難易度ボタンが前面に出ないようにする */
 .image-home .home-level-picker{z-index:14!important}
-.word-practice-overlay,.listening-overlay,.conversation-listening-overlay,.rush-overlay{z-index:200!important}
+.word-practice-overlay,.listening-overlay,.conversation-listening-overlay,.number-pointing-overlay,.rush-overlay{z-index:200!important}
 
 </style>
 </head>
@@ -1052,6 +1066,7 @@
     <button class="smart-practice-start" onclick="startSmartPractice()">今日のおまかせ5語</button>
     <button class="listening-start" onclick="startListeningChallenge()">🎧 聞き取りチャレンジ（10問）</button>
     <button class="conversation-listening-start" onclick="startConversationListening()">🗣️ 聞く練習（会話の英文）</button>
+    <button class="number-pointing-start" onclick="startNumberPointing()">🔢 数字を聞いてタッチ</button>
     <div id="vocab-summary" style="font-weight:bold;color:#6a1b9a;"></div>
     <div class="vocab-toolbar" aria-label="単語の種類で絞り込む">
       <button class="vocab-filter active" data-filter="all" onclick="filterVocabulary('all',this)">すべて</button>
@@ -1121,6 +1136,27 @@
       <button class="listening-next" id="conversation-listening-next" onclick="nextConversationListening()">次の問題へ ➜</button>
       <div class="conversation-listening-result" id="conversation-listening-result"></div>
       <button class="practice-close" onclick="closeConversationListening()">練習を終わる</button>
+    </div>
+  </div>
+
+  <div class="number-pointing-overlay" id="number-pointing-overlay" role="dialog" aria-modal="true" aria-labelledby="number-pointing-title">
+    <div class="number-pointing-panel">
+      <div class="listening-top">
+        <span id="number-pointing-progress">1 / 10</span>
+        <span id="number-pointing-score">せいかい 0</span>
+      </div>
+      <h2 id="number-pointing-title">🔢 数字を聞いて、タッチしよう！</h2>
+      <div class="number-pointing-help">値段の数字を英語で聞くよ。聞こえた数字を4つから選ぼう。</div>
+      <div class="number-pointing-spoken" id="number-pointing-spoken">？</div>
+      <div class="conversation-listening-controls">
+        <button class="listening-hear" onclick="playNumberPointing(0.72)">🔊 ふつうの速さ</button>
+        <button class="listening-hear conversation-listening-slow" onclick="playNumberPointing(0.38)">🐢 ゆっくり聞く</button>
+      </div>
+      <div class="number-pointing-choices" id="number-pointing-choices"></div>
+      <div class="number-pointing-feedback" id="number-pointing-feedback" role="status" aria-live="polite">英語の数字を聞いてね。</div>
+      <button class="listening-next" id="number-pointing-next" onclick="nextNumberPointing()">次の問題へ ➜</button>
+      <div class="number-pointing-result" id="number-pointing-result"></div>
+      <button class="practice-close" onclick="closeNumberPointing()">練習を終わる</button>
     </div>
   </div>
 
@@ -1420,6 +1456,10 @@
   let conversationListeningCorrect = 0;
   let conversationListeningAnswered = false;
   let conversationListeningMistakes = [];
+  let numberPointingQuestions = [];
+  let numberPointingIndex = 0;
+  let numberPointingCorrect = 0;
+  let numberPointingAnswered = false;
   let deviceMicStream = null;
   let deviceAudioContext = null;
   let deviceMeterFrame = null;
@@ -2775,6 +2815,152 @@
     const overlay = document.getElementById('conversation-listening-overlay');
     if (overlay) overlay.style.display = 'none';
     conversationListeningQuestions = [];
+  }
+
+  function numberToEnglish(number) {
+    const ones = ['zero','one','two','three','four','five','six','seven','eight','nine'];
+    const teens = ['ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
+    const tens = ['', '', 'twenty','thirty','forty','fifty','sixty','seventy','eighty','ninety'];
+    const value = Number(number);
+    if (value === 1000) return 'one thousand';
+    if (value < 10) return ones[value];
+    if (value < 20) return teens[value - 10];
+    if (value < 100) return `${tens[Math.floor(value / 10)]}${value % 10 ? ` ${ones[value % 10]}` : ''}`;
+    const hundreds = `${ones[Math.floor(value / 100)]} hundred`;
+    const rest = value % 100;
+    if (!rest) return hundreds;
+    return `${hundreds} ${rest < 20 ? teens[rest - 10] : `${tens[Math.floor(rest / 10)]}${rest % 10 ? ` ${ones[rest % 10]}` : ''}`}`;
+  }
+
+  function randomPriceNumber() {
+    return (Math.floor(Math.random() * 100) + 1) * 10;
+  }
+
+  function buildNumberPointingQuestions() {
+    const numberPool = shuffledWords(Array.from({length:100}, (_, index) => (index + 1) * 10));
+    return numberPool.slice(0,10).map(number => {
+      const choices = new Set([number]);
+      while (choices.size < 4) choices.add(randomPriceNumber());
+      return { number, english: numberToEnglish(number), choices: shuffledWords([...choices]) };
+    });
+  }
+
+  function startNumberPointing() {
+    closeWordPractice();
+    closeListeningChallenge();
+    closeConversationListening();
+    speechSynthesis.cancel();
+    numberPointingQuestions = buildNumberPointingQuestions();
+    numberPointingIndex = 0;
+    numberPointingCorrect = 0;
+    numberPointingAnswered = false;
+    document.getElementById('number-pointing-title').innerText = '🔢 数字を聞いて、タッチしよう！';
+    document.getElementById('number-pointing-result').style.display = 'none';
+    document.getElementById('number-pointing-choices').style.display = 'grid';
+    document.getElementById('number-pointing-next').style.display = 'none';
+    document.getElementById('number-pointing-overlay').style.display = 'flex';
+    showNumberPointingQuestion();
+  }
+
+  function showNumberPointingQuestion() {
+    numberPointingAnswered = false;
+    const question = numberPointingQuestions[numberPointingIndex];
+    document.getElementById('number-pointing-progress').innerText = `${numberPointingIndex + 1} / ${numberPointingQuestions.length}`;
+    document.getElementById('number-pointing-score').innerText = `せいかい ${numberPointingCorrect}`;
+    document.getElementById('number-pointing-spoken').innerText = '？';
+    const box = document.getElementById('number-pointing-choices');
+    box.innerHTML = '';
+    question.choices.forEach(number => {
+      const button = document.createElement('button');
+      button.className = 'number-pointing-choice';
+      button.dataset.number = number;
+      button.innerText = `${number}`;
+      button.onclick = () => answerNumberPointing(number, button);
+      box.appendChild(button);
+    });
+    document.getElementById('number-pointing-feedback').innerText = '英語の数字を聞いてね。';
+    const nextButton = document.getElementById('number-pointing-next');
+    nextButton.innerText = numberPointingIndex === numberPointingQuestions.length - 1 ? '結果を見る ➜' : '次の問題へ ➜';
+    // 画面を開いたタップ直後に再生し、iPad・Safariの自動再生制限を避ける。
+    playNumberPointing(0.72);
+    setTimeout(() => {
+      if (!window.speechSynthesis.speaking && !numberPointingAnswered) playNumberPointing(0.72);
+    }, 650);
+  }
+
+  function playNumberPointing(rate = 0.72) {
+    const question = numberPointingQuestions[numberPointingIndex];
+    if (!question) return;
+    document.getElementById('number-pointing-feedback').innerText = '🔊 英語の数字を聞いているよ。';
+    speakEnglishText(question.english, rate);
+  }
+
+  function answerNumberPointing(number, button) {
+    if (numberPointingAnswered) return;
+    numberPointingAnswered = true;
+    speechSynthesis.cancel();
+    const question = numberPointingQuestions[numberPointingIndex];
+    document.querySelectorAll('.number-pointing-choice').forEach(choiceButton => {
+      choiceButton.disabled = true;
+      if (Number(choiceButton.dataset.number) === question.number) choiceButton.classList.add('correct');
+    });
+    document.getElementById('number-pointing-spoken').innerText = `${question.english}（${question.number}）`;
+    if (Number(number) === question.number) {
+      numberPointingCorrect++;
+      button.classList.add('correct');
+      document.getElementById('number-pointing-feedback').innerText = '⭕ 正解！数字が聞き取れたね。';
+      playSound('correct');
+    } else {
+      button.classList.add('wrong');
+      document.getElementById('number-pointing-feedback').innerText = `おしい！ 正解は ${question.number}（${question.english}）だよ。`;
+      playSound('wrong');
+    }
+    document.getElementById('number-pointing-score').innerText = `せいかい ${numberPointingCorrect}`;
+    const nextButton = document.getElementById('number-pointing-next');
+    nextButton.style.display = 'block';
+    nextButton.focus();
+  }
+
+  function nextNumberPointing() {
+    numberPointingIndex++;
+    if (numberPointingIndex < numberPointingQuestions.length) {
+      showNumberPointingQuestion();
+      return;
+    }
+    finishNumberPointing();
+  }
+
+  function finishNumberPointing() {
+    const earned = numberPointingCorrect * 5;
+    points += earned;
+    totalListeningCorrect += numberPointingCorrect;
+    localStorage.setItem('restaurant_listening_total_correct', totalListeningCorrect);
+    updatePoints();
+    recordTrainingActivity('listening');
+    if (!dailyMissionState) initDailyMissions();
+    dailyMissionState.listeningCorrect += numberPointingCorrect;
+    checkDailyMissions();
+    if (!weeklyMissionState) initWeeklyMissions();
+    weeklyMissionState.listeningCorrect += numberPointingCorrect;
+    checkWeeklyMissions();
+    checkTourMission();
+    document.getElementById('number-pointing-choices').style.display = 'none';
+    document.getElementById('number-pointing-next').style.display = 'none';
+    document.getElementById('number-pointing-feedback').innerText = '';
+    document.getElementById('number-pointing-title').innerText = '🎉 数字ポインティングおわり！';
+    const message = numberPointingCorrect === numberPointingQuestions.length ? 'パーフェクト！すばらしい！'
+      : numberPointingCorrect >= 7 ? 'よく聞き取れたね！'
+      : 'もう一度聞くと、数字がもっと分かるようになるよ！';
+    const result = document.getElementById('number-pointing-result');
+    result.innerHTML = `<div style="font-size:2.2rem;font-weight:bold;color:#bf360c;">${numberPointingCorrect} / ${numberPointingQuestions.length}</div><p>${message}</p><p>次は聞こえた値段を英語で言ってみよう！</p><button class="number-pointing-start" onclick="startNumberPointing()">もう一度練習する</button>`;
+    result.style.display = 'block';
+  }
+
+  function closeNumberPointing() {
+    speechSynthesis.cancel();
+    const overlay = document.getElementById('number-pointing-overlay');
+    if (overlay) overlay.style.display = 'none';
+    numberPointingQuestions = [];
   }
 
   function openLunchRush() {
