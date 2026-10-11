@@ -1440,6 +1440,8 @@
   let currentTargetSpeech = "";
   let currentJpSubtext = "";
   let isPriceStep = false;
+  // コンピュータが直前に話した英文。会話バブルの中でも発声中の語を強調する。
+  let activeComputerSpeechElement = null;
 
   const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
   function playSound(type) {
@@ -2424,7 +2426,7 @@
       button.className = 'listening-choice';
       button.dataset.id = item.id;
       button.setAttribute('aria-label', item.name);
-      button.innerHTML = `${vocabPicture(item, 'listening-picture')}<span>${item.name}</span>`;
+    button.innerHTML = `${vocabPicture(item, 'listening-picture')}<span class="listening-choice-word">${item.name}</span>`;
       button.onclick = () => answerListeningQuestion(item, button);
       box.appendChild(button);
     });
@@ -2437,7 +2439,9 @@
 
   function playListeningWord() {
     if (!listeningQuestions.length || listeningIndex >= listeningQuestions.length) return;
-    speakEnglishText(listeningQuestions[listeningIndex].name, 0.82);
+    const target = listeningQuestions[listeningIndex];
+    const targetWord = document.querySelector(`.listening-choice[data-id="${target.id}"] .listening-choice-word`);
+    speakEnglishText(target.name, 0.82, null, targetWord);
   }
 
   function answerListeningQuestion(item, button) {
@@ -2585,7 +2589,11 @@
   function playRushOrder() {
     if (!rushQuestions.length || rushIndex >= rushQuestions.length) return;
     const name = rushQuestions[rushIndex].target.name;
-    speakEnglishText(`I'd like ${name}.`, rushModes[rushMode].rate);
+    const sentence = `I'd like ${name}.`;
+    const order = document.getElementById('rush-order');
+    order.dataset.afterSpeechText = sentence;
+    renderSpeechMarkup(order, sentence);
+    speakEnglishText(sentence, rushModes[rushMode].rate, null, order);
   }
 
   function answerRush(id,button) {
@@ -2664,7 +2672,7 @@
     const title = timeUp ? 'タイムアップ！' : rushCorrect === rushTotalQuestions ? 'パーフェクトサービス！' : 'ランチラッシュクリア！';
     const rewardNote = rate < 1 ? '<br><small>今日は4回目以降なので、売上報酬は控えめです。</small>' : '';
     const result = document.getElementById('rush-result');
-    const review = rushMistakes.length ? `<div class="rush-review"><h3>まちがえた注文を聞き直そう</h3><div class="rush-review-list">${rushMistakes.map(item => `<button class="rush-review-word" onclick="playRushReview(${item.id})">${vocabPicture(item,'rush-review-picture')}<span>${item.name}<br><small>音声を聞く</small></span></button>`).join('')}</div></div>` : '<div class="rush-review"><h3>全問聞き取れました！</h3></div>';
+    const review = rushMistakes.length ? `<div class="rush-review"><h3>まちがえた注文を聞き直そう</h3><div class="rush-review-list">${rushMistakes.map(item => `<button class="rush-review-word" data-id="${item.id}" onclick="playRushReview(${item.id})">${vocabPicture(item,'rush-review-picture')}<span class="rush-review-speech">${item.name}<br><small>音声を聞く</small></span></button>`).join('')}</div></div>` : '<div class="rush-review"><h3>全問聞き取れました！</h3></div>';
     result.innerHTML = `<h2 style="color:#bf360c;margin:0 0 8px;">${title}</h2><div style="font-size:2rem;font-weight:bold;">${rushCorrect} / ${rushTotalQuestions}</div><p>${rushModes[rushMode].label}　｜　ベストコンボ ${rushBestCombo}　｜　スコア ${rawScore}</p><p>このコースの自己ベスト ${lunchRushBests[rushMode]}　｜　売上 +${earned} コイン${rewardNote}</p>${review}<button class="listening-start" onclick="startLunchRush('${rushMode}')">同じコースに再挑戦</button> <button class="practice-close" onclick="openLunchRush()">コースを選び直す</button>`;
     result.style.display = 'block';
     rushQuestions = [];
@@ -2673,7 +2681,14 @@
   function playRushReview(id) {
     const item = menuData.find(word => word.id === id);
     if (!item) return;
-    speakEnglishText(`I'd like ${item.name}.`, .72);
+    const button = document.querySelector(`.rush-review-word[data-id="${id}"]`);
+    const speechElement = button ? button.querySelector('.rush-review-speech') : null;
+    const sentence = `I'd like ${item.name}.`;
+    if (speechElement) {
+      speechElement.dataset.afterSpeechText = sentence;
+      renderSpeechMarkup(speechElement, sentence);
+    }
+    speakEnglishText(sentence, .72, null, speechElement);
   }
 
   function closeLunchRush() {
@@ -2755,7 +2770,8 @@
   }
 
   function playSpeech(text, rate = 0.6, highlightElement = null) {
-    speakEnglishText(text, rate, null, highlightElement);
+    const element = highlightElement || activeComputerSpeechElement;
+    speakEnglishText(text, rate, null, element);
   }
 
   function playCurrentTargetHint(rate = 0.6) {
@@ -2770,12 +2786,19 @@
     const bubble = document.createElement('div');
     bubble.className = `chat-bubble ${isUser ? 'user' : 'opponent'}`;
     
-    let htmlContent = `<span class="chat-role">${roleLabel}</span>${text}`;
+    let htmlContent = `<span class="chat-role">${escapeSpeechHtml(roleLabel)}</span>`;
+    if (isUser) htmlContent += escapeSpeechHtml(text);
+    else htmlContent += '<span class="chat-english"></span>';
     if (!isUser && jpText) {
-      htmlContent += `<div class="chat-jp-translation">（${jpText}）</div>`;
+      htmlContent += `<div class="chat-jp-translation">（${escapeSpeechHtml(jpText)}）</div>`;
     }
     
     bubble.innerHTML = htmlContent;
+    if (!isUser) {
+      activeComputerSpeechElement = bubble.querySelector('.chat-english');
+      activeComputerSpeechElement.dataset.afterSpeechText = text;
+      renderSpeechMarkup(activeComputerSpeechElement, text);
+    }
     container.appendChild(bubble);
     container.scrollTop = container.scrollHeight;
   }
