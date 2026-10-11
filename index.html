@@ -2596,61 +2596,61 @@
         '店員さん',
         `Thank you for coming. This is Rainbow restaurant. What would you like?`,
         'いらっしゃいませ。レインボーレストランです。何にしますか？',
-        ['お会計は終わりました。ありがとうございました。', 'おつりはこれから渡します。']
+        ['お会計は終わりました。ありがとうございました。', 'おつりはこれから渡します。', '料理を選んでいます。']
       ),
       makeConversationListeningQuestion(
         'お客さん',
         `I'd like ${itemA.name}.`,
         `${itemA.name}をお願いします。`,
-        [`${itemB.name}をお願いします。`, `${itemA.name}はいくらですか？`]
+        [`${itemB.name}をお願いします。`, `${itemA.name}はいくらですか？`, 'おつりをください。']
       ),
       makeConversationListeningQuestion(
         '店員さん',
         `OK, ${itemA.name}.`,
         `わかりました。${itemA.name}ですね。`,
-        ['いらっしゃいませ。何にしますか？', 'ありがとうございます。また来てください。']
+        ['いらっしゃいませ。何にしますか？', 'ありがとうございます。また来てください。', 'お客さんが料理を選びます。']
       ),
       makeConversationListeningQuestion(
         'お客さん',
         'How much is it?',
         'いくらですか？',
-        ['はい、どうぞ。', 'また来てください。']
+        ['はい、どうぞ。', 'また来てください。', '料理はどこですか？']
       ),
       makeConversationListeningQuestion(
         '店員さん',
         `It's ${price} yen.`,
         `${price}円です。`,
-        [`${price + 100}円です。`, `${change}円のおつりです。`]
+        [`${price + 100}円です。`, `${change}円のおつりです。`, 'お会計は終わりました。']
       ),
       makeConversationListeningQuestion(
         'お客さん',
         'Here you are.',
         'はい、どうぞ。',
-        ['いくらですか？', 'わかりました。']
+        ['いくらですか？', 'わかりました。', 'これをください。']
       ),
       makeConversationListeningQuestion(
         '店員さん',
         `Your change is ${change} yen.`,
         `おつりは${change}円です。`,
-        [`${price}円です。`, '料理をお願いします。']
+        [`${price}円です。`, '料理をお願いします。', 'はい、どうぞ。']
       ),
       makeConversationListeningQuestion(
         'お客さん',
         'Thank you.',
         'ありがとうございます。',
-        ['いらっしゃいませ。', '何にしますか？']
+        ['いらっしゃいませ。', '何にしますか？', 'いくらですか？']
       ),
       makeConversationListeningQuestion(
         '店員さん',
         'Please come again!',
         'また来てください！',
-        ['おつりはこれです。', '料理を選んでください。']
+        ['おつりはこれです。', '料理を選んでください。', 'ご注文をどうぞ。']
       ),
       makeConversationListeningQuestion(
         'お客さん',
         `I'd like ${itemB.name}.`,
         `${itemB.name}をお願いします。`,
-        [`${itemA.name}をお願いします。`, `${itemB.name}は何円ですか？`]
+        [`${itemA.name}をお願いします。`, `${itemB.name}は何円ですか？`, 'おつりは何円ですか？']
       )
     ]);
   }
@@ -2694,7 +2694,11 @@
     document.getElementById('conversation-listening-feedback').innerText = '英文を聞いて、いちばん近い意味を選ぼう。';
     const nextButton = document.getElementById('conversation-listening-next');
     nextButton.innerText = conversationListeningIndex === conversationListeningQuestions.length - 1 ? '結果を見る ➜' : '次の問題へ ➜';
-    setTimeout(() => playConversationListening(0.72), 350);
+    // 開始ボタン／次の問題ボタンのタップ直後にも再生し、iPad・Safariの自動再生制限を避ける。
+    playConversationListening(0.72);
+    setTimeout(() => {
+      if (!window.speechSynthesis.speaking && !conversationListeningAnswered) playConversationListening(0.72);
+    }, 650);
   }
 
   function playConversationListening(rate = 0.72) {
