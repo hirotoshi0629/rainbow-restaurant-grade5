@@ -185,7 +185,7 @@
     .practice-actions { display:grid; grid-template-columns:repeat(2,1fr); gap:10px; }
     .practice-btn { min-height:54px; padding:10px; border:0; border-radius:14px; color:#fff; font-size:1rem; font-weight:bold; cursor:pointer; }
     .practice-btn:disabled { opacity:.45; cursor:not-allowed; }
-    .speed-normal { background:#00acc1; }.speed-slow { background:#1976d2; }
+    .speed-normal { background:#00acc1; }.speed-slow { background:#1976d2; }.speed-slower { background:#3949ab; }
     .record-start { background:#e53935; }.record-start.recording { background:#b71c1c; animation:pulse 1s infinite; }
     .record-play { background:#43a047; }.hard-toggle { background:#ff9800; grid-column:1/-1; }
     .pronunciation-check { background:#1565c0; box-shadow:0 4px 0 #0d47a1; }
@@ -457,9 +457,11 @@
 
     .target-label { font-size: 0.8rem; color: #2e7d32; font-weight: bold; }
     .target-text { font-size: 1.2rem; font-weight: bold; color: #1b5e20; margin: 4px 0; }
+    .speech-word { display:inline-block; padding:0 2px; border-radius:6px; transition:background .12s ease,color .12s ease,transform .12s ease; }
+    .speech-word.speaking { background:#ffd54f; color:#5d4037; transform:translateY(-1px); box-shadow:0 2px 0 #f9a825; }
     .jp-subtext { font-size: 0.85rem; color: #444; }
 
-    .controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; }
+    .controls { display: flex; justify-content: center; gap: 15px; margin-bottom: 15px; flex-wrap: wrap; }
 
     button {
       font-family: inherit; border: none; padding: 10px 20px; font-size: 1rem;
@@ -473,6 +475,7 @@
     .btn-speech-finish:disabled { opacity:.65; cursor:wait; }
     .speech-finish-help { display:none; margin:-4px auto 10px; text-align:center; color:#795548; font-size:.9rem; font-weight:bold; }
     .btn-hint { background: #00bcd4; color: white; }
+    .btn-hint-slower { background:#3949ab; }
     .btn-money { background: #ffca28; color: #333; padding: 6px 12px; }
     .btn-stamp { background: #6a1b9a; color: white; }
     .btn-home { background: #78909c; color: white; margin-right: auto; }
@@ -1053,6 +1056,7 @@
       <div class="practice-actions">
         <button class="practice-btn speed-normal" onclick="playPracticeWord(0.9)">🔊 ふつうの速さ</button>
         <button class="practice-btn speed-slow" onclick="playPracticeWord(0.55)">🐢 ゆっくり</button>
+        <button class="practice-btn speed-slower" onclick="playPracticeWord(0.3)">🐢 かなりゆっくり</button>
         <button class="practice-btn record-start" id="record-button" onclick="toggleWordRecording()">🔴 録音する</button>
         <button class="practice-btn record-play" id="play-recording-button" onclick="playWordRecording()" disabled>▶ 自分の声を聞く</button>
         <button class="practice-btn pronunciation-check" id="pronunciation-check-button" onclick="checkWordPronunciation()">🎤 発音チェック</button>
@@ -1151,7 +1155,8 @@
 
     <!-- 操作ボタン -->
     <div class="controls">
-      <button class="btn-hint" onclick="playCurrentTargetHint()">🔊 お手本を聞く (ゆっくり)</button>
+      <button class="btn-hint" onclick="playCurrentTargetHint(0.6)">🔊 お手本を聞く（ゆっくり）</button>
+      <button class="btn-hint btn-hint-slower" onclick="playCurrentTargetHint(0.3)">🐢 お手本を聞く（かなりゆっくり）</button>
       <button class="btn-mic" id="mic-btn" onclick="toggleMic()">🎤 マイクで話す</button>
     </div>
     <button class="btn-speech-finish" id="speech-finish-btn" onclick="finishSpeechInput()">✅ 話し終わった・判定する</button>
@@ -2023,7 +2028,9 @@
     }
     checkTourMission();
     document.getElementById('practice-word-icon').innerHTML = vocabPicture(item, 'practice-word-picture');
-    document.getElementById('practice-word-text').innerText = item.name;
+    const practiceWordText = document.getElementById('practice-word-text');
+    practiceWordText.dataset.afterSpeechText = item.name;
+    practiceWordText.innerText = item.name;
     document.getElementById('record-status').innerText = 'お手本を聞いてから、自分の声を録音してみよう。';
     const pronunciationResult = document.getElementById('pronunciation-result');
     pronunciationResult.style.display = 'none';
@@ -2049,14 +2056,41 @@
     updateSmartPracticeUI();
   }
 
+  // 音声再生中の英文を、語ごとに色で追いかけ表示する。
+  function escapeSpeechHtml(value) {
+    return String(value ?? '').replace(/[&<>"']/g, char => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[char]));
+  }
+
+  function renderSpeechMarkup(element, text) {
+    if (!element) return [];
+    const value = String(text ?? '');
+    let cursor = 0;
+    const html = value.replace(/\S+/g, (word, offset) => {
+      const before = escapeSpeechHtml(value.slice(cursor, offset));
+      cursor = offset + word.length;
+      return `${before}<span class="speech-word" data-start="${offset}" data-end="${cursor}">${escapeSpeechHtml(word)}</span>`;
+    }) + escapeSpeechHtml(value.slice(cursor));
+    element.innerHTML = html;
+    return [...element.querySelectorAll('.speech-word')];
+  }
+
+  function markSpeechWord(words, index) {
+    words.forEach((word, wordIndex) => word.classList.toggle('speaking', wordIndex === index));
+  }
+
+  function clearSpeechWords(words) {
+    words.forEach(word => word.classList.remove('speaking'));
+  }
+
   // 端末やブラウザによって音声リストの読み込みタイミングが異なるため、
   // 英語音声を明示してから再生する共通処理にする。
-  function speakEnglishText(text, rate = 0.9, statusElement = null) {
+  function speakEnglishText(text, rate = 0.9, statusElement = null, highlightElement = null) {
     const synth = window.speechSynthesis;
     if (!synth || typeof window.SpeechSynthesisUtterance !== 'function') {
       if (statusElement) statusElement.innerText = 'この端末では音声を再生できません。';
       return false;
     }
+    synth.cancel();
     const utterance = new SpeechSynthesisUtterance(String(text || ''));
     const voices = synth.getVoices ? synth.getVoices() : [];
     const englishVoice = voices.find(voice => /^en(?:-|_)/i.test(voice.lang))
@@ -2070,16 +2104,57 @@
     utterance.rate = Math.max(0.1, Math.min(2, Number(rate) || 0.9));
     utterance.pitch = 1;
     utterance.volume = 1;
+    const words = highlightElement ? renderSpeechMarkup(highlightElement, text) : [];
+    const restoreText = highlightElement && highlightElement.dataset.afterSpeechText
+      ? highlightElement.dataset.afterSpeechText : String(text || '');
+    let fallbackTimer = null;
+    let boundarySeen = false;
+    let fallbackIndex = 0;
+    const stopVisual = () => {
+      if (fallbackTimer) clearInterval(fallbackTimer);
+      fallbackTimer = null;
+      clearSpeechWords(words);
+    };
+    const restoreDisplay = () => {
+      if (highlightElement) renderSpeechMarkup(highlightElement, restoreText);
+    };
+    const markByCharIndex = charIndex => {
+      if (!words.length || !Number.isFinite(charIndex)) return;
+      const index = words.findIndex(word => {
+        const start = Number(word.dataset.start);
+        const end = Number(word.dataset.end);
+        return charIndex >= start && charIndex < end;
+      });
+      if (index >= 0) markSpeechWord(words, index);
+    };
     utterance.onstart = () => {
       if (statusElement) statusElement.innerText = '🔊 お手本を再生中…';
     };
+    utterance.onboundary = event => {
+      boundarySeen = true;
+      if (fallbackTimer) { clearInterval(fallbackTimer); fallbackTimer = null; }
+      markByCharIndex(event.charIndex);
+    };
     utterance.onend = () => {
+      stopVisual();
+      restoreDisplay();
       if (statusElement) statusElement.innerText = 'お手本を聞いてから、自分の声を録音してみよう。';
     };
     utterance.onerror = () => {
+      stopVisual();
+      restoreDisplay();
       if (statusElement) statusElement.innerText = '音声を再生できませんでした。端末の音量・消音設定を確認してね。';
     };
-    synth.cancel();
+    if (words.length) {
+      markSpeechWord(words, 0);
+      // onboundaryに対応しないブラウザでも、語ごとの色変化が見えるようにする。
+      const delay = Math.max(260, Math.min(1600, 620 / utterance.rate));
+      fallbackTimer = setInterval(() => {
+        if (boundarySeen || fallbackIndex >= words.length - 1) return;
+        fallbackIndex += 1;
+        markSpeechWord(words, fallbackIndex);
+      }, delay);
+    }
     // 一時停止状態が残るブラウザでも、必ず再開してから発話する。
     if (typeof synth.resume === 'function') synth.resume();
     synth.speak(utterance);
@@ -2089,7 +2164,7 @@
 
   function playPracticeWord(rate) {
     if (!vocabCurrent) return;
-    speakEnglishText(vocabCurrent.name, rate, document.getElementById('record-status'));
+    speakEnglishText(vocabCurrent.name, rate, document.getElementById('record-status'), document.getElementById('practice-word-text'));
   }
 
   async function toggleWordRecording() {
@@ -2652,7 +2727,9 @@
     currentTargetSpeech = eng;
     currentJpSubtext = jp;
     isPriceStep = isPrice;
-    document.getElementById('target-text').innerText = eng;
+    const target = document.getElementById('target-text');
+    target.dataset.afterSpeechText = eng;
+    renderSpeechMarkup(target, eng);
     document.getElementById('jp-subtext').innerText = jp ? `（${jp}）` : '';
   }
 
@@ -2677,13 +2754,13 @@
     }
   }
 
-  function playSpeech(text) {
-    speakEnglishText(text, 0.6);
+  function playSpeech(text, rate = 0.6, highlightElement = null) {
+    speakEnglishText(text, rate, null, highlightElement);
   }
 
-  function playCurrentTargetHint() {
+  function playCurrentTargetHint(rate = 0.6) {
     if (currentTargetSpeech && !currentTargetSpeech.includes("（")) {
-      playSpeech(currentTargetSpeech);
+      playSpeech(currentTargetSpeech, rate, document.getElementById('target-text'));
     }
   }
 
@@ -3312,9 +3389,12 @@
     const sub = document.getElementById('jp-subtext');
     if (practiceLevel === 'normal') {
       const words = eng.split(' ');
-      target.innerText = words.map((w,i) => (i > 0 && i % 3 === 1) ? '______' : w).join(' ');
+      const masked = words.map((w,i) => (i > 0 && i % 3 === 1) ? '______' : w).join(' ');
+      target.dataset.afterSpeechText = masked;
+      renderSpeechMarkup(target, masked);
     } else if (practiceLevel === 'challenge') {
-      target.innerText = '自分の言葉で伝えてみよう！';
+      target.dataset.afterSpeechText = '自分の言葉で伝えてみよう！';
+      renderSpeechMarkup(target, '自分の言葉で伝えてみよう！');
     }
     sub.innerText = jp ? `（${jp}）` : '';
   };
@@ -3334,9 +3414,9 @@
   };
 
   const baseHint = playCurrentTargetHint;
-  playCurrentTargetHint = function() {
+  playCurrentTargetHint = function(rate) {
     hintUsedThisRound = true;
-    baseHint();
+    baseHint(rate);
   };
 
   function normalizeSpeech(text) {
