@@ -973,6 +973,10 @@
 .image-home .home-level-picker .level-btn.active{background:#ffb23f!important;border-color:#f28a00!important;color:#4b3200!important}
 .image-home .home-level-picker .level-btn::before,.image-home .home-level-picker .level-btn::after{content:none!important;display:none!important}
 
+/* 画面オーバーレイを開いたとき、ホーム画面の難易度ボタンが前面に出ないようにする */
+.image-home .home-level-picker{z-index:14!important}
+.word-practice-overlay,.listening-overlay,.rush-overlay{z-index:200!important}
+
 </style>
 </head>
 <body>
