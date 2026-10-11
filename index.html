@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>At a Restaurant - English Game</title>
+  <title>レストランで英語ゲーム</title>
   <meta name="description" content="小学5年生向け。店員役とお客役を一人で練習できる英語レストランゲーム。">
   <link rel="icon" type="image/svg+xml" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%23ff7043'/%3E%3Cpath d='M14 18h36v8a18 18 0 0 1-36 0z' fill='%23fff3e0'/%3E%3Cpath d='M19 38h26v8H19z' fill='%23fff'/%3E%3C/svg%3E">
   <style>
@@ -602,7 +602,7 @@
     .card-visual{height:175px;border-radius:14px;background:#fff8d7;overflow:hidden;position:relative}
     .vocab-mini{display:flex;align-items:center;justify-content:center;gap:5px;height:100%}.vocab-mini span{width:30%;height:115px;border:2px solid #ffe082;border-radius:8px;background:#fff;display:flex;align-items:flex-end;justify-content:center;padding:8px 2px;font-size:.78rem;font-weight:bold;color:#1a237e}.vocab-mini span:nth-child(1){background:#fff url('assets/vocab-v2/hamburger.webp') center 20%/80% auto no-repeat}.vocab-mini span:nth-child(2){background:#fff url('assets/vocab-v2/spaghetti.webp') center 20%/80% auto no-repeat}.vocab-mini span:nth-child(3){background:#fff url('assets/vocab-v2/juice.webp') center 20%/80% auto no-repeat}
     .role-mini{display:grid;grid-template-columns:1fr 1fr;gap:6px;height:100%}.role-mini button{border:0;padding:0;background:#eef8ff;cursor:pointer;overflow:hidden;border-radius:12px;font:inherit;font-weight:bold;color:#075bb5}.role-mini button:last-child{background:#fff0f5;color:#ad1457}.role-photo{height:120px;background-image:url('assets/restaurant-hero.png');background-size:470px auto;background-repeat:no-repeat}.role-clerk-photo{background-position:16% 62%}.role-customer-photo{background-position:43% 62%}
-    .mission-mini{height:100%;padding:10px;background:#fff6dc;border-radius:12px;text-align:left}.mission-mini h3{margin:0 0 7px;color:#f44336;text-align:center}.mission-mini p{margin:6px 0;font-weight:bold;font-size:.9rem}.rush-mini{height:100%;background:url('assets/restaurant-hero.png') center/cover no-repeat;position:relative}.rush-mini:after{content:'LUNCH RUSH';position:absolute;inset:auto 8px 8px;background:#ffffffdd;border-radius:10px;padding:8px;color:#6a1b9a;font-weight:900}
+    .mission-mini{height:100%;padding:10px;background:#fff6dc;border-radius:12px;text-align:left}.mission-mini h3{margin:0 0 7px;color:#f44336;text-align:center}.mission-mini p{margin:6px 0;font-weight:bold;font-size:.9rem}.rush-mini{height:100%;background:url('assets/restaurant-hero.png') center/cover no-repeat;position:relative}.rush-mini:after{content:'ランチラッシュ';position:absolute;inset:auto 8px 8px;background:#ffffffdd;border-radius:10px;padding:8px;color:#6a1b9a;font-weight:900}
     .card-btn{margin-top:8px;border:0;border-radius:15px;padding:11px 7px;color:#fff;font:inherit;font-weight:bold;font-size:1rem;cursor:pointer;box-shadow:0 4px 0 rgba(0,0,0,.18)}.c1 .card-btn{background:#ffc400;color:#142a60}.c2 .card-btn{background:#168df0}.c3 .card-btn{background:#16ad4c}.c4 .card-btn{background:#7e43e5}
     .level-compact{display:flex;gap:4px;margin-top:7px}.level-compact button{flex:1;border:2px solid #f8bbd0;border-radius:8px;background:#fff;padding:5px 2px;font:inherit;font-size:.72rem;font-weight:bold;cursor:pointer}.level-compact button.active{background:#ffe082;border-color:#ff9800}
     .home-bottom-nav{display:grid;grid-template-columns:repeat(5,1fr);gap:3px;background:#168be0;padding:10px}.home-bottom-nav button{border:0;background:#1178c9;color:#fff;border-radius:14px;padding:13px 6px;font:inherit;font-weight:bold;font-size:.95rem;cursor:pointer;box-shadow:inset 0 0 0 2px #ffffff12}.home-bottom-nav button:hover{background:#0d68b1}
@@ -986,9 +986,9 @@
 
 <div class="container">
   <header>
-    <h2 style="margin:0; color:#d81b60;">At a Restaurant 🍔</h2>
+    <h2 style="margin:0; color:#d81b60;">レストランで英語ゲーム 🍔</h2>
     <div>
-      <span class="point-badge" id="point-display">売上 0 coin</span>
+      <span class="point-badge" id="point-display">売上 0 コイン</span>
       <button class="btn-stamp" onclick="openMyRestaurant()">マイレストラン</button>
     </div>
   </header>
@@ -1037,10 +1037,10 @@
     <div id="vocab-summary" style="font-weight:bold;color:#6a1b9a;"></div>
     <div class="vocab-toolbar" aria-label="単語の種類で絞り込む">
       <button class="vocab-filter active" data-filter="all" onclick="filterVocabulary('all',this)">すべて</button>
-      <button class="vocab-filter" data-filter="food" onclick="filterVocabulary('food',this)">🍔 food</button>
-      <button class="vocab-filter" data-filter="japanese" onclick="filterVocabulary('japanese',this)">🍱 Japanese</button>
-      <button class="vocab-filter" data-filter="drinks" onclick="filterVocabulary('drinks',this)">🥤 drinks</button>
-      <button class="vocab-filter" data-filter="dessert" onclick="filterVocabulary('dessert',this)">🍰 dessert</button>
+      <button class="vocab-filter" data-filter="food" onclick="filterVocabulary('food',this)">🍔 フード</button>
+      <button class="vocab-filter" data-filter="japanese" onclick="filterVocabulary('japanese',this)">🍱 和食</button>
+      <button class="vocab-filter" data-filter="drinks" onclick="filterVocabulary('drinks',this)">🥤 ドリンク</button>
+      <button class="vocab-filter" data-filter="dessert" onclick="filterVocabulary('dessert',this)">🍰 デザート</button>
       <button class="vocab-filter" data-filter="hard" onclick="filterVocabulary('hard',this)">⭐ 苦手だけ</button>
       <button class="vocab-filter" data-filter="listening-review" onclick="filterVocabulary('listening-review',this)">🎧 聞き取り復習</button>
     </div>
@@ -1088,17 +1088,17 @@
   <div class="rush-overlay" id="rush-overlay" role="dialog" aria-modal="true" aria-labelledby="rush-title">
     <div class="rush-panel">
       <div class="rush-top" id="rush-top">
-        <div class="rush-stat">ORDER<strong id="rush-progress">1 / 5</strong></div>
-        <div class="rush-stat">TIME<strong id="rush-time">75</strong></div>
-        <div class="rush-stat">COMBO<strong id="rush-combo">0</strong></div>
+        <div class="rush-stat">オーダー<strong id="rush-progress">1 / 5</strong></div>
+        <div class="rush-stat">タイム<strong id="rush-time">75</strong></div>
+        <div class="rush-stat">コンボ<strong id="rush-combo">0</strong></div>
       </div>
-      <h2 id="rush-title" style="color:#bf360c;margin:8px 0;">LUNCH RUSH</h2>
+      <h2 id="rush-title" style="color:#bf360c;margin:8px 0;">ランチラッシュ</h2>
       <div class="rush-setup" id="rush-setup">
         <p style="font-weight:bold;">自分に合うコースを選ぼう。</p>
         <div class="rush-course-grid">
-          <button class="rush-course" onclick="startLunchRush('warmup')"><strong>WARM-UP</strong><span>3択・5人<br>90秒・ゆっくり音声</span><span class="rush-course-best" id="rush-best-warmup">BEST 0</span></button>
-          <button class="rush-course" onclick="startLunchRush('standard')"><strong>STANDARD</strong><span>4択・5人<br>75秒・ふつうの音声</span><span class="rush-course-best" id="rush-best-standard">BEST 0</span></button>
-          <button class="rush-course" onclick="startLunchRush('expert')"><strong>EXPERT</strong><span>6択・7人<br>60秒・速めの音声</span><span class="rush-course-best" id="rush-best-expert">BEST 0</span></button>
+          <button class="rush-course" onclick="startLunchRush('warmup')"><strong>ウォームアップ</strong><span>3択・5人<br>90秒・ゆっくり音声</span><span class="rush-course-best" id="rush-best-warmup">ベスト 0</span></button>
+          <button class="rush-course" onclick="startLunchRush('standard')"><strong>スタンダード</strong><span>4択・5人<br>75秒・ふつうの音声</span><span class="rush-course-best" id="rush-best-standard">ベスト 0</span></button>
+          <button class="rush-course" onclick="startLunchRush('expert')"><strong>エキスパート</strong><span>6択・7人<br>60秒・速めの音声</span><span class="rush-course-best" id="rush-best-expert">ベスト 0</span></button>
         </div>
       </div>
       <div class="rush-order" id="rush-order">注文の英文を聞いて、正しいメニューを選ぼう。</div>
@@ -1124,7 +1124,7 @@
     </div>
 
     <div class="mission-card" id="mission-card">
-      <strong id="mission-title">SERVICE MISSION</strong>
+      <strong id="mission-title">サービスミッション</strong>
       <div id="mission-text"></div>
       <div class="customer-chip" id="customer-chip"></div>
     </div>
@@ -1133,10 +1133,10 @@
 
     <!-- カテゴリ選択タブ -->
     <div class="category-tabs" id="category-tabs">
-      <button class="tab-btn active" onclick="switchCategory('food')">🍔 food</button>
-      <button class="tab-btn" onclick="switchCategory('japanese')">🍱 Japanese</button>
-      <button class="tab-btn" onclick="switchCategory('drinks')">🥤 drinks</button>
-      <button class="tab-btn" onclick="switchCategory('dessert')">🍰 dessert</button>
+      <button class="tab-btn active" onclick="switchCategory('food')">🍔 フード</button>
+      <button class="tab-btn" onclick="switchCategory('japanese')">🍱 和食</button>
+      <button class="tab-btn" onclick="switchCategory('drinks')">🥤 ドリンク</button>
+      <button class="tab-btn" onclick="switchCategory('dessert')">🍰 デザート</button>
     </div>
 
     <!-- メニュー格子 -->
@@ -1185,7 +1185,7 @@
 <!-- マイレストラン -->
 <div class="modal" id="restaurant-modal" role="dialog" aria-modal="true" aria-labelledby="restaurant-rank-name">
   <div class="modal-content restaurant-modal-content">
-    <div class="restaurant-level-label" id="restaurant-level-label">RESTAURANT LEVEL 1</div>
+    <div class="restaurant-level-label" id="restaurant-level-label">レストラン レベル 1</div>
     <div class="restaurant-rank" id="restaurant-rank-name">小さな屋台</div>
     <img class="restaurant-stage-image" id="restaurant-stage-image" src="assets/restaurant-stages/stage-00.webp" alt="成長中のレストラン">
     <div class="growth-track" aria-label="次のレストランまでの成長度">
@@ -1195,7 +1195,7 @@
     <div class="career-summary" id="career-summary">全30レベルのレストランキャリア</div>
     <div class="stage-road" id="stage-road"></div>
     <div class="management-stats">
-      <div class="management-stat"><span>売上</span><strong id="restaurant-coins">0</strong><small>coin</small></div>
+      <div class="management-stat"><span>売上</span><strong id="restaurant-coins">0</strong><small>コイン</small></div>
       <div class="management-stat"><span>会話成功</span><strong id="conversation-count">0</strong><small>回</small></div>
       <div class="management-stat"><span>聞き取り最高</span><strong id="listening-best">0 / 10</strong><small>自己ベスト</small></div>
       <div class="management-stat"><span>ランチラッシュ</span><strong id="rush-best">0</strong><small>ハイスコア</small></div>
@@ -1205,13 +1205,13 @@
       <div class="requirement-list" id="promotion-requirements"></div>
     </section>
     <section class="weekly-box">
-      <h3>WEEKLY CHALLENGE</h3>
+      <h3>ウィークリーチャレンジ</h3>
       <div class="weekly-list" id="weekly-challenge-list"></div>
-      <div class="daily-complete" id="weekly-complete">WEEKLY CLEAR　全達成ボーナス +400 coin</div>
+      <div class="daily-complete" id="weekly-complete">ウィークリークリア　全達成ボーナス +400 コイン</div>
     </section>
     <section class="world-tour-box">
-      <h3>WORLD RESTAURANT TOUR</h3>
-      <div class="tour-passport" id="tour-passport">LEVEL 30で世界ツアーがオープン</div>
+      <h3>ワールドレストランツアー</h3>
+      <div class="tour-passport" id="tour-passport">レベル 30で世界ツアーがオープン</div>
       <div class="tour-grid" id="tour-grid"></div>
       <div class="tour-mission" id="tour-mission">まずはレストランキャリアを進めよう。</div>
     </section>
@@ -1223,7 +1223,7 @@
 
 <div class="modal" id="training-report-modal" role="dialog" aria-modal="true" aria-labelledby="training-report-title">
   <div class="modal-content report-modal-content">
-    <h2 id="training-report-title" style="color:#0d47a1;margin:2px 0;">MY TRAINING REPORT</h2>
+    <h2 id="training-report-title" style="color:#0d47a1;margin:2px 0;">マイトレーニングレポート</h2>
     <p style="margin:4px 0;color:#455a64;font-weight:bold;">自分の記録を見て、次の練習を決めよう。</p>
     <div class="report-stats">
       <div class="report-stat"><span>練習した単語</span><strong id="report-vocab">0 / 44</strong></div>
@@ -1237,7 +1237,7 @@
       <div class="role-balance-item">店員役　<span id="report-clerk">0回</span></div>
       <div class="role-balance-item">お客さん役　<span id="report-customer">0回</span></div>
     </div>
-    <div class="coach-card"><h3>NEXT TRAINING</h3><div id="coach-message"></div></div>
+    <div class="coach-card"><h3>ネクストトレーニング</h3><div id="coach-message"></div></div>
     <section class="data-safety">
       <h3>学習記録を守る</h3>
       <p>記録をファイルに保存すると、別の端末でも続きから始められます。</p>
@@ -1343,13 +1343,13 @@
   ];
 
   const careerLevelCount = 30;
-  const careerRankNames = ['ROOKIE','BRONZE','SILVER','GOLD','PLATINUM'];
+  const careerRankNames = ['ルーキー','ブロンズ','シルバー','ゴールド','プラチナ'];
   const worldTourCities = [
-    { name:'NEW YORK', jp:'ニューヨーク', stamps:0, image:'assets/world-tour/new-york.webp', mission:'会話練習を今週8回クリア' },
-    { name:'LONDON', jp:'ロンドン', stamps:2, image:'assets/world-tour/london.webp', mission:'聞き取りで今週50問正解' },
-    { name:'SYDNEY', jp:'シドニー', stamps:5, image:'assets/world-tour/sydney.webp', mission:'違う単語を今週25語練習' },
-    { name:'SINGAPORE', jp:'シンガポール', stamps:8, image:'assets/world-tour/singapore.webp', mission:'店員役・お客さん役を今週4回ずつクリア' },
-    { name:'PARIS', jp:'パリ', stamps:12, image:'assets/world-tour/paris.webp', mission:'ヒントなし会話を今週5回クリア' }
+    { name:'ニューヨーク', jp:'ニューヨーク', stamps:0, image:'assets/world-tour/new-york.webp', mission:'会話練習を今週8回クリア' },
+    { name:'ロンドン', jp:'ロンドン', stamps:2, image:'assets/world-tour/london.webp', mission:'聞き取りで今週50問正解' },
+    { name:'シドニー', jp:'シドニー', stamps:5, image:'assets/world-tour/sydney.webp', mission:'違う単語を今週25語練習' },
+    { name:'シンガポール', jp:'シンガポール', stamps:8, image:'assets/world-tour/singapore.webp', mission:'店員役・お客さん役を今週4回ずつクリア' },
+    { name:'パリ', jp:'パリ', stamps:12, image:'assets/world-tour/paris.webp', mission:'ヒントなし会話を今週5回クリア' }
   ];
 
   let currentRole = 'customer';
@@ -1407,9 +1407,9 @@
   let rushAnswered = false;
   let rushMistakes = [];
   const rushModes = {
-    warmup:{ label:'WARM-UP', choices:3, questions:5, seconds:90, rate:.68, multiplier:.8 },
-    standard:{ label:'STANDARD', choices:4, questions:5, seconds:75, rate:.82, multiplier:1 },
-    expert:{ label:'EXPERT', choices:6, questions:7, seconds:60, rate:.95, multiplier:1.5 }
+    warmup:{ label:'ウォームアップ', choices:3, questions:5, seconds:90, rate:.68, multiplier:.8 },
+    standard:{ label:'スタンダード', choices:4, questions:5, seconds:75, rate:.82, multiplier:1 },
+    expert:{ label:'エキスパート', choices:6, questions:7, seconds:60, rate:.95, multiplier:1.5 }
   };
   let rushMode = 'standard';
   let rushTotalQuestions = 5;
@@ -1651,7 +1651,7 @@
     if (listeningBest < 7) return '単語の聞き取りチャレンジに挑戦しよう。まずは10問中7問正解が目標です。';
     if (clerkClears === 0) return '次は店員役に挑戦しよう。お客さん役と両方できると、会話の流れがよく分かります。';
     if (customerClears === 0) return '次はお客さん役に挑戦しよう。“I’d like ～.” を使って注文してみよう。';
-    if ((lunchRushBests.expert || 0) === 0) return '聞き取りが伸びています。ランチラッシュのEXPERTに一度挑戦してみよう。';
+    if ((lunchRushBests.expert || 0) === 0) return '聞き取りが伸びています。ランチラッシュのエキスパートに一度挑戦してみよう。';
     if (noHintClears < 5) return '会話練習の「チャレンジ」で、ヒントなしクリアを目指そう。';
     return 'バランスよく練習できています。週間チャレンジと世界ツアーを進めよう。';
   }
@@ -1717,17 +1717,17 @@
       if (mission.current >= mission.target && !weeklyMissionState.rewards[index]) {
         weeklyMissionState.rewards[index] = true;
         points += mission.reward;
-        showMissionToast(`WEEKLY CLEAR　売上 +${mission.reward} coin`);
+        showMissionToast(`ウィークリークリア　売上 +${mission.reward} コイン`);
       }
     });
     if (weeklyMissionState.rewards.every(Boolean) && !weeklyMissionState.allBonus) {
       weeklyMissionState.allBonus = true;
       points += 400;
-      showMissionToast('WEEKLY ALL CLEAR　売上 +400 coin');
+      showMissionToast('ウィークリーオールクリア　売上 +400 コイン');
       if (currentCareerLevel() >= careerLevelCount) {
         worldTourStamps++;
         localStorage.setItem('restaurant_world_tour_stamps', worldTourStamps);
-        showMissionToast('PASSPORT STAMP GET！ 世界ツアーのスタンプ +1');
+      showMissionToast('パスポートスタンプゲット！ 世界ツアーのスタンプ +1');
       }
     }
     saveWeeklyMissions();
@@ -1781,7 +1781,7 @@
       return `<div class="daily-mission ${done ? 'done' : ''}">
         <div class="mission-number">${done ? 'OK' : index + 1}</div>
         <div class="mission-copy"><strong>${mission.text}</strong><span class="mission-progress">${mission.progressText || `${progress} / ${mission.target}`}</span></div>
-        <div class="mission-reward">+${mission.reward} coin</div>
+        <div class="mission-reward">+${mission.reward} コイン</div>
       </div>`;
     }).join('');
     document.getElementById('daily-complete').style.display = dailyMissionState.allBonus ? 'block' : 'none';
@@ -1806,13 +1806,13 @@
       if (mission.current >= mission.target && !dailyMissionState.rewards[index]) {
         dailyMissionState.rewards[index] = true;
         points += mission.reward;
-        showMissionToast(`MISSION CLEAR　売上 +${mission.reward} coin`);
+        showMissionToast(`ミッションクリア　売上 +${mission.reward} コイン`);
       }
     });
     if (dailyMissionState.rewards.every(Boolean) && !dailyMissionState.allBonus) {
       dailyMissionState.allBonus = true;
       points += 150;
-      showMissionToast('ALL CLEAR　全達成ボーナス +150 coin');
+      showMissionToast('オールクリア　全達成ボーナス +150 コイン');
     }
     saveDailyMissions();
     updatePoints();
@@ -1828,7 +1828,7 @@
   }
 
   function updatePoints() {
-    document.getElementById('point-display').innerText = `売上 ${points} coin`;
+    document.getElementById('point-display').innerText = `売上 ${points} コイン`;
     localStorage.setItem('restaurant_pts', points);
   }
 
@@ -1939,7 +1939,7 @@
       const reviewLevel = listeningReview[item.name] || 0;
       button.className = `vocab-tile ${hardWords.has(item.name) ? 'hard' : ''} ${mastery ? 'spoken' : ''} ${mastery >= 3 ? 'mastered' : ''} ${reviewLevel ? 'review' : ''}`;
       button.setAttribute('aria-label', `${item.name}を練習する`);
-      const masteryLabel = mastery >= 3 ? 'MASTER 3/3' : `✓ ${mastery}/3`;
+      const masteryLabel = mastery >= 3 ? 'マスター 3/3' : `✓ ${mastery}/3`;
       button.innerHTML = `<span class="spoken-badge">${masteryLabel}</span><span class="hard-badge">⭐ 苦手</span>${vocabPicture(item, 'vocab-tile-picture')}<span class="vocab-tile-word">${item.name}</span><span class="listening-review-badge">🎧 復習 ${reviewLevel}</span>`;
       button.onclick = () => openWordPractice(item);
       grid.appendChild(button);
@@ -1950,7 +1950,7 @@
     const masteredCount = menuData.filter(item => wordMasteryCount(item.name) >= 3).length;
     const startedCount = menuData.filter(item => wordMasteryCount(item.name) > 0).length;
     const reviewCount = menuData.filter(item => (listeningReview[item.name] || 0) > 0).length;
-    document.getElementById('vocab-summary').innerText = `${words.length}語を表示　｜　MASTER ${masteredCount}語　｜　練習中 ${startedCount - masteredCount}語　｜　聞き取り復習 ${reviewCount}語　｜　苦手 ${hardWords.size}語`;
+    document.getElementById('vocab-summary').innerText = `${words.length}語を表示　｜　マスター ${masteredCount}語　｜　練習中 ${startedCount - masteredCount}語　｜　聞き取り復習 ${reviewCount}語　｜　苦手 ${hardWords.size}語`;
   }
 
   function startSmartPractice() {
@@ -1997,7 +1997,7 @@
       return;
     }
     const progress = document.getElementById('smart-practice-progress');
-    progress.innerText = '今日のおまかせ5語　COMPLETE！';
+    progress.innerText = '今日のおまかせ5語　コンプリート！';
     document.getElementById('smart-next-button').style.display = 'none';
     const result = document.getElementById('pronunciation-result');
     result.style.display = 'block';
@@ -2320,7 +2320,7 @@
         renderVocabularyGrid();
         resultBox.className = 'pronunciation-result good';
         resultBox.innerText = mastery >= 3
-          ? `伝わったよ！ MASTER 3/3 達成！\n聞こえた英語：${heard}`
+          ? `伝わったよ！ マスター 3/3 達成！\n聞こえた英語：${heard}`
           : `伝わったよ！ 定着メーター ${mastery}/3\n聞こえた英語：${heard}\n次の段階は、別の日にもう一度チャレンジしよう。`;
         playSound('correct');
       } else {
@@ -2513,7 +2513,7 @@
       : 'もう一度挑戦すると、もっと聞こえるようになるよ！';
     const result = document.getElementById('listening-result');
     const reviewCount = menuData.filter(item => (listeningReview[item.name] || 0) > 0).length;
-    result.innerHTML = `<div style="font-size:2.2rem;font-weight:bold;color:#e65100;">${listeningCorrect} / 10</div><p style="font-weight:bold;">${message}</p><p>聞き取り復習 ${reviewCount}語　｜　売上 ${earned} coin アップ！</p><button class="listening-start" onclick="startListeningChallenge()">もう一度チャレンジ</button>`;
+    result.innerHTML = `<div style="font-size:2.2rem;font-weight:bold;color:#e65100;">${listeningCorrect} / 10</div><p style="font-weight:bold;">${message}</p><p>聞き取り復習 ${reviewCount}語　｜　売上 ${earned} コイン アップ！</p><button class="listening-start" onclick="startListeningChallenge()">もう一度チャレンジ</button>`;
     result.style.display = 'block';
   }
 
@@ -2537,10 +2537,10 @@
     document.getElementById('rush-result').style.display = 'none';
     document.getElementById('rush-feedback').innerText = '';
     document.getElementById('rush-top').style.display = 'none';
-    document.getElementById('rush-title').innerText = 'LUNCH RUSH　コース選択';
-    document.getElementById('rush-best-warmup').innerText = `BEST ${lunchRushBests.warmup || 0}`;
-    document.getElementById('rush-best-standard').innerText = `BEST ${lunchRushBests.standard || 0}`;
-    document.getElementById('rush-best-expert').innerText = `BEST ${lunchRushBests.expert || 0}`;
+    document.getElementById('rush-title').innerText = 'ランチラッシュ　コース選択';
+    document.getElementById('rush-best-warmup').innerText = `ベスト ${lunchRushBests.warmup || 0}`;
+    document.getElementById('rush-best-standard').innerText = `ベスト ${lunchRushBests.standard || 0}`;
+    document.getElementById('rush-best-expert').innerText = `ベスト ${lunchRushBests.expert || 0}`;
   }
 
   function startLunchRush(mode) {
@@ -2552,7 +2552,7 @@
       return { target, choices:shuffledWords([target,...others]) };
     });
     rushIndex = 0; rushCorrect = 0; rushCombo = 0; rushBestCombo = 0; rushTimeLeft = settings.seconds; rushAnswered = false; rushMistakes = [];
-    document.getElementById('rush-title').innerText = `LUNCH RUSH　${settings.label}`;
+    document.getElementById('rush-title').innerText = `ランチラッシュ　${settings.label}`;
     document.getElementById('rush-setup').style.display = 'none';
     document.getElementById('rush-top').style.display = 'grid';
     document.getElementById('rush-order').style.display = 'block';
@@ -2601,7 +2601,7 @@
     if (id === target.id) {
       rushCorrect++; rushCombo++; rushBestCombo = Math.max(rushBestCombo,rushCombo);
       button.classList.add('correct');
-      document.getElementById('rush-feedback').innerText = `正解！ ${rushCombo} COMBO`;
+      document.getElementById('rush-feedback').innerText = `正解！ ${rushCombo} コンボ`;
       playSound('correct');
     } else {
       rushCombo = 0;
@@ -2661,11 +2661,11 @@
     checkWeeklyMissions();
     checkTourMission();
     updatePoints();
-    const title = timeUp ? 'TIME UP！' : rushCorrect === rushTotalQuestions ? 'PERFECT SERVICE！' : 'LUNCH RUSH CLEAR！';
+    const title = timeUp ? 'タイムアップ！' : rushCorrect === rushTotalQuestions ? 'パーフェクトサービス！' : 'ランチラッシュクリア！';
     const rewardNote = rate < 1 ? '<br><small>今日は4回目以降なので、売上報酬は控えめです。</small>' : '';
     const result = document.getElementById('rush-result');
     const review = rushMistakes.length ? `<div class="rush-review"><h3>まちがえた注文を聞き直そう</h3><div class="rush-review-list">${rushMistakes.map(item => `<button class="rush-review-word" onclick="playRushReview(${item.id})">${vocabPicture(item,'rush-review-picture')}<span>${item.name}<br><small>音声を聞く</small></span></button>`).join('')}</div></div>` : '<div class="rush-review"><h3>全問聞き取れました！</h3></div>';
-    result.innerHTML = `<h2 style="color:#bf360c;margin:0 0 8px;">${title}</h2><div style="font-size:2rem;font-weight:bold;">${rushCorrect} / ${rushTotalQuestions}</div><p>${rushModes[rushMode].label}　｜　BEST COMBO ${rushBestCombo}　｜　SCORE ${rawScore}</p><p>このコースの自己ベスト ${lunchRushBests[rushMode]}　｜　売上 +${earned} coin${rewardNote}</p>${review}<button class="listening-start" onclick="startLunchRush('${rushMode}')">同じコースに再挑戦</button> <button class="practice-close" onclick="openLunchRush()">コースを選び直す</button>`;
+    result.innerHTML = `<h2 style="color:#bf360c;margin:0 0 8px;">${title}</h2><div style="font-size:2rem;font-weight:bold;">${rushCorrect} / ${rushTotalQuestions}</div><p>${rushModes[rushMode].label}　｜　ベストコンボ ${rushBestCombo}　｜　スコア ${rawScore}</p><p>このコースの自己ベスト ${lunchRushBests[rushMode]}　｜　売上 +${earned} コイン${rewardNote}</p>${review}<button class="listening-start" onclick="startLunchRush('${rushMode}')">同じコースに再挑戦</button> <button class="practice-close" onclick="openLunchRush()">コースを選び直す</button>`;
     result.style.display = 'block';
     rushQuestions = [];
   }
@@ -3195,7 +3195,7 @@
     else dailyMissionState.customerClears++;
     checkDailyMissions();
     playSound('correct');
-    alert("おめでとう！やりとり完了！ 売上100 coinアップ！");
+    alert("おめでとう！やりとり完了！ 売上100 コインアップ！");
     goHome();
   }
 
@@ -3203,7 +3203,7 @@
     if (level <= 1) return [];
     const n = level - 1;
     const requirements = [
-      { label:'売上', current:points, target:Math.round(95 * Math.pow(n,1.55)), unit:' coin' },
+      { label:'売上', current:points, target:Math.round(95 * Math.pow(n,1.55)), unit:' コイン' },
       { label:'会話成功', current:completedConversations, target:Math.ceil(n * .75), unit:'回' },
       { label:'聞き取り正解', current:totalListeningCorrect, target:n * 5, unit:'問' },
       { label:'練習した単語', current:practicedWords.size, target:Math.min(44, Math.ceil(n * 1.5)), unit:'語' }
@@ -3253,7 +3253,7 @@
       points += 500;
       saveWeeklyMissions();
       updatePoints();
-      showMissionToast(`${worldTourCities[activeTourCity].name} MISSION CLEAR　+500 coin`);
+      showMissionToast(`${worldTourCities[activeTourCity].name} ミッションクリア　+500 コイン`);
     }
   }
 
@@ -3261,8 +3261,8 @@
     const level = currentCareerLevel();
     const passport = document.getElementById('tour-passport');
     const grid = document.getElementById('tour-grid');
-    if (level < careerLevelCount) passport.innerText = `LEVEL 30で世界ツアーがオープン（現在 LEVEL ${level}）`;
-    else passport.innerText = `PASSPORT STAMPS　${worldTourStamps} / 12`;
+    if (level < careerLevelCount) passport.innerText = `レベル 30で世界ツアーがオープン（現在 レベル ${level}）`;
+    else passport.innerText = `パスポートスタンプ　${worldTourStamps} / 12`;
     grid.innerHTML = worldTourCities.map((city,index) => {
       const unlocked = tourCityUnlocked(index);
       return `<button class="tour-city ${unlocked?'available':'locked'} ${unlocked&&index===activeTourCity?'active':''}" onclick="selectTourCity(${index})" ${unlocked?'':'disabled'}>
@@ -3276,7 +3276,7 @@
       if (!tourCityUnlocked(activeTourCity)) activeTourCity = 0;
       const city = worldTourCities[activeTourCity];
       const progress = activeTourMissionProgress();
-      mission.innerHTML = `<strong>${city.name} SPECIAL MISSION</strong><br>${city.mission}<br>${Math.min(progress.current,progress.target)} / ${progress.target}${progress.unit}${weeklyMissionState.tourReward?'　CLEAR！':'　｜　報酬 +500 coin'}`;
+      mission.innerHTML = `<strong>${city.name} スペシャルミッション</strong><br>${city.mission}<br>${Math.min(progress.current,progress.target)} / ${progress.target}${progress.unit}${weeklyMissionState.tourReward?'　クリア！':'　｜　報酬 +500 コイン'}`;
     }
   }
 
@@ -3295,7 +3295,7 @@
     const stageIndex = Math.min(restaurantStages.length - 1, Math.floor((level - 1) / 5));
     const stage = restaurantStages[stageIndex];
     const rank = careerRankNames[(level - 1) % 5];
-    document.getElementById('restaurant-level-label').innerText = `RESTAURANT LEVEL ${level} / ${careerLevelCount}`;
+    document.getElementById('restaurant-level-label').innerText = `レストラン レベル ${level} / ${careerLevelCount}`;
     document.getElementById('restaurant-rank-name').innerText = `${stage.name}　${rank}`;
     document.getElementById('restaurant-stage-image').src = stage.image;
     document.getElementById('restaurant-stage-image').alt = `${stage.name}のイラスト`;
@@ -3312,21 +3312,21 @@
       const requirements = careerRequirements(level + 1);
       const doneCount = requirements.filter(req => req.current >= req.target).length;
       document.getElementById('growth-fill').style.width = `${Math.round(doneCount / requirements.length * 100)}%`;
-      document.getElementById('growth-message').innerText = `LEVEL ${level + 1}へ　あと${requirements.length - doneCount}条件`;
+      document.getElementById('growth-message').innerText = `レベル ${level + 1}へ　あと${requirements.length - doneCount}条件`;
       requirementBox.innerHTML = requirements.map(req => {
         const done = req.current >= req.target;
         return `<div class="requirement ${done?'done':''}"><span class="requirement-mark">${done?'OK':'・'}</span><span>${req.label}</span><span class="requirement-progress">${Math.min(req.current,req.target)} / ${req.target}${req.unit}</span></div>`;
       }).join('');
     } else {
       document.getElementById('growth-fill').style.width = '100%';
-      document.getElementById('growth-message').innerText = 'RESTAURANT CAREER COMPLETE！';
+      document.getElementById('growth-message').innerText = 'レストランキャリアコンプリート！';
       requirementBox.innerHTML = '<div class="requirement done"><span class="requirement-mark">OK</span><span>全30レベル達成！週間チャレンジで記録を伸ばそう。</span></div>';
     }
     document.getElementById('career-summary').innerText = `建物ステージ ${stageIndex+1} / 6　｜　ランク ${rank}`;
     const weekly = weeklyMissionDefinitions();
     document.getElementById('weekly-challenge-list').innerHTML = weekly.map((mission,index) => {
       const done = mission.current >= mission.target;
-      return `<div class="weekly-item ${done?'done':''}"><span class="requirement-mark">${done?'OK':index+1}</span><span>${mission.text}<br><small>${Math.min(mission.current,mission.target)} / ${mission.target}</small></span><span class="weekly-reward">+${mission.reward} coin</span></div>`;
+      return `<div class="weekly-item ${done?'done':''}"><span class="requirement-mark">${done?'OK':index+1}</span><span>${mission.text}<br><small>${Math.min(mission.current,mission.target)} / ${mission.target}</small></span><span class="weekly-reward">+${mission.reward} コイン</span></div>`;
     }).join('');
     document.getElementById('weekly-complete').style.display = weeklyMissionState.allBonus ? 'block' : 'none';
     renderWorldTour();
@@ -3409,7 +3409,7 @@
     baseStartGame(role);
     document.getElementById('mission-card').style.display = 'block';
     document.getElementById('mission-text').innerText = currentMission;
-    document.getElementById('customer-chip').innerText = `TODAY'S GUEST：${currentGuest.name}（${currentGuest.note}）`;
+    document.getElementById('customer-chip').innerText = `きょうのお客さん：${currentGuest.name}（${currentGuest.note}）`;
     document.getElementById('role-badge').innerText += `　${levelLabel()}`;
   };
 
@@ -3537,7 +3537,7 @@
     checkTourMission();
     playSound('correct');
     const grade = retryCountThisRound === 0 && !hintUsedThisRound ? 'S' : retryCountThisRound <= 1 ? 'A' : 'B';
-    alert(`やり取りクリア！\nサービス評価 ${grade}\n売上 ${earned} coin アップ！${bonus ? '\nヒントなしボーナス +50 coin' : ''}`);
+    alert(`やり取りクリア！\nサービス評価 ${grade}\n売上 ${earned} コイン アップ！${bonus ? '\nヒントなしボーナス +50 コイン' : ''}`);
     goHome();
   };
 
