@@ -876,6 +876,15 @@
 .home-step-mission .home-step-visual img,.home-step-rush .home-step-visual img{width:100%;height:100%;object-fit:contain;background:#fff}
 .home-step-rush .home-step-visual{background:#fff;padding:0}
 .home-step-rush .home-step-visual:after{content:none}
+/* final fit and contrast pass: keep every home illustration inside its card */
+.home-step-role .home-step-visual,
+.home-step-mission .home-step-visual,
+.home-step-rush .home-step-visual{display:flex;align-items:center;justify-content:center;box-sizing:border-box;overflow:hidden;padding:4px;background:#eef9ff}
+.home-roles-art,
+.home-step-mission .home-step-visual img,
+.home-step-rush .home-step-visual img{display:block;box-sizing:border-box;max-width:100%!important;max-height:100%!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;padding:2px;background:#fff}
+.home-step-mission .home-step-btn{background:#7e57c2!important;color:#fff!important;opacity:1!important;text-shadow:0 1px 1px rgba(0,0,0,.25)}
+.home-step-rush .home-step-btn{background:#f28c00!important;color:#fff!important;opacity:1!important;text-shadow:0 1px 1px rgba(0,0,0,.25)}
 @media(max-width:1050px){.home-role-levels{gap:2px;padding:2px}.home-role-levels button{padding:3px 1px}}
 @media(max-width:700px){.home-step-vocab .home-step-visual{gap:3px;padding:4px}.home-role-buttons{gap:2px;margin:2px 0}.home-role-levels{gap:2px;padding:2px}.home-role-levels button{padding:3px 1px}.home-role-levels span{font-size:.43rem}}
 #app-help-overlay .help-image-shell{position:relative!important;width:min(1536px,100vw)!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;max-height:none!important;overflow:visible!important}
@@ -1225,8 +1234,8 @@
       <p class="order-listening-help">コンピュータの注文をよく聞いて、注文された商品を全部タッチしよう。</p>
       <div class="order-listening-sentence" id="order-listening-sentence">？</div>
       <div class="order-listening-controls">
-        <button class="listening-hear" type="button" onclick="playOrderListening(0.78)">🔊 もう一度聞く</button>
-        <button class="listening-hear order-listening-slow" type="button" onclick="playOrderListening(0.42)">🐢 ゆっくり聞く</button>
+        <button class="listening-hear" type="button" onclick="playOrderListening(0.55)">🔊 ゆっくり聞く</button>
+        <button class="listening-hear order-listening-slow" type="button" onclick="playOrderListening(0.28)">🐢 かなりゆっくり聞く</button>
       </div>
       <div class="order-listening-choices" id="order-listening-choices"></div>
       <div class="order-listening-selected" id="order-listening-selected">0こ選択中</div>
@@ -2751,10 +2760,10 @@
     });
     document.getElementById('order-listening-answer').disabled = false;
     document.getElementById('order-listening-next').style.display = 'none';
-    setTimeout(() => playOrderListening(0.78), 300);
+    setTimeout(() => playOrderListening(0.55), 300);
   }
 
-  function playOrderListening(rate = 0.78) {
+  function playOrderListening(rate = 0.55) {
     if (!orderListeningCurrent || orderListeningAnswered) return;
     document.getElementById('order-listening-feedback').innerText = '🔊 注文を聞いているよ。';
     speakEnglishText(orderListeningCurrent.sentence, rate);
@@ -4047,5 +4056,5 @@
 
 
 </body>
-<!-- order card audio and crop fixes 2026-10-12 -->
 </html>
+
