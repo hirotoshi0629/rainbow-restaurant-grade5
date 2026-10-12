@@ -818,6 +818,46 @@
 .image-home .strengths-kanji-mask{left:67.0%;top:91.0%;width:10.0%;height:4.15%;background:#1587d5;color:#fff;font-size:clamp(.65rem,1.05vw,.98rem)}
 /* force the image-based help design above every legacy help rule */
 #app-help-overlay{display:none;position:fixed!important;inset:0!important;z-index:9999!important;padding:0!important;background:rgba(0,0,0,.62)!important;align-items:flex-start!important;justify-content:center!important;overflow:auto!important}
+
+/* ===== ORDER LISTENING: six picture choices ===== */
+.order-listening-overlay{display:none;position:fixed;inset:0;z-index:210;padding:14px;background:rgba(19,45,76,.75);align-items:center;justify-content:center}
+.order-listening-panel{width:min(900px,100%);max-height:96vh;overflow:auto;padding:18px;border:5px solid #168df0;border-radius:24px;background:linear-gradient(180deg,#f2fbff,#fff);text-align:center;box-shadow:0 18px 55px rgba(0,0,0,.35)}
+.order-listening-top{display:flex;justify-content:space-between;gap:10px;color:#075bb5;font-size:1.05rem;font-weight:900}
+.order-listening-panel h2{margin:9px 0 3px;color:#075bb5;font-size:1.45rem}.order-listening-help{margin:4px 0 8px;color:#244a75;font-weight:800}
+.order-listening-sentence{min-height:45px;display:flex;align-items:center;justify-content:center;margin:7px auto 5px;padding:8px 14px;border:3px solid #8ec9ef;border-radius:14px;background:#fff;color:#075bb5;font-size:1.16rem;font-weight:900}
+.order-listening-controls{display:flex;justify-content:center;gap:8px;flex-wrap:wrap}.order-listening-controls .listening-hear{margin:6px 0 10px}.order-listening-slow{background:#3949ab}
+.order-listening-choices{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:2px}
+.order-listening-choice{position:relative;min-height:155px;padding:8px;border:4px solid #9ed5f8;border-radius:17px;background:#fff;color:#12346d;font:inherit;font-size:1rem;font-weight:900;cursor:pointer;box-shadow:0 3px 0 #d6efff;transition:.15s}
+.order-listening-choice:hover,.order-listening-choice:focus-visible{border-color:#168df0;outline:none;transform:translateY(-2px)}.order-listening-choice.selected{border-color:#ff9800;background:#fff8e1;box-shadow:0 0 0 3px #ffe0b2}.order-listening-choice.correct{border-color:#2eaf5d;background:#e8f5e9}.order-listening-choice.wrong{border-color:#e53935;background:#ffebee}.order-listening-choice:disabled{cursor:default}
+.order-listening-choice img{display:block;width:100%;height:105px;object-fit:contain;margin-bottom:3px}.order-listening-choice-word{display:block;line-height:1.05}
+.order-listening-selected{min-height:25px;margin:8px 0 2px;color:#075bb5;font-weight:900}.order-listening-feedback{min-height:30px;margin:5px 0;color:#244a75;font-size:1.03rem;font-weight:900}
+.order-listening-answer{display:inline-block;margin:5px 0 3px;padding:12px 26px;border:0;border-radius:999px;background:linear-gradient(135deg,#16ad4c,#087f38);color:#fff;font:inherit;font-size:1.04rem;font-weight:900;cursor:pointer;box-shadow:0 4px 0 #08652d}.order-listening-answer:disabled{opacity:.45;cursor:not-allowed}
+.order-listening-next{display:none;width:100%;margin-top:8px;padding:12px;border:0;border-radius:14px;background:#168df0;color:#fff;font:inherit;font-weight:900;cursor:pointer}.order-listening-result{display:none;margin-top:12px;padding:15px;border-radius:15px;background:#e7f5ff;color:#075bb5;font-weight:900}
+@media(max-width:650px){.order-listening-panel{padding:12px}.order-listening-choices{grid-template-columns:repeat(2,1fr);gap:8px}.order-listening-choice{min-height:130px;padding:6px;border-width:3px;font-size:.85rem}.order-listening-choice img{height:82px}.order-listening-panel h2{font-size:1.18rem}.order-listening-help{font-size:.85rem}.order-listening-sentence{font-size:1rem}}
+
+/* ===== 2026 HOME ACTION BOARD =====
+   The approved home artwork stays as the visual hero. This opaque, responsive
+   action board replaces the old flattened lower menu so the five learning
+   steps are readable and independently tappable on iPad and desktop. */
+.home-action-board{position:absolute;z-index:20;left:1.05%;right:1.05%;top:48.9%;height:38.4%;display:grid;grid-template-columns:1fr 1.18fr 1.12fr 1fr 1fr;gap:.65%;padding:.7%;box-sizing:border-box;border:4px solid #8ec9ef;border-radius:22px;background:linear-gradient(180deg,#f8fdff,#dff3ff);box-shadow:0 7px 16px rgba(30,92,145,.22);line-height:1.15}
+.home-step-card{min-width:0;display:flex;flex-direction:column;padding:.65%;border:3px solid;border-radius:16px;background:#fff;box-shadow:0 4px 8px rgba(0,0,0,.12);overflow:hidden}
+.home-step-card h2{display:flex;align-items:center;gap:7px;min-height:2.35em;margin:0;color:#12346d;font-size:clamp(.78rem,1.36vw,1.27rem);font-weight:900;line-height:1.08;text-align:left}
+.home-step-card h2 b{display:grid;place-items:center;flex:0 0 clamp(30px,3.2vw,50px);height:clamp(30px,3.2vw,50px);border-radius:50%;color:#fff;font-size:clamp(1rem,2vw,1.7rem)}
+.home-step-card p{margin:4px 2px;color:#244a75;font-size:clamp(.58rem,.78vw,.8rem);font-weight:800;text-align:center}
+.home-step-card .home-step-visual{flex:1;min-height:0;margin:3px;border-radius:11px;overflow:hidden;background:#eef9ff}
+.home-step-card .home-step-visual img{display:block;width:100%;height:100%;object-fit:cover}
+.home-step-vocab .home-step-visual{display:flex;align-items:center;justify-content:space-around;gap:3px;padding:5px;background:#fff7d6}
+.home-step-vocab .home-step-visual img{width:31%;height:86%;object-fit:contain;border:2px solid #ffe082;border-radius:8px;background:#fff}
+.home-step-card .home-step-btn{margin-top:5px;width:100%;min-height:34px;padding:7px 5px;border:0;border-radius:12px;color:#fff;font:inherit;font-size:clamp(.68rem,1vw,1rem);font-weight:900;line-height:1.1;cursor:pointer;box-shadow:0 3px 0 rgba(0,0,0,.18)}
+.home-step-card .home-step-btn:hover{filter:brightness(1.05);transform:translateY(-1px)}
+.home-step-card .home-step-btn:focus-visible{outline:3px solid #1565c0;outline-offset:2px}
+.home-step-vocab{border-color:#ffd54f;background:#fffdf1}.home-step-vocab h2 b{background:#ffc400;color:#153569}.home-step-vocab .home-step-visual{background:#fff7d6}.home-step-vocab .home-step-btn{background:#ffc400;color:#153569}
+.home-step-listening{border-color:#49a8ef;background:#f3fbff}.home-step-listening h2 b{background:#168df0}.home-step-listening .home-step-btn{background:#168df0}
+.home-step-role{border-color:#77c884;background:#f6fff7}.home-step-role h2 b{background:#16ad4c}.home-step-role .home-step-visual{display:grid;grid-template-columns:1fr 1fr;gap:4px;padding:4px;background:#eaf8ff}.home-role-btn{display:flex;flex-direction:column;justify-content:flex-end;min-width:0;padding:0 0 5px;border:0;border-radius:9px;background:#e6f5ff;color:#0870c9;font:inherit;font-size:clamp(.56rem,.7vw,.78rem);font-weight:900;cursor:pointer;overflow:hidden}.home-role-btn:last-child{background:#fff0f5;color:#c2185b}.home-role-pic{height:100%;min-height:62px;background-image:url('assets/restaurant-hero.png');background-size:340px auto;background-repeat:no-repeat}.home-role-pic.clerk{background-position:9% 68%}.home-role-pic.customer{background-position:39% 68%}
+.home-step-mission{border-color:#b388ff;background:#fbf8ff}.home-step-mission h2 b{background:#7e57c2}.home-step-mission .home-step-visual{padding:7px;background:#fff5d8;color:#3e342d;font-size:clamp(.55rem,.72vw,.78rem);font-weight:900}.home-step-mission .home-step-visual strong{display:block;margin:2px 0 6px;color:#ef3d3d;text-align:center;font-size:clamp(.68rem,.9vw,.95rem)}.home-step-mission .home-step-visual span{display:block;margin:4px 0}
+.home-step-rush{border-color:#ffad43;background:#fffaf2}.home-step-rush h2 b{background:#f28c00}.home-step-rush .home-step-visual{position:relative;background:url('assets/restaurant-hero.png') center/cover no-repeat}.home-step-rush .home-step-visual:after{content:'聞いてタッチ！';position:absolute;left:7px;right:7px;bottom:6px;padding:5px 2px;border-radius:8px;background:#ffffffdd;color:#6f2bbd;font-size:clamp(.58rem,.76vw,.82rem);font-weight:900;text-align:center}
+@media(max-width:1050px){.home-action-board{top:48.8%;height:38.5%;gap:.5%;padding:.55%;border-width:3px;border-radius:16px}.home-step-card{border-width:2px;border-radius:12px}.home-step-card h2{font-size:clamp(.62rem,1.25vw,1rem)}.home-step-card h2 b{flex-basis:clamp(25px,3vw,38px);height:clamp(25px,3vw,38px)}.home-step-card p{font-size:clamp(.48rem,.7vw,.68rem)}.home-step-card .home-step-btn{font-size:clamp(.54rem,.9vw,.82rem);padding:5px 3px}.home-role-pic{background-size:290px auto}}
+@media(max-width:700px){.image-home .home-design-wrap{min-width:760px}.home-action-board{left:1%;right:1%;top:48.5%;height:38.7%;gap:.45%;padding:.5%;border-radius:14px}.home-step-card{padding:.45%;border-radius:10px}.home-step-card h2{font-size:.67rem;gap:3px}.home-step-card h2 b{flex-basis:25px;height:25px;font-size:.95rem}.home-step-card p{font-size:.48rem}.home-step-card .home-step-btn{min-height:27px;font-size:.55rem;padding:4px 2px;border-radius:8px}.home-step-mission .home-step-visual{padding:4px}.home-step-rush .home-step-visual:after{font-size:.5rem;left:3px;right:3px}.home-role-pic{min-height:44px;background-size:230px auto}}
 #app-help-overlay .help-image-shell{position:relative!important;width:min(1536px,100vw)!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;max-height:none!important;overflow:visible!important}
 #app-help-overlay .help-master-image{display:block!important;width:100%!important;height:auto!important;max-width:none!important;border:0!important;border-radius:0!important}
 #app-help-overlay .help-image-close{position:absolute!important;right:.65%!important;top:.7%!important;width:6.2%!important;height:9.8%!important;z-index:10001!important;border:0!important;background:transparent!important;cursor:pointer!important}
@@ -1033,6 +1073,37 @@
         <button type="button" class="level-btn" data-level="normal" onclick="setLevel('normal',this)">ふつう</button>
         <button type="button" class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button>
       </div>
+      <section class="home-action-board" aria-label="学習メニュー">
+        <article class="home-step-card home-step-vocab">
+          <h2><b>1</b><span>単語を練習しよう</span></h2>
+          <div class="home-step-visual"><img src="assets/vocab-v2/food-09.webp" alt="hamburger"><img src="assets/vocab-v2/food-16.webp" alt="spaghetti"><img src="assets/vocab-v2/drinks-03.webp" alt="juice"></div>
+          <button class="home-step-btn" type="button" onclick="openVocabulary()">単語練習を始める</button>
+        </article>
+        <article class="home-step-card home-step-listening">
+          <h2><b>2</b><span>注文内容を聞き取ろう</span></h2>
+          <div class="home-step-visual"><img src="assets/order-listening-card.webp" alt="注文を聞き取るゲーム"></div>
+          <p>聞こえた商品を6つから選ぼう</p>
+          <button class="home-step-btn" type="button" onclick="startOrderListening()">聞き取りゲームを始める</button>
+        </article>
+        <article class="home-step-card home-step-role">
+          <h2><b>3</b><span>練習する役を選ぼう</span></h2>
+          <div class="home-step-visual">
+            <button class="home-role-btn" type="button" onclick="startGame('clerk')"><span class="home-role-pic clerk"></span>店員さん</button>
+            <button class="home-role-btn" type="button" onclick="startGame('customer')"><span class="home-role-pic customer"></span>お客さん</button>
+          </div>
+          <p>やさしい・ふつう・チャレンジ</p>
+        </article>
+        <article class="home-step-card home-step-mission">
+          <h2><b>4</b><span>ミッションに挑戦しよう</span></h2>
+          <div class="home-step-visual"><strong>今日のミッション</strong><span>⭐ 店員のせりふを言う</span><span>⭐ お客さんのせりふを言う</span><span>⭐ 注文を1つ成功させる</span></div>
+          <button class="home-step-btn" type="button" onclick="openTrainingReport()">ミッションを見る</button>
+        </article>
+        <article class="home-step-card home-step-rush">
+          <h2><b>5</b><span>ランチラッシュに挑戦</span></h2>
+          <div class="home-step-visual"></div>
+          <button class="home-step-btn" type="button" onclick="openLunchRush()">ランチラッシュを始める</button>
+        </article>
+      </section>
 </div>
   </div>
 
@@ -1121,6 +1192,29 @@
       <button class="listening-next" id="number-pointing-next" onclick="nextNumberPointing()">次の問題へ ➜</button>
       <div class="number-pointing-result" id="number-pointing-result"></div>
       <button class="practice-close" onclick="closeNumberPointing()">練習を終わる</button>
+    </div>
+  </div>
+
+  <div class="order-listening-overlay" id="order-listening-overlay" role="dialog" aria-modal="true" aria-labelledby="order-listening-title">
+    <div class="order-listening-panel">
+      <div class="order-listening-top">
+        <span id="order-listening-progress">1 / 10</span>
+        <span id="order-listening-score">せいかい 0</span>
+      </div>
+      <h2 id="order-listening-title">🛎️ 注文内容を聞き取ろう</h2>
+      <p class="order-listening-help">コンピュータの注文をよく聞いて、注文された商品を全部タッチしよう。</p>
+      <div class="order-listening-sentence" id="order-listening-sentence">？</div>
+      <div class="order-listening-controls">
+        <button class="listening-hear" type="button" onclick="playOrderListening(0.78)">🔊 もう一度聞く</button>
+        <button class="listening-hear order-listening-slow" type="button" onclick="playOrderListening(0.42)">🐢 ゆっくり聞く</button>
+      </div>
+      <div class="order-listening-choices" id="order-listening-choices"></div>
+      <div class="order-listening-selected" id="order-listening-selected">0こ選択中</div>
+      <div class="order-listening-feedback" id="order-listening-feedback" role="status" aria-live="polite">音声を聞いて、注文された商品を選ぼう。</div>
+      <button class="order-listening-answer" id="order-listening-answer" type="button" onclick="answerOrderListening()">できた！答え合わせ</button>
+      <button class="listening-next" id="order-listening-next" type="button" onclick="nextOrderListening()">次の問題へ ➜</button>
+      <div class="order-listening-result" id="order-listening-result"></div>
+      <button class="practice-close" type="button" onclick="closeOrderListening()">練習を終わる</button>
     </div>
   </div>
 
@@ -1419,6 +1513,12 @@
   let numberPointingIndex = 0;
   let numberPointingCorrect = 0;
   let numberPointingAnswered = false;
+  let orderListeningQuestions = [];
+  let orderListeningIndex = 0;
+  let orderListeningCorrect = 0;
+  let orderListeningCurrent = null;
+  let orderListeningSelected = new Set();
+  let orderListeningAnswered = false;
   let deviceMicStream = null;
   let deviceAudioContext = null;
   let deviceMeterFrame = null;
@@ -2569,6 +2669,165 @@
     const overlay = document.getElementById('listening-overlay');
     if (overlay) overlay.style.display = 'none';
     listeningQuestions = [];
+  }
+
+  function orderListeningSentence(items) {
+    const names = items.map(item => item.name);
+    if (names.length === 1) return `I'd like ${names[0]}, please.`;
+    const tail = names[names.length - 1];
+    return `I'd like ${names.slice(0, -1).join(', ')} and ${tail}, please.`;
+  }
+
+  function buildOrderListeningQuestions() {
+    return Array.from({length:10}, () => {
+      const count = Math.floor(Math.random() * 3) + 1;
+      const targets = shuffledWords(menuData).slice(0, count);
+      const distractors = shuffledWords(menuData.filter(item => !targets.some(target => target.id === item.id))).slice(0, 6 - count);
+      return { targets, choices: shuffledWords([...targets, ...distractors]), sentence: orderListeningSentence(targets) };
+    });
+  }
+
+  function startOrderListening() {
+    closeWordPractice();
+    closeListeningChallenge();
+    closeNumberPointing();
+    speechSynthesis.cancel();
+    orderListeningQuestions = buildOrderListeningQuestions();
+    orderListeningIndex = 0;
+    orderListeningCorrect = 0;
+    orderListeningCurrent = null;
+    orderListeningSelected = new Set();
+    orderListeningAnswered = false;
+    document.getElementById('order-listening-overlay').style.display = 'flex';
+    document.getElementById('order-listening-result').style.display = 'none';
+    document.getElementById('order-listening-choices').style.display = 'grid';
+    document.getElementById('order-listening-answer').style.display = 'inline-block';
+    document.getElementById('order-listening-next').style.display = 'none';
+    document.getElementById('order-listening-title').innerText = '🛎️ 注文内容を聞き取ろう';
+    showOrderListeningQuestion();
+  }
+
+  function showOrderListeningQuestion() {
+    orderListeningCurrent = orderListeningQuestions[orderListeningIndex];
+    orderListeningSelected = new Set();
+    orderListeningAnswered = false;
+    const question = orderListeningCurrent;
+    document.getElementById('order-listening-progress').innerText = `${orderListeningIndex + 1} / ${orderListeningQuestions.length}`;
+    document.getElementById('order-listening-score').innerText = `せいかい ${orderListeningCorrect}`;
+    document.getElementById('order-listening-sentence').innerText = '？　注文をよく聞いてね';
+    document.getElementById('order-listening-selected').innerText = '0こ選択中';
+    document.getElementById('order-listening-feedback').innerText = '音声を聞いて、注文された商品を選ぼう。';
+    const box = document.getElementById('order-listening-choices');
+    box.innerHTML = '';
+    question.choices.forEach(item => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'order-listening-choice';
+      button.dataset.id = item.id;
+      button.setAttribute('aria-label', item.name);
+      button.innerHTML = `${vocabPicture(item, 'order-listening-picture')}<span class="order-listening-choice-word">${item.name}</span>`;
+      button.onclick = () => toggleOrderListeningChoice(item, button);
+      box.appendChild(button);
+    });
+    document.getElementById('order-listening-answer').disabled = false;
+    document.getElementById('order-listening-next').style.display = 'none';
+    setTimeout(() => playOrderListening(0.78), 300);
+  }
+
+  function playOrderListening(rate = 0.78) {
+    if (!orderListeningCurrent || orderListeningAnswered) return;
+    document.getElementById('order-listening-feedback').innerText = '🔊 注文を聞いているよ。';
+    speakEnglishText(orderListeningCurrent.sentence, rate);
+  }
+
+  function toggleOrderListeningChoice(item, button) {
+    if (orderListeningAnswered) return;
+    if (orderListeningSelected.has(item.id)) {
+      orderListeningSelected.delete(item.id);
+      button.classList.remove('selected');
+    } else {
+      orderListeningSelected.add(item.id);
+      button.classList.add('selected');
+    }
+    document.getElementById('order-listening-selected').innerText = `${orderListeningSelected.size}こ選択中`;
+  }
+
+  function answerOrderListening() {
+    if (orderListeningAnswered) return;
+    if (orderListeningSelected.size === 0) {
+      document.getElementById('order-listening-feedback').innerText = 'まず、注文された商品を1つ以上タッチしてね。';
+      return;
+    }
+    orderListeningAnswered = true;
+    speechSynthesis.cancel();
+    const targetIds = new Set(orderListeningCurrent.targets.map(item => item.id));
+    const isCorrect = orderListeningSelected.size === targetIds.size && [...targetIds].every(id => orderListeningSelected.has(id));
+    document.querySelectorAll('.order-listening-choice').forEach(button => {
+      const id = Number(button.dataset.id);
+      button.disabled = true;
+      if (targetIds.has(id)) button.classList.add('correct');
+      else if (orderListeningSelected.has(id)) button.classList.add('wrong');
+    });
+    document.getElementById('order-listening-sentence').innerText = orderListeningCurrent.sentence;
+    document.getElementById('order-listening-answer').disabled = true;
+    if (isCorrect) {
+      orderListeningCorrect++;
+      document.getElementById('order-listening-feedback').innerText = '⭕ 正解！注文を全部聞き取れたね。';
+      playSound('correct');
+    } else {
+      const answerNames = orderListeningCurrent.targets.map(item => item.name).join('・');
+      document.getElementById('order-listening-feedback').innerText = `おしい！ 正解は ${answerNames} だよ。`;
+      playSound('wrong');
+    }
+    document.getElementById('order-listening-score').innerText = `せいかい ${orderListeningCorrect}`;
+    const nextButton = document.getElementById('order-listening-next');
+    nextButton.innerText = orderListeningIndex === orderListeningQuestions.length - 1 ? '結果を見る ➜' : '次の問題へ ➜';
+    nextButton.style.display = 'block';
+    nextButton.focus();
+  }
+
+  function nextOrderListening() {
+    orderListeningIndex++;
+    if (orderListeningIndex < orderListeningQuestions.length) {
+      showOrderListeningQuestion();
+      return;
+    }
+    finishOrderListening();
+  }
+
+  function finishOrderListening() {
+    const earned = orderListeningCorrect * 8;
+    points += earned;
+    totalListeningCorrect += orderListeningCorrect;
+    localStorage.setItem('restaurant_listening_total_correct', totalListeningCorrect);
+    updatePoints();
+    recordTrainingActivity('listening');
+    if (!dailyMissionState) initDailyMissions();
+    dailyMissionState.listeningCorrect += orderListeningCorrect;
+    checkDailyMissions();
+    if (!weeklyMissionState) initWeeklyMissions();
+    weeklyMissionState.listeningCorrect += orderListeningCorrect;
+    checkWeeklyMissions();
+    checkTourMission();
+    document.getElementById('order-listening-choices').style.display = 'none';
+    document.getElementById('order-listening-answer').style.display = 'none';
+    document.getElementById('order-listening-next').style.display = 'none';
+    document.getElementById('order-listening-feedback').innerText = '';
+    document.getElementById('order-listening-title').innerText = '🎉 聞き取りゲームおわり！';
+    const message = orderListeningCorrect === orderListeningQuestions.length ? 'パーフェクト！すばらしい！'
+      : orderListeningCorrect >= 7 ? 'よく聞き取れたね！'
+      : 'もう一度聞くと、注文がもっと分かるようになるよ！';
+    const result = document.getElementById('order-listening-result');
+    result.innerHTML = `<div style="font-size:2.2rem;font-weight:bold;color:#075bb5;">${orderListeningCorrect} / ${orderListeningQuestions.length}</div><p>${message}</p><p>売上 ${earned} コイン アップ！</p><button class="listening-start" onclick="startOrderListening()">もう一度チャレンジ</button>`;
+    result.style.display = 'block';
+  }
+
+  function closeOrderListening() {
+    speechSynthesis.cancel();
+    const overlay = document.getElementById('order-listening-overlay');
+    if (overlay) overlay.style.display = 'none';
+    orderListeningQuestions = [];
+    orderListeningCurrent = null;
   }
 
   function numberToEnglish(number) {
