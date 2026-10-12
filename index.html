@@ -895,6 +895,12 @@
 .home-step-rush .home-step-visual img{padding:7px 4px 15px!important;background:#fffaf2!important}
 @media(max-width:1050px){.home-role-levels{gap:2px;padding:2px}.home-role-levels button{padding:3px 1px}}
 @media(max-width:700px){.home-step-vocab .home-step-visual{gap:3px;padding:4px}.home-role-buttons{gap:2px;margin:2px 0}.home-role-levels{gap:2px;padding:2px}.home-role-levels button{padding:3px 1px}.home-role-levels span{font-size:.43rem}}
+/* iPad widths: keep the six vocabulary tiles compact and balanced instead of
+   stretching their borders vertically over the pictures. */
+@media (min-width:701px) and (max-width:1100px){
+  .home-step-vocab .home-step-visual{grid-template-rows:repeat(2,minmax(0,1fr));align-content:center;gap:4px;padding:5px}
+  .home-step-vocab .home-step-visual img{width:100%!important;height:auto!important;aspect-ratio:1/1;max-height:100%;align-self:center;object-fit:contain}
+}
 #app-help-overlay .help-image-shell{position:relative!important;width:min(1536px,100vw)!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;max-height:none!important;overflow:visible!important}
 #app-help-overlay .help-master-image{display:block!important;width:100%!important;height:auto!important;max-width:none!important;border:0!important;border-radius:0!important}
 #app-help-overlay .help-image-close{position:absolute!important;right:.65%!important;top:.7%!important;width:6.2%!important;height:9.8%!important;z-index:10001!important;border:0!important;background:transparent!important;cursor:pointer!important}
