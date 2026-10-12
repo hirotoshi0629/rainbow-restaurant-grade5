@@ -858,6 +858,26 @@
 .home-step-rush{border-color:#ffad43;background:#fffaf2}.home-step-rush h2 b{background:#f28c00}.home-step-rush .home-step-visual{position:relative;background:url('assets/restaurant-hero.png') center/cover no-repeat}.home-step-rush .home-step-visual:after{content:'聞いてタッチ！';position:absolute;left:7px;right:7px;bottom:6px;padding:5px 2px;border-radius:8px;background:#ffffffdd;color:#6f2bbd;font-size:clamp(.58rem,.76vw,.82rem);font-weight:900;text-align:center}
 @media(max-width:1050px){.home-action-board{top:48.8%;height:38.5%;gap:.5%;padding:.55%;border-width:3px;border-radius:16px}.home-step-card{border-width:2px;border-radius:12px}.home-step-card h2{font-size:clamp(.62rem,1.25vw,1rem)}.home-step-card h2 b{flex-basis:clamp(25px,3vw,38px);height:clamp(25px,3vw,38px)}.home-step-card p{font-size:clamp(.48rem,.7vw,.68rem)}.home-step-card .home-step-btn{font-size:clamp(.54rem,.9vw,.82rem);padding:5px 3px}.home-role-pic{background-size:290px auto}}
 @media(max-width:700px){.image-home .home-design-wrap{min-width:760px}.home-action-board{left:1%;right:1%;top:48.5%;height:38.7%;gap:.45%;padding:.5%;border-radius:14px}.home-step-card{padding:.45%;border-radius:10px}.home-step-card h2{font-size:.67rem;gap:3px}.home-step-card h2 b{flex-basis:25px;height:25px;font-size:.95rem}.home-step-card p{font-size:.48rem}.home-step-card .home-step-btn{min-height:27px;font-size:.55rem;padding:4px 2px;border-radius:8px}.home-step-mission .home-step-visual{padding:4px}.home-step-rush .home-step-visual:after{font-size:.5rem;left:3px;right:3px}.home-role-pic{min-height:44px;background-size:230px auto}}
+
+/* final home-card corrections: six balanced vocab pictures, new reference art,
+   and difficulty buttons that remain independently tappable. */
+.home-step-vocab .home-step-visual{display:grid;grid-template-columns:repeat(3,1fr);grid-template-rows:repeat(2,1fr);align-items:center;justify-items:center;gap:5px;padding:7px}
+.home-step-vocab .home-step-visual img{width:100%;height:100%;min-height:0;object-fit:contain;border:2px solid #ffe082;border-radius:8px;background:#fff}
+.home-step-role .home-step-visual{display:block;padding:0;background:#eaf8ff}
+.home-roles-art{width:100%!important;height:100%!important;object-fit:cover!important;object-position:center!important}
+.home-role-buttons{display:grid;grid-template-columns:1fr 1fr;gap:4px;margin:3px 0 2px}
+.home-role-buttons .home-role-btn{min-height:27px;padding:4px 2px;border-radius:8px;background:#168df0;color:#fff;font-size:clamp(.55rem,.78vw,.8rem);font-weight:900}
+.home-role-buttons .home-role-btn:last-child{background:#ec6aa9}
+.home-role-levels{display:grid;grid-template-columns:auto repeat(3,1fr);gap:3px;align-items:center;margin-top:2px;padding:3px;border:2px solid #f06292;border-radius:8px;background:#fff9fc}
+.home-role-levels span{color:#ad1457;font-size:clamp(.46rem,.62vw,.68rem);font-weight:900;white-space:nowrap}
+.home-role-levels button{min-width:0;padding:4px 2px;border:2px solid #f8bbd0;border-radius:6px;background:#fff;color:#5d4037;font:inherit;font-size:clamp(.46rem,.62vw,.68rem);font-weight:900;line-height:1;cursor:pointer;white-space:nowrap}
+.home-role-levels button.active{background:#ffad3d;border-color:#f28c00;color:#6d3b00}
+.home-step-mission .home-step-visual{padding:0;background:#fff5d8}
+.home-step-mission .home-step-visual img,.home-step-rush .home-step-visual img{width:100%;height:100%;object-fit:cover}
+.home-step-rush .home-step-visual{background:#fff;padding:0}
+.home-step-rush .home-step-visual:after{content:none}
+@media(max-width:1050px){.home-role-levels{gap:2px;padding:2px}.home-role-levels button{padding:3px 1px}}
+@media(max-width:700px){.home-step-vocab .home-step-visual{gap:3px;padding:4px}.home-role-buttons{gap:2px;margin:2px 0}.home-role-levels{gap:2px;padding:2px}.home-role-levels button{padding:3px 1px}.home-role-levels span{font-size:.43rem}}
 #app-help-overlay .help-image-shell{position:relative!important;width:min(1536px,100vw)!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;max-height:none!important;overflow:visible!important}
 #app-help-overlay .help-master-image{display:block!important;width:100%!important;height:auto!important;max-width:none!important;border:0!important;border-radius:0!important}
 #app-help-overlay .help-image-close{position:absolute!important;right:.65%!important;top:.7%!important;width:6.2%!important;height:9.8%!important;z-index:10001!important;border:0!important;background:transparent!important;cursor:pointer!important}
@@ -1076,31 +1096,31 @@
       <section class="home-action-board" aria-label="学習メニュー">
         <article class="home-step-card home-step-vocab">
           <h2><b>1</b><span>単語を練習しよう</span></h2>
-          <div class="home-step-visual"><img src="assets/vocab-v2/food-09.webp" alt="hamburger"><img src="assets/vocab-v2/food-16.webp" alt="spaghetti"><img src="assets/vocab-v2/drinks-03.webp" alt="juice"></div>
+          <div class="home-step-visual"><img src="assets/vocab-v2/food-09.webp" alt="hamburger"><img src="assets/vocab-v2/food-16.webp" alt="spaghetti"><img src="assets/vocab-v2/drinks-03.webp" alt="juice"><img src="assets/vocab-v2/food-08.webp" alt="pizza"><img src="assets/vocab-v2/japanese-04.webp" alt="sushi"><img src="assets/vocab-v2/dessert-00.webp" alt="cake"></div>
           <button class="home-step-btn" type="button" onclick="openVocabulary()">単語練習を始める</button>
         </article>
         <article class="home-step-card home-step-listening">
           <h2><b>2</b><span>注文内容を聞き取ろう</span></h2>
-          <div class="home-step-visual"><img src="assets/order-listening-card.webp" alt="注文を聞き取るゲーム"></div>
+          <div class="home-step-visual"><img src="assets/order-listening-card.webp?v=20261012" alt="注文を聞き取るゲーム"></div>
           <p>聞こえた商品を6つから選ぼう</p>
           <button class="home-step-btn" type="button" onclick="startOrderListening()">聞き取りゲームを始める</button>
         </article>
         <article class="home-step-card home-step-role">
           <h2><b>3</b><span>練習する役を選ぼう</span></h2>
           <div class="home-step-visual">
-            <button class="home-role-btn" type="button" onclick="startGame('clerk')"><span class="home-role-pic clerk"></span>店員さん</button>
-            <button class="home-role-btn" type="button" onclick="startGame('customer')"><span class="home-role-pic customer"></span>お客さん</button>
+            <img class="home-roles-art" src="assets/home-roles-art.webp" alt="店員さんとお客さん">
           </div>
-          <p>やさしい・ふつう・チャレンジ</p>
+          <div class="home-role-buttons"><button class="home-role-btn" type="button" onclick="startGame('clerk')">店員さん</button><button class="home-role-btn" type="button" onclick="startGame('customer')">お客さん</button></div>
+          <div class="home-role-levels" aria-label="難易度を選ぶ"><span>難易度</span><button type="button" class="level-btn active" data-level="easy" onclick="setLevel('easy',this)">やさしい</button><button type="button" class="level-btn" data-level="normal" onclick="setLevel('normal',this)">ふつう</button><button type="button" class="level-btn" data-level="challenge" onclick="setLevel('challenge',this)">チャレンジ</button></div>
         </article>
         <article class="home-step-card home-step-mission">
           <h2><b>4</b><span>ミッションに挑戦しよう</span></h2>
-          <div class="home-step-visual"><strong>今日のミッション</strong><span>⭐ 店員のせりふを言う</span><span>⭐ お客さんのせりふを言う</span><span>⭐ 注文を1つ成功させる</span></div>
+          <div class="home-step-visual"><img src="assets/home-mission-art.webp" alt="今日のミッション"></div>
           <button class="home-step-btn" type="button" onclick="openTrainingReport()">ミッションを見る</button>
         </article>
         <article class="home-step-card home-step-rush">
           <h2><b>5</b><span>ランチラッシュに挑戦</span></h2>
-          <div class="home-step-visual"></div>
+          <div class="home-step-visual"><img src="assets/home-rush-art.webp" alt="ランチラッシュ"></div>
           <button class="home-step-btn" type="button" onclick="openLunchRush()">ランチラッシュを始める</button>
         </article>
       </section>
@@ -3836,7 +3856,7 @@
   function setLevel(level, button) {
     practiceLevel = level;
     try { localStorage.setItem('restaurant_level', level); } catch(e) {}
-    document.querySelectorAll('.home-level-picker .level-btn').forEach(function(b) {
+    document.querySelectorAll('.level-btn').forEach(function(b) {
       b.classList.toggle('active', b.dataset.level === level);
     });
   }
