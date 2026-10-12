@@ -198,8 +198,6 @@
     .practice-close { margin-top:13px; padding:9px 20px; border:0; border-radius:999px; background:#78909c; color:white; font-weight:bold; cursor:pointer; }
     .listening-start { margin:12px 0 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#ff8f00,#f4511e); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(244,81,30,.25); }
     .listening-start:hover { transform:translateY(-2px); }
-    .conversation-listening-start { margin:12px 5px 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#00838f,#1565c0); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(21,101,192,.25); }
-    .conversation-listening-start:hover { transform:translateY(-2px); }
     .number-pointing-start { margin:12px 5px 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#ef6c00,#c62828); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(198,40,40,.25); }
     .number-pointing-start:hover { transform:translateY(-2px); }
     .smart-practice-start { margin:12px 5px 4px; padding:13px 24px; border:0; border-radius:999px; background:linear-gradient(135deg,#7b1fa2,#3949ab); color:#fff; font-size:1.05rem; font-weight:bold; cursor:pointer; box-shadow:0 5px 12px rgba(69,39,160,.25); }
@@ -215,26 +213,14 @@
     .listening-choice:hover,.listening-choice:focus-visible { border-color:#7b1fa2; outline:none; transform:translateY(-2px); }
     .listening-choice.correct { border-color:#43a047; background:#e8f5e9; }
     .listening-choice.wrong { border-color:#e53935; background:#ffebee; }
-    .conversation-listening-overlay { display:none; position:fixed; inset:0; z-index:80; padding:16px; background:rgba(13,71,161,.72); align-items:center; justify-content:center; }
-    .conversation-listening-panel { width:min(780px,100%); max-height:96vh; overflow:auto; padding:20px; border:5px solid #00838f; border-radius:24px; background:linear-gradient(180deg,#e0f7fa,#fff); text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.32); }
-    .conversation-listening-panel h2 { margin:10px 0 8px; color:#006064; font-size:1.35rem; }
-    .conversation-listening-speaker { display:inline-block; margin:4px auto 8px; padding:6px 14px; border-radius:999px; background:#fff; color:#006064; font-weight:bold; }
-    .conversation-listening-text { min-height:82px; display:flex; align-items:center; justify-content:center; margin:8px 0 12px; padding:16px; border:3px solid #4dd0e1; border-radius:16px; background:#fff; color:#263238; font-size:1.35rem; font-weight:bold; line-height:1.55; }
-    .conversation-listening-controls { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
-    .conversation-listening-controls .listening-hear { margin:4px 0 12px; }
-    .conversation-listening-slow { background:#3949ab; }
-    .conversation-listening-choices { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
-    .conversation-listening-choice { min-height:82px; padding:12px; border:3px solid #80cbc4; border-radius:16px; background:#fff; color:#263238; font:inherit; font-size:1.03rem; font-weight:bold; cursor:pointer; }
-    .conversation-listening-choice:hover,.conversation-listening-choice:focus-visible { border-color:#00695c; outline:none; transform:translateY(-2px); }
-    .conversation-listening-choice.correct { border-color:#2e7d32; background:#e8f5e9; }
-    .conversation-listening-choice.wrong { border-color:#c62828; background:#ffebee; }
-    .conversation-listening-feedback { min-height:32px; margin:10px 0; color:#00695c; font-size:1.05rem; font-weight:bold; }
-    .conversation-listening-result { display:none; margin-top:14px; padding:16px; border-radius:16px; background:#e0f2f1; color:#004d40; font-weight:bold; }
     .number-pointing-overlay { display:none; position:fixed; inset:0; z-index:85; padding:16px; background:rgba(191,54,12,.72); align-items:center; justify-content:center; }
     .number-pointing-panel { width:min(700px,100%); max-height:96vh; overflow:auto; padding:20px; border:5px solid #ef6c00; border-radius:24px; background:linear-gradient(180deg,#fff3e0,#fff); text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.32); }
     .number-pointing-panel h2 { margin:10px 0 8px; color:#bf360c; font-size:1.35rem; }
     .number-pointing-help { margin:4px 0 10px; color:#6d4c41; font-weight:bold; }
     .number-pointing-spoken { min-height:56px; display:flex; align-items:center; justify-content:center; margin:8px auto 12px; padding:10px 16px; border:3px solid #ffb74d; border-radius:16px; background:#fff; color:#bf360c; font-size:1.35rem; font-weight:bold; }
+    .number-pointing-controls { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
+    .number-pointing-controls .listening-hear { margin:4px 0 12px; }
+    .number-pointing-slow { background:#3949ab; }
     .number-pointing-choices { display:grid; grid-template-columns:repeat(2,1fr); gap:12px; }
     .number-pointing-choice { min-height:88px; padding:12px; border:4px solid #ffb74d; border-radius:18px; background:#fff; color:#4e342e; font:inherit; font-size:1.8rem; font-weight:bold; cursor:pointer; box-shadow:0 3px 0 #ffe0b2; }
     .number-pointing-choice:hover,.number-pointing-choice:focus-visible { border-color:#e65100; outline:none; transform:translateY(-2px); }
@@ -604,7 +590,7 @@
     .stars { color:#ffb300; letter-spacing:2px; font-size:1.2rem; }
     .judge-overlay { font-family:inherit; width:auto!important; font-size:3rem!important; padding:24px 34px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:24px; background:rgba(255,255,255,.96); box-shadow:0 14px 40px rgba(0,0,0,.24); }
     .judge-batsu { color:#ef6c00!important; }
-    @media (max-width:650px){ body{padding:6px}.container{padding:12px}.level-buttons{grid-template-columns:1fr}.step-row{font-size:.75rem}.hero-visual{max-height:180px}.restaurant-sign h1{font-size:1.35rem}.role-card{width:46%;padding:12px}.role-icon{font-size:3rem}.menu-grid{grid-template-columns:repeat(2,1fr)}.vocab-grid{grid-template-columns:repeat(2,1fr)}.practice-actions{grid-template-columns:1fr}.hard-toggle{grid-column:auto}.word-practice-panel{padding:17px}.listening-panel{padding:14px}.listening-choice{min-height:145px}.listening-picture{height:88px}.conversation-listening-panel{padding:14px}.conversation-listening-text{font-size:1.05rem;min-height:72px}.conversation-listening-choices{grid-template-columns:1fr}.number-pointing-panel{padding:14px}.number-pointing-choice{min-height:74px;font-size:1.45rem}.rush-choices,.rush-choices.choices-3,.rush-choices.choices-6{grid-template-columns:repeat(2,1fr)}.rush-choice img{height:90px}.rush-top{gap:4px}.rush-stat{font-size:.78rem;padding:7px}.rush-course-grid{grid-template-columns:1fr}.rush-course{min-height:0}.report-stats{grid-template-columns:repeat(2,1fr)}.activity-chart{gap:3px;padding:7px}.activity-bar-wrap{width:82%} }
+    @media (max-width:650px){ body{padding:6px}.container{padding:12px}.level-buttons{grid-template-columns:1fr}.step-row{font-size:.75rem}.hero-visual{max-height:180px}.restaurant-sign h1{font-size:1.35rem}.role-card{width:46%;padding:12px}.role-icon{font-size:3rem}.menu-grid{grid-template-columns:repeat(2,1fr)}.vocab-grid{grid-template-columns:repeat(2,1fr)}.practice-actions{grid-template-columns:1fr}.hard-toggle{grid-column:auto}.word-practice-panel{padding:17px}.listening-panel{padding:14px}.listening-choice{min-height:145px}.listening-picture{height:88px}.number-pointing-panel{padding:14px}.number-pointing-choice{min-height:74px;font-size:1.45rem}.rush-choices,.rush-choices.choices-3,.rush-choices.choices-6{grid-template-columns:repeat(2,1fr)}.rush-choice img{height:90px}.rush-top{gap:4px}.rush-stat{font-size:.78rem;padding:7px}.rush-course-grid{grid-template-columns:1fr}.rush-course{min-height:0}.report-stats{grid-template-columns:repeat(2,1fr)}.activity-chart{gap:3px;padding:7px}.activity-bar-wrap{width:82%} }
     @media (max-width:650px){ .restaurant-stage-image{height:210px}.management-stats{grid-template-columns:1fr}.stage-road{grid-template-columns:repeat(3,1fr)}header{align-items:flex-start;gap:6px}header>div{display:flex;flex-direction:column;gap:6px}.point-badge{font-size:.9rem;padding:7px 11px}.btn-stamp{padding:7px 11px;font-size:.9rem}.daily-board{padding:12px}.daily-mission{grid-template-columns:36px 1fr}.mission-reward{grid-column:2}.tour-grid{grid-template-columns:repeat(2,1fr)}.tour-city:last-child{grid-column:1/-1} }
   
     /* 2026-09-25 新ホーム画面 */
@@ -1009,7 +995,7 @@
 
 /* 画面オーバーレイを開いたとき、ホーム画面の難易度ボタンが前面に出ないようにする */
 .image-home .home-level-picker{z-index:14!important}
-.word-practice-overlay,.listening-overlay,.conversation-listening-overlay,.number-pointing-overlay,.rush-overlay{z-index:200!important}
+.word-practice-overlay,.listening-overlay,.number-pointing-overlay,.rush-overlay{z-index:200!important}
 
 </style>
 </head>
@@ -1065,7 +1051,6 @@
     <p style="margin-bottom:6px;">練習したい単語をタッチしよう！</p>
     <button class="smart-practice-start" onclick="startSmartPractice()">今日のおまかせ5語</button>
     <button class="listening-start" onclick="startListeningChallenge()">🎧 聞き取りチャレンジ（10問）</button>
-    <button class="conversation-listening-start" onclick="startConversationListening()">🗣️ 聞く練習（会話の英文）</button>
     <button class="number-pointing-start" onclick="startNumberPointing()">🔢 数字を聞いてタッチ</button>
     <div id="vocab-summary" style="font-weight:bold;color:#6a1b9a;"></div>
     <div class="vocab-toolbar" aria-label="単語の種類で絞り込む">
@@ -1118,27 +1103,6 @@
     </div>
   </div>
 
-  <div class="conversation-listening-overlay" id="conversation-listening-overlay" role="dialog" aria-modal="true" aria-labelledby="conversation-listening-title">
-    <div class="conversation-listening-panel">
-      <div class="listening-top">
-        <span id="conversation-listening-progress">1 / 10</span>
-        <span id="conversation-listening-score">せいかい 0</span>
-      </div>
-      <h2 id="conversation-listening-title">🗣️ 聞いて、いちばん近い意味をえらぼう</h2>
-      <div class="conversation-listening-speaker" id="conversation-listening-speaker">店員さんの英文</div>
-      <div class="conversation-listening-text" id="conversation-listening-text" aria-live="polite">音声を聞いてね。</div>
-      <div class="conversation-listening-controls">
-        <button class="listening-hear" onclick="playConversationListening(0.72)">🔊 ふつうの速さ</button>
-        <button class="listening-hear conversation-listening-slow" onclick="playConversationListening(0.38)">🐢 ゆっくり聞く</button>
-      </div>
-      <div class="conversation-listening-choices" id="conversation-listening-choices"></div>
-      <div class="conversation-listening-feedback" id="conversation-listening-feedback" role="status" aria-live="polite"></div>
-      <button class="listening-next" id="conversation-listening-next" onclick="nextConversationListening()">次の問題へ ➜</button>
-      <div class="conversation-listening-result" id="conversation-listening-result"></div>
-      <button class="practice-close" onclick="closeConversationListening()">練習を終わる</button>
-    </div>
-  </div>
-
   <div class="number-pointing-overlay" id="number-pointing-overlay" role="dialog" aria-modal="true" aria-labelledby="number-pointing-title">
     <div class="number-pointing-panel">
       <div class="listening-top">
@@ -1148,9 +1112,9 @@
       <h2 id="number-pointing-title">🔢 数字を聞いて、タッチしよう！</h2>
       <div class="number-pointing-help">値段の数字を英語で聞くよ。聞こえた数字を4つから選ぼう。</div>
       <div class="number-pointing-spoken" id="number-pointing-spoken">？</div>
-      <div class="conversation-listening-controls">
+      <div class="number-pointing-controls">
         <button class="listening-hear" onclick="playNumberPointing(0.72)">🔊 ふつうの速さ</button>
-        <button class="listening-hear conversation-listening-slow" onclick="playNumberPointing(0.38)">🐢 ゆっくり聞く</button>
+        <button class="listening-hear number-pointing-slow" onclick="playNumberPointing(0.38)">🐢 ゆっくり聞く</button>
       </div>
       <div class="number-pointing-choices" id="number-pointing-choices"></div>
       <div class="number-pointing-feedback" id="number-pointing-feedback" role="status" aria-live="polite">英語の数字を聞いてね。</div>
@@ -1451,11 +1415,6 @@
   let listeningAnswered = false;
   let listeningReview;
   try { listeningReview = JSON.parse(localStorage.getItem('restaurant_listening_review') || '{}'); } catch (_) { listeningReview = {}; }
-  let conversationListeningQuestions = [];
-  let conversationListeningIndex = 0;
-  let conversationListeningCorrect = 0;
-  let conversationListeningAnswered = false;
-  let conversationListeningMistakes = [];
   let numberPointingQuestions = [];
   let numberPointingIndex = 0;
   let numberPointingCorrect = 0;
@@ -2524,8 +2483,8 @@
   function playListeningWord() {
     if (!listeningQuestions.length || listeningIndex >= listeningQuestions.length) return;
     const target = listeningQuestions[listeningIndex];
-    const targetWord = document.querySelector(`.listening-choice[data-id="${target.id}"] .listening-choice-word`);
-    speakEnglishText(target.name, 0.82, null, targetWord);
+    // 単語の聞き取りチャレンジは、発音中の文字色を変えず音声だけで出題する。
+    speakEnglishText(target.name, 0.82);
   }
 
   function answerListeningQuestion(item, button) {
@@ -2612,211 +2571,6 @@
     listeningQuestions = [];
   }
 
-  // 会話の英文を聞いて、日本語の意味を選ぶ練習。
-  // 単語の聞き取りから、実際のやり取りの聞き取りへつなげるためのモード。
-  function makeConversationListeningQuestion(speaker, text, correct, distractors) {
-    return {
-      speaker,
-      text,
-      choices: shuffledWords([
-        { label: correct, correct: true },
-        ...distractors.map(label => ({ label, correct: false }))
-      ])
-    };
-  }
-
-  function buildConversationListeningQuestions() {
-    const items = shuffledWords(menuData.filter(item => item.price > 0));
-    const itemA = items[0] || menuData[0];
-    const itemB = items[1] || menuData[1];
-    const price = itemA.price;
-    const change = Math.max(10, 1000 - price);
-    return shuffledWords([
-      makeConversationListeningQuestion(
-        '店員さん',
-        `Thank you for coming. This is Rainbow restaurant. What would you like?`,
-        'いらっしゃいませ。レインボーレストランです。何にしますか？',
-        ['お会計は終わりました。ありがとうございました。', 'おつりはこれから渡します。', '料理を選んでいます。']
-      ),
-      makeConversationListeningQuestion(
-        'お客さん',
-        `I'd like ${itemA.name}.`,
-        `${itemA.name}をお願いします。`,
-        [`${itemB.name}をお願いします。`, `${itemA.name}はいくらですか？`, 'おつりをください。']
-      ),
-      makeConversationListeningQuestion(
-        '店員さん',
-        `OK, ${itemA.name}.`,
-        `わかりました。${itemA.name}ですね。`,
-        ['いらっしゃいませ。何にしますか？', 'ありがとうございます。また来てください。', 'お客さんが料理を選びます。']
-      ),
-      makeConversationListeningQuestion(
-        'お客さん',
-        'How much is it?',
-        'いくらですか？',
-        ['はい、どうぞ。', 'また来てください。', '料理はどこですか？']
-      ),
-      makeConversationListeningQuestion(
-        '店員さん',
-        `It's ${price} yen.`,
-        `${price}円です。`,
-        [`${price + 100}円です。`, `${change}円のおつりです。`, 'お会計は終わりました。']
-      ),
-      makeConversationListeningQuestion(
-        'お客さん',
-        'Here you are.',
-        'はい、どうぞ。',
-        ['いくらですか？', 'わかりました。', 'これをください。']
-      ),
-      makeConversationListeningQuestion(
-        '店員さん',
-        `Your change is ${change} yen.`,
-        `おつりは${change}円です。`,
-        [`${price}円です。`, '料理をお願いします。', 'はい、どうぞ。']
-      ),
-      makeConversationListeningQuestion(
-        'お客さん',
-        'Thank you.',
-        'ありがとうございます。',
-        ['いらっしゃいませ。', '何にしますか？', 'いくらですか？']
-      ),
-      makeConversationListeningQuestion(
-        '店員さん',
-        'Please come again!',
-        'また来てください！',
-        ['おつりはこれです。', '料理を選んでください。', 'ご注文をどうぞ。']
-      ),
-      makeConversationListeningQuestion(
-        'お客さん',
-        `I'd like ${itemB.name}.`,
-        `${itemB.name}をお願いします。`,
-        [`${itemA.name}をお願いします。`, `${itemB.name}は何円ですか？`, 'おつりは何円ですか？']
-      )
-    ]);
-  }
-
-  function startConversationListening() {
-    closeWordPractice();
-    closeListeningChallenge();
-    speechSynthesis.cancel();
-    conversationListeningQuestions = buildConversationListeningQuestions();
-    conversationListeningIndex = 0;
-    conversationListeningCorrect = 0;
-    conversationListeningAnswered = false;
-    conversationListeningMistakes = [];
-    document.getElementById('conversation-listening-title').innerText = '🗣️ 聞いて、いちばん近い意味をえらぼう';
-    document.getElementById('conversation-listening-result').style.display = 'none';
-    document.getElementById('conversation-listening-choices').style.display = 'grid';
-    document.getElementById('conversation-listening-next').style.display = 'none';
-    document.getElementById('conversation-listening-overlay').style.display = 'flex';
-    showConversationListeningQuestion();
-  }
-
-  function showConversationListeningQuestion() {
-    conversationListeningAnswered = false;
-    const question = conversationListeningQuestions[conversationListeningIndex];
-    const textElement = document.getElementById('conversation-listening-text');
-    textElement.dataset.afterSpeechText = question.text;
-    renderSpeechMarkup(textElement, question.text);
-    document.getElementById('conversation-listening-speaker').innerText = `${question.speaker}の英文`;
-    document.getElementById('conversation-listening-progress').innerText = `${conversationListeningIndex + 1} / ${conversationListeningQuestions.length}`;
-    document.getElementById('conversation-listening-score').innerText = `せいかい ${conversationListeningCorrect}`;
-    const box = document.getElementById('conversation-listening-choices');
-    box.innerHTML = '';
-    question.choices.forEach((choice, index) => {
-      const button = document.createElement('button');
-      button.className = 'conversation-listening-choice';
-      button.dataset.index = index;
-      button.innerText = choice.label;
-      button.onclick = () => answerConversationListening(index, button);
-      box.appendChild(button);
-    });
-    document.getElementById('conversation-listening-feedback').innerText = '英文を聞いて、いちばん近い意味を選ぼう。';
-    const nextButton = document.getElementById('conversation-listening-next');
-    nextButton.innerText = conversationListeningIndex === conversationListeningQuestions.length - 1 ? '結果を見る ➜' : '次の問題へ ➜';
-    // 開始ボタン／次の問題ボタンのタップ直後にも再生し、iPad・Safariの自動再生制限を避ける。
-    playConversationListening(0.72);
-    setTimeout(() => {
-      if (!window.speechSynthesis.speaking && !conversationListeningAnswered) playConversationListening(0.72);
-    }, 650);
-  }
-
-  function playConversationListening(rate = 0.72) {
-    const question = conversationListeningQuestions[conversationListeningIndex];
-    if (!question) return;
-    const textElement = document.getElementById('conversation-listening-text');
-    speakEnglishText(question.text, rate, null, textElement);
-  }
-
-  function answerConversationListening(index, button) {
-    if (conversationListeningAnswered) return;
-    conversationListeningAnswered = true;
-    speechSynthesis.cancel();
-    const question = conversationListeningQuestions[conversationListeningIndex];
-    const choice = question.choices[index];
-    document.querySelectorAll('.conversation-listening-choice').forEach((choiceButton, choiceIndex) => {
-      choiceButton.disabled = true;
-      if (question.choices[choiceIndex].correct) choiceButton.classList.add('correct');
-    });
-    if (choice.correct) {
-      conversationListeningCorrect++;
-      button.classList.add('correct');
-      document.getElementById('conversation-listening-feedback').innerText = '⭕ 正解！よく聞き取れたね。';
-      playSound('correct');
-    } else {
-      button.classList.add('wrong');
-      conversationListeningMistakes.push(question);
-      document.getElementById('conversation-listening-feedback').innerText = `おしい！ 正解は「${question.choices.find(item => item.correct).label}」だよ。`;
-      playSound('wrong');
-    }
-    document.getElementById('conversation-listening-score').innerText = `せいかい ${conversationListeningCorrect}`;
-    const nextButton = document.getElementById('conversation-listening-next');
-    nextButton.style.display = 'block';
-    nextButton.focus();
-  }
-
-  function nextConversationListening() {
-    conversationListeningIndex++;
-    if (conversationListeningIndex < conversationListeningQuestions.length) {
-      showConversationListeningQuestion();
-      return;
-    }
-    finishConversationListening();
-  }
-
-  function finishConversationListening() {
-    const earned = conversationListeningCorrect * 8;
-    points += earned;
-    totalListeningCorrect += conversationListeningCorrect;
-    localStorage.setItem('restaurant_listening_total_correct', totalListeningCorrect);
-    updatePoints();
-    recordTrainingActivity('listening');
-    if (!dailyMissionState) initDailyMissions();
-    dailyMissionState.listeningCorrect += conversationListeningCorrect;
-    checkDailyMissions();
-    if (!weeklyMissionState) initWeeklyMissions();
-    weeklyMissionState.listeningCorrect += conversationListeningCorrect;
-    checkWeeklyMissions();
-    checkTourMission();
-    document.getElementById('conversation-listening-choices').style.display = 'none';
-    document.getElementById('conversation-listening-next').style.display = 'none';
-    document.getElementById('conversation-listening-feedback').innerText = '';
-    document.getElementById('conversation-listening-title').innerText = '🎉 聞く練習おわり！';
-    const message = conversationListeningCorrect === conversationListeningQuestions.length ? 'パーフェクト！すばらしい！'
-      : conversationListeningCorrect >= 7 ? 'よく聞き取れたね！'
-      : 'もう一度聞くと、もっと分かるようになるよ！';
-    const result = document.getElementById('conversation-listening-result');
-    result.innerHTML = `<div style="font-size:2.2rem;font-weight:bold;color:#00695c;">${conversationListeningCorrect} / ${conversationListeningQuestions.length}</div><p>${message}</p><p>聞き取った英文を、次は自分でも言ってみよう！</p><button class="conversation-listening-start" onclick="startConversationListening()">もう一度練習する</button>`;
-    result.style.display = 'block';
-  }
-
-  function closeConversationListening() {
-    speechSynthesis.cancel();
-    const overlay = document.getElementById('conversation-listening-overlay');
-    if (overlay) overlay.style.display = 'none';
-    conversationListeningQuestions = [];
-  }
-
   function numberToEnglish(number) {
     const ones = ['zero','one','two','three','four','five','six','seven','eight','nine'];
     const teens = ['ten','eleven','twelve','thirteen','fourteen','fifteen','sixteen','seventeen','eighteen','nineteen'];
@@ -2848,7 +2602,6 @@
   function startNumberPointing() {
     closeWordPractice();
     closeListeningChallenge();
-    closeConversationListening();
     speechSynthesis.cancel();
     numberPointingQuestions = buildNumberPointingQuestions();
     numberPointingIndex = 0;
