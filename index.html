@@ -1556,6 +1556,7 @@
   let orderListeningCurrent = null;
   let orderListeningSelected = new Set();
   let orderListeningAnswered = false;
+  let orderListeningSpeechToken = 0;
   let deviceMicStream = null;
   let deviceAudioContext = null;
   let deviceMeterFrame = null;
@@ -2774,7 +2775,73 @@
   function playOrderListening(rate = 0.55) {
     if (!orderListeningCurrent || orderListeningAnswered) return;
     document.getElementById('order-listening-feedback').innerText = '🔊 注文を聞いているよ。';
-    speakEnglishText(orderListeningCurrent.sentence, rate);
+    speakOrderListeningAudio(rate);
+  }
+
+  // 聞き取りゲームだけは、店員（女性）→お客さん（男性）の会話にする。
+  // 端末ごとに音声名が違うため、英語音声名の性別キーワードを優先して選ぶ。
+  function pickOrderVoice(gender, excludedVoice = null) {
+    const voices = (window.speechSynthesis && speechSynthesis.getVoices)
+      ? speechSynthesis.getVoices().filter(voice => /^en(?:-|_)/i.test(voice.lang) || /english|英語/i.test(`${voice.name} ${voice.lang}`))
+      : [];
+    const patterns = gender === 'female'
+      ? /female|woman|samantha|karen|moira|victoria|zira|susan|hazel|aria|jenny|emma|ava|siri/i
+      : /male|man|alex|daniel|david|mark|george|guy|ryan|matthew|fred|tom/i;
+    return voices.find(voice => voice !== excludedVoice && patterns.test(voice.name))
+      || voices.find(voice => voice !== excludedVoice)
+      || null;
+  }
+
+  function configureOrderUtterance(utterance, voice, rate) {
+    if (voice) {
+      utterance.voice = voice;
+      utterance.lang = voice.lang;
+    } else {
+      utterance.lang = 'en-US';
+    }
+    utterance.rate = Math.max(0.1, Math.min(2, Number(rate) || 0.55));
+    utterance.pitch = 1;
+    utterance.volume = 1;
+  }
+
+  function speakOrderListeningAudio(rate = 0.55) {
+    const synth = window.speechSynthesis;
+    if (!synth || typeof window.SpeechSynthesisUtterance !== 'function' || !orderListeningCurrent) return false;
+    synth.cancel();
+    const speechToken = ++orderListeningSpeechToken;
+    const femaleVoice = pickOrderVoice('female');
+    const maleVoice = pickOrderVoice('male', femaleVoice);
+    const prompt = new SpeechSynthesisUtterance('What would you like?');
+    const order = new SpeechSynthesisUtterance(orderListeningCurrent.sentence);
+    configureOrderUtterance(prompt, femaleVoice, rate);
+    configureOrderUtterance(order, maleVoice, rate);
+    const playOrder = () => {
+      if (speechToken !== orderListeningSpeechToken || !orderListeningCurrent || orderListeningAnswered) return;
+      if (typeof synth.resume === 'function') synth.resume();
+      synth.speak(order);
+    };
+    prompt.onstart = () => {
+      if (speechToken !== orderListeningSpeechToken) return;
+      document.getElementById('order-listening-feedback').innerText = '🔊 店員さんが聞いているよ。';
+    };
+    prompt.onend = playOrder;
+    prompt.onerror = playOrder;
+    order.onstart = () => {
+      if (speechToken !== orderListeningSpeechToken) return;
+      document.getElementById('order-listening-feedback').innerText = '🔊 注文を聞いているよ。';
+    };
+    order.onend = () => {
+      if (speechToken !== orderListeningSpeechToken) return;
+      if (!orderListeningAnswered) document.getElementById('order-listening-feedback').innerText = '注文された商品を選ぼう。';
+    };
+    order.onerror = () => {
+      if (speechToken !== orderListeningSpeechToken) return;
+      document.getElementById('order-listening-feedback').innerText = '音声を再生できませんでした。もう一度聞いてみよう。';
+    };
+    if (typeof synth.resume === 'function') synth.resume();
+    synth.speak(prompt);
+    setTimeout(() => { if (typeof synth.resume === 'function' && synth.paused) synth.resume(); }, 80);
+    return true;
   }
 
   function toggleOrderListeningChoice(item, button) {
