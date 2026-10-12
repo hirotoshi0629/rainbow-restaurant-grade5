@@ -885,6 +885,14 @@
 .home-step-rush .home-step-visual img{display:block;box-sizing:border-box;max-width:100%!important;max-height:100%!important;width:100%!important;height:100%!important;object-fit:contain!important;object-position:center!important;padding:2px;background:#fff}
 .home-step-mission .home-step-btn{background:#7e57c2!important;color:#fff!important;opacity:1!important;text-shadow:0 1px 1px rgba(0,0,0,.25)}
 .home-step-rush .home-step-btn{background:#f28c00!important;color:#fff!important;opacity:1!important;text-shadow:0 1px 1px rgba(0,0,0,.25)}
+/* Hide the legacy artwork edges that sit behind the new five-card board. */
+.home-action-board{isolation:isolate}
+.home-action-board::before{content:"";position:absolute;z-index:0;left:-5px;right:-5px;top:-18px;height:20px;border-radius:18px 18px 0 0;background:#dff3ff;pointer-events:none}
+.home-action-board>*{position:relative;z-index:1}
+/* Give the two character scenes a visible lower breathing space so no body is
+   visually cut by the card edge on desktop or iPad. */
+.home-step-role .home-roles-art{padding:7px 4px 15px!important;background:#eaf8ff!important}
+.home-step-rush .home-step-visual img{padding:7px 4px 15px!important;background:#fffaf2!important}
 @media(max-width:1050px){.home-role-levels{gap:2px;padding:2px}.home-role-levels button{padding:3px 1px}}
 @media(max-width:700px){.home-step-vocab .home-step-visual{gap:3px;padding:4px}.home-role-buttons{gap:2px;margin:2px 0}.home-role-levels{gap:2px;padding:2px}.home-role-levels button{padding:3px 1px}.home-role-levels span{font-size:.43rem}}
 #app-help-overlay .help-image-shell{position:relative!important;width:min(1536px,100vw)!important;margin:0 auto!important;padding:0!important;background:transparent!important;border:0!important;border-radius:0!important;box-shadow:none!important;max-height:none!important;overflow:visible!important}
