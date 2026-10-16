@@ -239,10 +239,12 @@
     .rush-choices.choices-6 { grid-template-columns:repeat(3,1fr); }
     .rush-choice { padding:8px; border:3px solid #ffcc80; border-radius:15px; background:#fff; color:#4e342e; font:inherit; font-weight:bold; cursor:pointer; }
     .rush-choice:hover,.rush-choice:focus-visible { border-color:#e65100; outline:none; transform:translateY(-2px); }
+    .rush-choice.selected { border-color:#168df0; background:#e3f2fd; box-shadow:0 0 0 3px #90caf9; }
     .rush-choice img { display:block; width:100%; height:115px; object-fit:contain; }
     .rush-choice.correct { border-color:#43a047; background:#e8f5e9; }
     .rush-choice.wrong { border-color:#e53935; background:#ffebee; }
     .rush-feedback { min-height:32px; margin:10px 0; color:#bf360c; font-size:1.1rem; font-weight:bold; }
+    .rush-submit { display:none; margin:8px auto 4px; padding:12px 28px; border:0; border-radius:999px; background:linear-gradient(135deg,#16ad4c,#087f38); color:#fff; font:inherit; font-weight:900; cursor:pointer; box-shadow:0 4px 0 #08652d; }
     .rush-result { display:none; padding:18px; border-radius:16px; background:#fff3e0; }
     .rush-setup { padding:8px 0 2px; }
     .rush-course-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:12px; margin:14px 0; }
@@ -1273,13 +1275,14 @@
         <p style="font-weight:bold;">自分に合うコースを選ぼう。</p>
         <div class="rush-course-grid">
           <button class="rush-course" onclick="startLunchRush('warmup')"><strong>ウォームアップ</strong><span>3択・5人<br>90秒・ゆっくり音声</span><span class="rush-course-best" id="rush-best-warmup">ベスト 0</span></button>
-          <button class="rush-course" onclick="startLunchRush('standard')"><strong>スタンダード</strong><span>4択・5人<br>75秒・ふつうの音声</span><span class="rush-course-best" id="rush-best-standard">ベスト 0</span></button>
-          <button class="rush-course" onclick="startLunchRush('expert')"><strong>エキスパート</strong><span>6択・7人<br>60秒・速めの音声</span><span class="rush-course-best" id="rush-best-expert">ベスト 0</span></button>
+          <button class="rush-course" onclick="startLunchRush('standard')"><strong>スタンダード</strong><span>4択・5人<br>1〜2品ランダム・ふつうの音声</span><span class="rush-course-best" id="rush-best-standard">ベスト 0</span></button>
+          <button class="rush-course" onclick="startLunchRush('expert')"><strong>エキスパート</strong><span>6択・7人<br>1〜3品ランダム・速めの音声</span><span class="rush-course-best" id="rush-best-expert">ベスト 0</span></button>
         </div>
       </div>
-      <div class="rush-order" id="rush-order">注文の英文を聞いて、正しいメニューを選ぼう。</div>
+      <div class="rush-order" id="rush-order">注文を聞いて、正しいメニューを選ぼう。</div>
       <button class="listening-hear" id="rush-hear" onclick="playRushOrder()">🔊 注文をもう一度聞く</button>
       <div class="rush-choices" id="rush-choices"></div>
+      <button class="rush-submit" id="rush-submit" onclick="answerRush()">これで決める</button>
       <div class="rush-feedback" id="rush-feedback" role="status" aria-live="polite"></div>
       <div class="rush-result" id="rush-result"></div>
       <button class="practice-close" onclick="closeLunchRush()">ゲームを終わる</button>
@@ -1594,9 +1597,9 @@
   let rushAnswered = false;
   let rushMistakes = [];
   const rushModes = {
-    warmup:{ label:'ウォームアップ', choices:3, questions:5, seconds:90, rate:.68, multiplier:.8 },
-    standard:{ label:'スタンダード', choices:4, questions:5, seconds:75, rate:.82, multiplier:1 },
-    expert:{ label:'エキスパート', choices:6, questions:7, seconds:60, rate:.95, multiplier:1.5 }
+    warmup:{ label:'ウォームアップ', choices:3, questions:5, seconds:90, rate:.68, minItems:1, maxItems:1, multiplier:.8 },
+    standard:{ label:'スタンダード', choices:4, questions:5, seconds:75, rate:.82, minItems:1, maxItems:2, multiplier:1 },
+    expert:{ label:'エキスパート', choices:6, questions:7, seconds:60, rate:.95, minItems:1, maxItems:3, multiplier:1.5 }
   };
   let rushMode = 'standard';
   let rushTotalQuestions = 5;
@@ -1605,6 +1608,7 @@
   const oldRushBest = parseInt(localStorage.getItem('restaurant_lunch_rush_best') || '0');
   let lunchRushBests = storedRushBests || { warmup:0, standard:oldRushBest, expert:0 };
   let lunchRushBest = Math.max(lunchRushBests.warmup || 0,lunchRushBests.standard || 0,lunchRushBests.expert || 0);
+  let rushSelected = new Set();
   let missionToastTimer = null;
   let isRecording = false;
   let recognition;
@@ -3094,6 +3098,7 @@
     document.getElementById('rush-setup').style.display = 'block';
     document.getElementById('rush-order').style.display = 'none';
     document.getElementById('rush-choices').style.display = 'none';
+    document.getElementById('rush-submit').style.display = 'none';
     document.getElementById('rush-hear').style.display = 'none';
     document.getElementById('rush-result').style.display = 'none';
     document.getElementById('rush-feedback').innerText = '';
@@ -3108,11 +3113,15 @@
     rushMode = mode;
     const settings = rushModes[mode];
     rushTotalQuestions = settings.questions;
-    rushQuestions = shuffledWords(menuData).slice(0,settings.questions).map(target => {
-      const others = shuffledWords(menuData.filter(item => item.id !== target.id)).slice(0,settings.choices - 1);
-      return { target, choices:shuffledWords([target,...others]) };
+    rushQuestions = Array.from({length:settings.questions}, () => {
+      const itemCount = settings.minItems + Math.floor(Math.random() * (settings.maxItems - settings.minItems + 1));
+      const targets = shuffledWords(menuData).slice(0,itemCount);
+      const targetIds = new Set(targets.map(item => item.id));
+      const others = shuffledWords(menuData.filter(item => !targetIds.has(item.id))).slice(0,settings.choices - itemCount);
+      return { targets, choices:shuffledWords([...targets,...others]) };
     });
     rushIndex = 0; rushCorrect = 0; rushCombo = 0; rushBestCombo = 0; rushTimeLeft = settings.seconds; rushAnswered = false; rushMistakes = [];
+    rushSelected = new Set();
     document.getElementById('rush-title').innerText = `ランチラッシュ　${settings.label}`;
     document.getElementById('rush-setup').style.display = 'none';
     document.getElementById('rush-top').style.display = 'grid';
@@ -3120,6 +3129,8 @@
     document.getElementById('rush-result').style.display = 'none';
     document.getElementById('rush-choices').style.display = 'grid';
     document.getElementById('rush-choices').className = `rush-choices choices-${settings.choices}`;
+    document.getElementById('rush-submit').style.display = 'block';
+    document.getElementById('rush-submit').disabled = false;
     document.getElementById('rush-hear').style.display = 'inline-block';
     updateRushStats();
     showRushQuestion();
@@ -3134,10 +3145,13 @@
   function showRushQuestion() {
     rushAnswered = false;
     const question = rushQuestions[rushIndex];
-    document.getElementById('rush-order').innerText = 'お客さんの注文を聞こう。';
+    rushSelected = new Set();
+    document.getElementById('rush-order').innerText = '注文をよく聞いて、商品を選ぼう。';
     document.getElementById('rush-feedback').innerText = '';
+    document.getElementById('rush-submit').style.display = 'block';
+    document.getElementById('rush-submit').disabled = false;
     document.getElementById('rush-choices').innerHTML = question.choices.map(item =>
-      `<button class="rush-choice" data-id="${item.id}" onclick="answerRush(${item.id},this)">${vocabPicture(item,'rush-picture')}<span>${item.name}</span></button>`
+      `<button class="rush-choice" data-id="${item.id}" onclick="toggleRushChoice(${item.id},this)">${vocabPicture(item,'rush-picture')}<span>${item.name}</span></button>`
     ).join('');
     updateRushStats();
     setTimeout(playRushOrder,450);
@@ -3145,34 +3159,54 @@
 
   function playRushOrder() {
     if (!rushQuestions.length || rushIndex >= rushQuestions.length) return;
-    const name = rushQuestions[rushIndex].target.name;
-    const sentence = `I'd like ${name}.`;
-    const order = document.getElementById('rush-order');
-    order.dataset.afterSpeechText = sentence;
-    renderSpeechMarkup(order, sentence);
-    speakEnglishText(sentence, rushModes[rushMode].rate, null, order);
+    const targets = rushQuestions[rushIndex].targets;
+    const names = targets.map(item => item.name);
+    const sentence = names.length === 1
+      ? `I'd like ${names[0]}.`
+      : names.length === 2
+        ? `I'd like ${names[0]} and ${names[1]}.`
+        : `I'd like ${names.slice(0,-1).join(', ')} and ${names[names.length - 1]}.`;
+    speakEnglishText(sentence, rushModes[rushMode].rate);
   }
 
-  function answerRush(id,button) {
+  function toggleRushChoice(id,button) {
     if (rushAnswered) return;
+    if (rushSelected.has(id)) {
+      rushSelected.delete(id);
+      button.classList.remove('selected');
+    } else {
+      rushSelected.add(id);
+      button.classList.add('selected');
+    }
+    document.getElementById('rush-feedback').innerText = `${rushSelected.size}こ選択中`;
+  }
+
+  function answerRush() {
+    if (rushAnswered || !rushQuestions.length) return;
+    if (rushSelected.size === 0) {
+      document.getElementById('rush-feedback').innerText = '商品を1つ以上選んでね。';
+      return;
+    }
     rushAnswered = true;
     speechSynthesis.cancel();
-    const target = rushQuestions[rushIndex].target;
+    document.getElementById('rush-submit').disabled = true;
+    const targets = rushQuestions[rushIndex].targets;
+    const targetIds = new Set(targets.map(item => item.id));
+    const isCorrect = rushSelected.size === targetIds.size && [...targetIds].every(id => rushSelected.has(id));
     document.querySelectorAll('.rush-choice').forEach(choice => {
       choice.disabled = true;
-      if (Number(choice.dataset.id) === target.id) choice.classList.add('correct');
+      const choiceId = Number(choice.dataset.id);
+      if (targetIds.has(choiceId)) choice.classList.add('correct');
+      else if (rushSelected.has(choiceId)) choice.classList.add('wrong');
     });
-    document.getElementById('rush-order').innerText = `I'd like ${target.name}.`;
-    if (id === target.id) {
+    if (isCorrect) {
       rushCorrect++; rushCombo++; rushBestCombo = Math.max(rushBestCombo,rushCombo);
-      button.classList.add('correct');
       document.getElementById('rush-feedback').innerText = `正解！ ${rushCombo} コンボ`;
       playSound('correct');
     } else {
       rushCombo = 0;
-      if (!rushMistakes.some(item => item.id === target.id)) rushMistakes.push(target);
-      button.classList.add('wrong');
-      document.getElementById('rush-feedback').innerText = `おしい！ 注文は “${target.name}”`;
+      targets.forEach(target => { if (!rushMistakes.some(item => item.id === target.id)) rushMistakes.push(target); });
+      document.getElementById('rush-feedback').innerText = 'おしい！注文された商品を確認しよう。';
       playSound('wrong');
     }
     updateRushStats();
@@ -3206,6 +3240,7 @@
     rushTimer = null;
     speechSynthesis.cancel();
     document.getElementById('rush-choices').style.display = 'none';
+    document.getElementById('rush-submit').style.display = 'none';
     document.getElementById('rush-hear').style.display = 'none';
     const rawScore = rushCorrect * 100 + rushBestCombo * 25 + Math.max(0,rushTimeLeft) * 2;
     lunchRushBests[rushMode] = Math.max(lunchRushBests[rushMode] || 0,rawScore);
@@ -3238,14 +3273,8 @@
   function playRushReview(id) {
     const item = menuData.find(word => word.id === id);
     if (!item) return;
-    const button = document.querySelector(`.rush-review-word[data-id="${id}"]`);
-    const speechElement = button ? button.querySelector('.rush-review-speech') : null;
     const sentence = `I'd like ${item.name}.`;
-    if (speechElement) {
-      speechElement.dataset.afterSpeechText = sentence;
-      renderSpeechMarkup(speechElement, sentence);
-    }
-    speakEnglishText(sentence, .72, null, speechElement);
+    speakEnglishText(sentence, .72);
   }
 
   function closeLunchRush() {
