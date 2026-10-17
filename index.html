@@ -4154,6 +4154,207 @@
     document.querySelectorAll('.level-btn').forEach(b => b.classList.toggle('active', b.dataset.level === practiceLevel));
   });
 </script>
+<script>
+  // 追加会話：おすすめ→注文の確認→値段→おつりまで、画像の流れで練習する。
+  // 既存の単語・聞き取りゲームとは独立し、店員役／お客さん役の会話だけを拡張する。
+  let expandedRecommendation = '';
+  let expandedRecommendationJp = '';
+  let expandedRecommendationPlayed = false;
+
+  function getExpandedRecommendation() {
+    if (expandedRecommendation || !selectedItems.length) return expandedRecommendation;
+    const names = selectedItems.slice(0, 2).map(item => item.name);
+    if (names.length > 1 && Math.random() < 0.5) {
+      expandedRecommendation = `The ${names.join(' and ')} are good.`;
+      expandedRecommendationJp = `${names.join('と')}はおすすめです。`;
+    } else {
+      expandedRecommendation = `The ${names[0]} is delicious.`;
+      expandedRecommendationJp = `${names[0]}はおいしいですよ。`;
+    }
+    return expandedRecommendation;
+  }
+
+  function expandedRecommendationEnglish() {
+    return getExpandedRecommendation();
+  }
+
+  renderStepFlow = function() {
+    const box = document.getElementById('step-flow-box');
+    if (!box) return;
+    box.innerHTML = '';
+    const total = selectedItems.reduce((sum, item) => sum + item.price, 0);
+    const itemText = formatItemList(selectedItems) || '...';
+    const change = Math.max(0, (currentRole === 'customer' ? insertedMoney : customerGivenMoney) - total);
+    const customerSteps = [
+      { left: expandedRecommendationEnglish(), right: `I see. Well, I'd like ${itemText}.` },
+      { left: `${itemText}. Thank you.`, right: 'How much is it?' },
+      { left: `Let me see. ${total} yen, please.`, right: `${total} yen? Here you are.` },
+      { left: `OK. Your change is ${change} yen.`, right: `${change} yen. Thank you.` },
+      { left: 'Here you are.', right: '🎉 クリア！' }
+    ];
+    const clerkSteps = [
+      { left: `Thank you for coming. This is ${restaurantName} restaurant. What would you like?`, right: 'I see. Well, I\'d like ... .' },
+      { left: expandedRecommendationEnglish(), right: `I see. Well, I'd like ${itemText}.` },
+      { left: `${itemText}. Thank you.`, right: 'How much is it?' },
+      { left: `Let me see. ${total} yen, please.`, right: `${total} yen? Here you are.` },
+      { left: `OK. Your change is ${change} yen.`, right: `${change} yen. Thank you.` },
+      { left: 'Here you are.', right: '🎉 クリア！' }
+    ];
+    const rows = currentRole === 'customer' ? customerSteps : clerkSteps;
+    rows.forEach((row, index) => {
+      const element = document.createElement('div');
+      element.className = `step-row ${index + 1 === currentStep ? 'active' : ''}`;
+      element.innerHTML = `<div class="step-col left">🧑‍🍳 ${escapeSpeechHtml(row.left)}</div><div class="step-col right">😋 ${escapeSpeechHtml(row.right)}</div>`;
+      box.appendChild(element);
+    });
+  };
+
+  setupStep = function() {
+    const total = selectedItems.reduce((sum, item) => sum + item.price, 0);
+    const itemText = formatItemList(selectedItems);
+    const itemJpText = formatItemListJp(selectedItems);
+    if (currentRole === 'clerk' && currentStep === 5 && !customerGivenMoney) {
+      customerGivenMoney = generateCustomerPayment(total);
+    }
+    renderStepFlow();
+
+    if (currentRole === 'customer') {
+      if (currentStep === 1) {
+        if (!expandedRecommendationPlayed) {
+          const recommendation = expandedRecommendationEnglish();
+          addChatBubble(recommendation, false, '店員', expandedRecommendationJp);
+          playSpeech(recommendation);
+          expandedRecommendationPlayed = true;
+        }
+        setTargetText(`I see. Well, I'd like ${itemText}.`, `${itemJpText}をお願いします`, false);
+        document.getElementById('guide-msg').innerText = 'おすすめを聞いたら、「I see. Well, I\'d like ～.」と言って注文しよう！';
+      } else if (currentStep === 2) {
+        addChatBubble(`${itemText}. Thank you.`, false, '店員', `${itemJpText}ですね。ありがとうございます。`);
+        playSpeech(`${itemText}. Thank you.`);
+        setTargetText('How much is it?', 'いくらですか？', false);
+        document.getElementById('guide-msg').innerText = '「How much is it?」と値段を聞こう！';
+      } else if (currentStep === 3) {
+        addChatBubble(`Let me see. ${total} yen, please.`, false, '店員', `ええと、${total}円です。`);
+        playSpeech(`Let me see. ${total} yen, please.`);
+        setTargetText(`${total} yen? Here you are.`, `${total}円ですか？どうぞ。`, false);
+        document.getElementById('guide-msg').innerText = '聞こえた値段を確認して、「Here you are.」とお金を渡そう！';
+        document.getElementById('money-area').style.display = 'flex';
+        insertedMoney = 0;
+        document.getElementById('inserted-money-text').innerText = '0';
+      } else if (currentStep === 4) {
+        const change = insertedMoney - total;
+        addChatBubble(`OK. Your change is ${change} yen.`, false, '店員', `はい、おつりは${change}円です。`);
+        playSpeech(`OK. Your change is ${change} yen.`);
+        setTargetText(`${change} yen. Thank you.`, `${change}円です。ありがとうございます。`, true);
+        document.getElementById('guide-msg').innerText = 'おつりの金額を言って、「Thank you.」と伝えよう！';
+      } else if (currentStep === 5) {
+        addChatBubble('Here you are.', false, '店員', 'はい、どうぞ。');
+        playSpeech('Here you are.');
+        setTargetText('（やり取り完了）', '', false);
+        document.getElementById('guide-msg').innerText = 'すべてのやり取りができたね！';
+        setTimeout(finishPractice, 800);
+      }
+    } else if (currentStep === 1) {
+      setTargetText(`Thank you for coming. This is ${restaurantName} restaurant. What would you like?`, 'いらっしゃいませ。何にしますか？', false);
+      document.getElementById('guide-msg').innerText = 'あいさつをして、「What would you like?」と聞こう！';
+    } else if (currentStep === 2) {
+      const recommendation = expandedRecommendationEnglish();
+      setTargetText(recommendation, expandedRecommendationJp, false);
+      document.getElementById('guide-msg').innerText = 'おすすめを紹介しよう！「The ～ is delicious.」または「The ～ are good.」';
+    } else if (currentStep === 3) {
+      addChatBubble(`I see. Well, I'd like ${itemText}.`, false, 'お客', `${itemJpText}をお願いします。`);
+      playSpeech(`I see. Well, I'd like ${itemText}.`);
+      setTargetText(`${itemText}. Thank you.`, `${itemJpText}ですね。ありがとうございます。`, false);
+      document.getElementById('guide-msg').innerText = '注文を確認して、「商品名。Thank you.」と言おう！';
+    } else if (currentStep === 4) {
+      addChatBubble('How much is it?', false, 'お客', 'いくらですか？');
+      playSpeech('How much is it?');
+      setTargetText(`Let me see. ${total} yen, please.`, `ええと、${total}円です。`, true);
+      document.getElementById('guide-msg').innerText = `「Let me see. ${total} yen, please.」と値段を伝えよう！`;
+    } else if (currentStep === 5) {
+      const change = customerGivenMoney - total;
+      addChatBubble(`${customerGivenMoney} yen? Here you are.`, false, 'お客', `${customerGivenMoney}円ですか？どうぞ。`);
+      playSpeech(`${customerGivenMoney} yen? Here you are.`);
+      setTargetText(`OK. Your change is ${change} yen.`, `はい、おつりは${change}円です。`, true);
+      document.getElementById('guide-msg').innerText = `おつりを計算して、「OK. Your change is ${change} yen.」と言おう！`;
+    } else if (currentStep === 6) {
+      const change = customerGivenMoney - total;
+      addChatBubble(`${change} yen. Thank you.`, false, 'お客', `${change}円です。ありがとうございます。`);
+      playSpeech(`${change} yen. Thank you.`);
+      setTargetText('Here you are.', 'はい、どうぞ。', false);
+      document.getElementById('guide-msg').innerText = '最後に「Here you are.」と言って渡そう！';
+    } else if (currentStep === 7) {
+      finishPractice();
+    }
+  };
+
+  const expandedStartGame = startGame;
+  startGame = function(role) {
+    expandedRecommendation = '';
+    expandedRecommendationJp = '';
+    expandedRecommendationPlayed = false;
+    customerGivenMoney = 0;
+    expandedStartGame(role);
+  };
+
+  function expandedNumberMatches(text, value) {
+    const words = new Set(normalizeSpeech(text).split(' ').filter(Boolean));
+    const alternatives = [numberToEnglish(value)];
+    if (value >= 100 && value < 1000) alternatives.push(numberToEnglish(value).replace(' hundred', ''));
+    return alternatives.some(phrase => {
+      const required = normalizeSpeech(phrase).split(' ').filter(word => word !== 'and');
+      return words.has(String(value)) || required.every(word => words.has(word));
+    });
+  }
+
+  const baseConversationCheck = checkSpeechFlex;
+  checkSpeechFlex = function(userText) {
+    const target = normalizeSpeech(currentTargetSpeech);
+    const user = normalizeSpeech(userText);
+    const userWords = new Set(user.split(' ').filter(Boolean));
+    const targetNumber = (currentTargetSpeech.match(/\d+/) || [])[0];
+    const expandedTarget = target.startsWith('i see') || target.startsWith('let me see') || target.startsWith('ok your change') || (target.includes('here you are') && targetNumber) || (target.endsWith('thank you') && targetNumber) || (target.endsWith('thank you') && target.includes('good')) || (target.endsWith('thank you') && selectedItems.length > 0 && !target.startsWith('thank you'));
+    if (!expandedTarget) return baseConversationCheck(userText);
+
+    let ok = false;
+    let finishHint = 'お手本を聞いて、文の最後まで言ってみよう。';
+    if (target.startsWith('i see')) {
+      const itemWords = selectedItems.flatMap(item => normalizeSpeech(item.name).split(' ')).filter(Boolean);
+      ok = ['i', 'see', 'well', "i'd", 'like'].every(word => userWords.has(word)) && itemWords.every(word => userWords.has(word));
+      finishHint = '「I see. Well, I\'d like ～.」と、商品名まで言ってみよう。';
+    } else if (target.startsWith('let me see')) {
+      ok = ['let', 'me', 'see', 'yen', 'please'].every(word => userWords.has(word)) && targetNumber && expandedNumberMatches(userText, Number(targetNumber));
+      finishHint = '「Let me see. ～ yen, please.」と値段まで言ってみよう。';
+    } else if (target.startsWith('ok your change')) {
+      ok = ['ok', 'your', 'change', 'is', 'yen'].every(word => userWords.has(word)) && targetNumber && expandedNumberMatches(userText, Number(targetNumber));
+      finishHint = '「OK. Your change is ～ yen.」とおつりまで言ってみよう。';
+    } else if (target.includes('here you are') && targetNumber) {
+      ok = ['here', 'you', 'are'].every(word => userWords.has(word)) && expandedNumberMatches(userText, Number(targetNumber));
+      finishHint = '値段を確認して、「Here you are.」まで言ってみよう。';
+    } else if (target.endsWith('thank you') && targetNumber) {
+      ok = ['thank', 'you'].every(word => userWords.has(word)) && expandedNumberMatches(userText, Number(targetNumber));
+      finishHint = 'おつりの数字と「Thank you.」を言ってみよう。';
+    } else {
+      const keys = importantWords(target);
+      ok = keys.length > 0 && keys.every(word => userWords.has(word));
+      finishHint = '商品名と「Thank you.」まで、ゆっくり言ってみよう。';
+    }
+
+    document.getElementById('heard-box').style.display = 'block';
+    document.getElementById('heard-text').innerText = userText;
+    if (ok) {
+      showJudge(true);
+      addChatBubble(userText, true, 'あなた');
+      currentStep++;
+      setTimeout(setupStep, 750);
+    } else {
+      retryCountThisRound++;
+      showJudge(false);
+      document.getElementById('mic-status').innerText = `もう少し！${finishHint}`;
+      setTimeout(() => alert(`もう少し！\n${finishHint}`), 300);
+    }
+  };
+</script>
 <script>function openAppHelp(){document.getElementById('app-help-overlay').style.display='flex'}function closeAppHelp(){document.getElementById('app-help-overlay').style.display='none'}</script>
 
 
@@ -4167,4 +4368,3 @@
 
 </body>
 </html>
-
