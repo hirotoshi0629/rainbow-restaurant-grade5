@@ -2721,9 +2721,9 @@
 
   function orderListeningSentence(items) {
     const names = items.map(item => item.name);
-    if (names.length === 1) return `I'd like ${names[0]}. Please.`;
+    if (names.length === 1) return `I'd like ${names[0]}.`;
     const tail = names[names.length - 1];
-    return `I'd like ${names.slice(0, -1).join(', ')} and ${tail}. Please.`;
+    return `I'd like ${names.slice(0, -1).join(', ')} and ${tail}.`;
   }
 
   function buildOrderListeningQuestions() {
