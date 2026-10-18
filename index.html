@@ -238,7 +238,9 @@
     .number-speaking-controls { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
     .number-speaking-mic { min-width:210px; background:#00897b; }
     .number-speaking-mic.listening { background:#e53935; animation:pulse 1s infinite; }
-    .number-speaking-answer { display:none; min-width:190px; background:#1565c0; }
+    .number-speaking-answer { display:none; min-width:0; flex:1 1 30%; background:#1565c0; white-space:normal; line-height:1.2; }
+    .number-speaking-answer-slow { background:#1976d2; }
+    .number-speaking-answer-slower { background:#3949ab; }
     .number-speaking-feedback { min-height:50px; margin:12px 0 4px; color:#38534e; font-size:1.05rem; font-weight:bold; white-space:pre-line; }
     .number-speaking-feedback.good { color:#1b5e20; }
     .number-speaking-feedback.retry { color:#bf360c; }
@@ -1276,7 +1278,9 @@
       <div class="number-speaking-target" id="number-speaking-target" aria-label="発音する数字">？</div>
       <div class="number-speaking-controls">
         <button class="practice-btn number-speaking-mic" id="number-speaking-mic" onclick="checkNumberSpeaking()">🎤 発音チェック</button>
-        <button class="practice-btn number-speaking-answer" id="number-speaking-answer" onclick="playNumberSpeakingAnswer()">🔊 正解を聞く</button>
+        <button class="practice-btn number-speaking-answer" id="number-speaking-answer" onclick="playNumberSpeakingAnswer(0.72)">🔊 正解を聞く</button>
+        <button class="practice-btn number-speaking-answer number-speaking-answer-slow" id="number-speaking-answer-slow" onclick="playNumberSpeakingAnswer(0.45)">🐢 正解を聞く（ゆっくり）</button>
+        <button class="practice-btn number-speaking-answer number-speaking-answer-slower" id="number-speaking-answer-slower" onclick="playNumberSpeakingAnswer(0.28)">🐢 正解を聞く（かなりゆっくり）</button>
       </div>
       <div class="number-speaking-feedback" id="number-speaking-feedback" role="status" aria-live="polite">数字を英語で言って、「発音チェック」を押してね。</div>
       <button class="listening-next" id="number-speaking-next" onclick="nextNumberSpeaking()">次の問題へ ➜</button>
@@ -3183,7 +3187,7 @@
     micButton.disabled = false;
     micButton.classList.remove('listening');
     micButton.innerText = '🎤 発音チェック';
-    document.getElementById('number-speaking-answer').style.display = 'none';
+    document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'none'; });
     document.getElementById('number-speaking-feedback').className = 'number-speaking-feedback';
     document.getElementById('number-speaking-feedback').innerText = '数字を英語で言って、「発音チェック」を押してね。';
     const nextButton = document.getElementById('number-speaking-next');
@@ -3308,12 +3312,12 @@
       numberSpeakingCorrect++;
       feedback.className = 'number-speaking-feedback good';
       feedback.innerText = '⭕ 正解！ きれいに言えたね。';
-      document.getElementById('number-speaking-answer').style.display = 'none';
+      document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'none'; });
       playSound('correct');
     } else {
       feedback.className = 'number-speaking-feedback retry';
       feedback.innerText = 'おしい！「正解を聞く」を押して、英語の言い方を聞いてみよう。';
-      document.getElementById('number-speaking-answer').style.display = 'inline-flex';
+      document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'inline-flex'; });
       playSound('wrong');
     }
     document.getElementById('number-speaking-score').innerText = `せいかい ${numberSpeakingCorrect}`;
@@ -3342,7 +3346,7 @@
     updatePoints();
     recordTrainingActivity('speaking');
     document.getElementById('number-speaking-mic').style.display = 'none';
-    document.getElementById('number-speaking-answer').style.display = 'none';
+    document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'none'; });
     document.getElementById('number-speaking-next').style.display = 'none';
     document.getElementById('number-speaking-title').innerText = '🎉 数字の発音練習おわり！';
     const message = numberSpeakingCorrect === numberSpeakingQuestions.length ? 'パーフェクト！すばらしい！'
