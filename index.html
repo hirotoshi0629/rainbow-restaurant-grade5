@@ -680,6 +680,10 @@
 #home-screen.image-home{padding:0!important;margin:0!important;background:#dff4ff!important;border:0!important;border-radius:0!important;overflow:hidden!important}
 .image-home .home-design-wrap{position:relative;width:100%;max-width:1536px;margin:0 auto;line-height:0;background:#dff4ff}
 .image-home .home-design-image{display:block;width:100%;height:auto;user-select:none;-webkit-user-drag:none}
+.image-home .home-live-stats{position:absolute;z-index:13;left:84.2%;top:19.2%;width:14.6%;height:15.4%;display:flex;flex-direction:column;justify-content:center;gap:5%;padding:1.2% 1.2% 1.2% 1.5%;border-radius:10px;background:#fff;color:#0b2d73;font-weight:900;line-height:1.05;white-space:nowrap;pointer-events:none}
+.image-home .home-live-stat{display:flex;align-items:baseline;gap:.18em;font-size:clamp(.63rem,1.25vw,1.35rem)}
+.image-home .home-live-stat strong{font-size:1.05em;letter-spacing:.01em}
+.image-home .home-live-stat span{font-size:.8em}
 .image-home .home-hotspot{position:absolute;z-index:10;border:0;background:transparent;color:transparent;cursor:pointer;border-radius:16px;padding:0;outline:none;-webkit-tap-highlight-color:transparent}
 .image-home .home-hotspot:focus-visible{outline:5px solid #1565c0;outline-offset:-4px;background:#ffffff22}
 .image-home .home-hotspot:active{background:#ffffff30;transform:scale(.985)}
@@ -1099,6 +1103,10 @@
   <div class="home-screen image-home" id="home-screen">
     <div class="home-design-wrap">
       <img class="home-design-image" src="rainbow-home-kanji.webp?v=20260926-exact-home" alt="Rainbow Restaurant ホーム画面">
+      <div class="home-live-stats" aria-label="レストランの現在の売り上げとクリア数">
+        <div class="home-live-stat"><strong id="home-live-points">0</strong><span>コイン</span></div>
+        <div class="home-live-stat"><strong id="home-live-clears">0 / 30</strong><span>クリア</span></div>
+      </div>
       <button class="home-hotspot hs-sound" onclick="speakText('Welcome to Rainbow Restaurant!')" aria-label="音声"></button>
       <button class="home-hotspot hs-settings" onclick="openDeviceCheck()" aria-label="設定"></button>
       <button class="home-hotspot hs-help-top" onclick="openAppHelp()" aria-label="詳しい使い方"></button>
@@ -2022,6 +2030,14 @@
 
   function updatePoints() {
     document.getElementById('point-display').innerText = `売上 ${points} コイン`;
+    const homePoints = document.getElementById('home-live-points');
+    const homeClears = document.getElementById('home-live-clears');
+    if (homePoints) homePoints.innerText = Number.isFinite(points) ? points : 0;
+    if (homeClears) {
+      const level = typeof currentCareerLevel === 'function' ? currentCareerLevel() : 1;
+      const cleared = Math.min(careerLevelCount, Math.max(0, level - 1));
+      homeClears.innerText = `${cleared} / ${careerLevelCount}`;
+    }
     localStorage.setItem('restaurant_pts', points);
   }
 
