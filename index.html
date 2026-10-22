@@ -3891,6 +3891,10 @@
     };
 
     recognition.onresult = (event) => {
+      // SpeechRecognition itself is the authoritative microphone signal.  The
+      // optional level meter may not be available on every browser, so do not
+      // let a monitor-stream failure make a real voice recording look empty.
+      voiceWasDetected = true;
       let currentInterim = '';
       for (let i = event.resultIndex; i < event.results.length; ++i) {
         if (event.results[i].isFinal) {
@@ -3934,6 +3938,9 @@
         status.innerText = "マイクが許可されていません。ブラウザのマイクを許可してください。";
         status.classList.add('error');
         newTab.style.display = 'block';
+      } else if (event.error === 'audio-capture') {
+        status.innerText = "マイクを一時的に使えませんでした。少し待ってから、もう一度押してください。";
+        status.classList.add('error');
       } else {
         status.innerText = "マイクを開始できませんでした。もう一度押してみてください。";
         status.classList.add('error');
@@ -3972,7 +3979,10 @@
       document.getElementById('heard-box').style.display = 'none';
       document.getElementById('heard-text').innerText = '';
       try {
-        await startMicMonitor();
+        // Start the browser's speech recognizer directly from the user's
+        // click.  The separate Web Audio level meter is only a visual aid and
+        // must never block recognition (some iPad/Edge combinations reject a
+        // second getUserMedia stream even though SpeechRecognition works).
         isRecording = true;
         micButton.classList.add('recording');
         micButton.innerText = "🎙️ マイクを開始中…";
@@ -3981,6 +3991,7 @@
         document.getElementById('speech-finish-btn').innerText = '✅ 話し終わった・判定する';
         document.getElementById('speech-finish-help').style.display = 'block';
         recognition.start();
+        startMicMonitor().catch(() => {});
       } catch (error) {
         stopMicControls();
         stopMicMonitor();
@@ -4044,42 +4055,56 @@
     stopMicMonitor();
     voiceEnergyFrames = 0;
     voiceWasDetected = false;
-    activeMicStream = await navigator.mediaDevices.getUserMedia({
-      audio: { echoCancellation:true, noiseSuppression:true, autoGainControl:true }
-    });
-    const MonitorAudioContext = window.AudioContext || window.webkitAudioContext;
-    micMonitorContext = new MonitorAudioContext();
-    if (micMonitorContext.state === 'suspended') await micMonitorContext.resume();
-    const source = micMonitorContext.createMediaStreamSource(activeMicStream);
-    const analyser = micMonitorContext.createAnalyser();
-    analyser.fftSize = 1024;
-    analyser.smoothingTimeConstant = 0.55;
-    source.connect(analyser);
-    const samples = new Uint8Array(analyser.fftSize);
-    const wrap = document.getElementById('mic-level-wrap');
-    const bar = document.getElementById('mic-level-bar');
-    wrap.style.display = 'block';
+    try {
+      if (!navigator.mediaDevices || typeof navigator.mediaDevices.getUserMedia !== 'function') return false;
+      activeMicStream = await navigator.mediaDevices.getUserMedia({
+        audio: { echoCancellation:true, noiseSuppression:true, autoGainControl:true }
+      });
+      const MonitorAudioContext = window.AudioContext || window.webkitAudioContext;
+      if (!MonitorAudioContext) {
+        stopMicMonitor();
+        return false;
+      }
+      micMonitorContext = new MonitorAudioContext();
+      if (micMonitorContext.state === 'suspended') await micMonitorContext.resume();
+      const source = micMonitorContext.createMediaStreamSource(activeMicStream);
+      const analyser = micMonitorContext.createAnalyser();
+      analyser.fftSize = 1024;
+      analyser.smoothingTimeConstant = 0.55;
+      source.connect(analyser);
+      const samples = new Uint8Array(analyser.fftSize);
+      const wrap = document.getElementById('mic-level-wrap');
+      const bar = document.getElementById('mic-level-bar');
+      wrap.style.display = 'block';
 
-    const measure = () => {
-      analyser.getByteTimeDomainData(samples);
-      let sum = 0;
-      for (const sample of samples) {
-        const centered = (sample - 128) / 128;
-        sum += centered * centered;
-      }
-      const rms = Math.sqrt(sum / samples.length);
-      const level = Math.min(100, Math.max(2, rms * 900));
-      bar.style.width = `${level}%`;
-      if (rms > 0.018) {
-        voiceEnergyFrames++;
-        if (voiceEnergyFrames >= 4 && !voiceWasDetected) {
-          voiceWasDetected = true;
-          document.getElementById('mic-status').innerText = "✨ 声がマイクに届いています。そのまま英文を話してね。";
+      const measure = () => {
+        if (!micMonitorContext || micMonitorContext.state === 'closed' || !activeMicStream) return;
+        analyser.getByteTimeDomainData(samples);
+        let sum = 0;
+        for (const sample of samples) {
+          const centered = (sample - 128) / 128;
+          sum += centered * centered;
         }
-      }
-      micMonitorFrame = requestAnimationFrame(measure);
-    };
-    measure();
+        const rms = Math.sqrt(sum / samples.length);
+        const level = Math.min(100, Math.max(2, rms * 900));
+        bar.style.width = `${level}%`;
+        if (rms > 0.018) {
+          voiceEnergyFrames++;
+          if (voiceEnergyFrames >= 4 && !voiceWasDetected) {
+            voiceWasDetected = true;
+            document.getElementById('mic-status').innerText = "✨ 声がマイクに届いています。そのまま英文を話してね。";
+          }
+        }
+        micMonitorFrame = requestAnimationFrame(measure);
+      };
+      measure();
+      return true;
+    } catch (_) {
+      // The meter is optional.  SpeechRecognition continues even when a
+      // second microphone stream is unavailable or permission is transient.
+      stopMicMonitor();
+      return false;
+    }
   }
 
   function stopMicMonitor() {
@@ -4720,4 +4745,3 @@
 
 </body>
 </html>
-
