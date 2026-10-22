@@ -2339,22 +2339,46 @@
 
   // 端末やブラウザによって音声リストの読み込みタイミングが異なるため、
   // 英語音声を明示してから再生する共通処理にする。
+  // PC版Chromeでは、直前の発声を cancel() した直後の speak() が
+  // 無音になることがあるため、少し待ってから再生し、開始イベントが
+  // 来なかった場合は一度だけ再試行する。
+  let speechRequestId = 0;
   function speakEnglishText(text, rate = 0.9, statusElement = null, highlightElement = null) {
     const synth = window.speechSynthesis;
     if (!synth || typeof window.SpeechSynthesisUtterance !== 'function') {
       if (statusElement) statusElement.innerText = 'この端末では音声を再生できません。';
       return false;
     }
+    const requestId = ++speechRequestId;
     synth.cancel();
     const utterance = new SpeechSynthesisUtterance(String(text || ''));
-    const voices = synth.getVoices ? synth.getVoices() : [];
-    const englishVoice = voices.find(voice => /^en(?:-|_)/i.test(voice.lang))
-      || voices.find(voice => /english|英語/i.test(`${voice.name} ${voice.lang}`));
-    if (englishVoice) {
-      utterance.voice = englishVoice;
-      utterance.lang = englishVoice.lang;
-    } else {
-      utterance.lang = 'en-US';
+    const applyEnglishVoice = () => {
+      const voices = synth.getVoices ? synth.getVoices() : [];
+      const englishVoice = voices.find(voice => /^en(?:-|_)/i.test(voice.lang))
+        || voices.find(voice => /english|英語/i.test(`${voice.name} ${voice.lang}`));
+      if (englishVoice) {
+        utterance.voice = englishVoice;
+        utterance.lang = englishVoice.lang;
+      } else {
+        // 音声リストがまだ空でも、lang指定だけでOS標準英語音声を選べる。
+        utterance.lang = 'en-US';
+      }
+      return !!englishVoice;
+    };
+    applyEnglishVoice();
+    let voiceChangeHandler = null;
+    if (!utterance.voice && typeof synth.addEventListener === 'function') {
+      voiceChangeHandler = () => {
+        applyEnglishVoice();
+        synth.removeEventListener('voiceschanged', voiceChangeHandler);
+      };
+      synth.addEventListener('voiceschanged', voiceChangeHandler);
+      setTimeout(() => {
+        if (voiceChangeHandler) {
+          synth.removeEventListener('voiceschanged', voiceChangeHandler);
+          voiceChangeHandler = null;
+        }
+      }, 800);
     }
     utterance.rate = Math.max(0.1, Math.min(2, Number(rate) || 0.9));
     utterance.pitch = 1;
@@ -2382,7 +2406,11 @@
       });
       if (index >= 0) markSpeechWord(words, index);
     };
+    let started = false;
+    let retryTimer = null;
     utterance.onstart = () => {
+      started = true;
+      if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
       if (statusElement) statusElement.innerText = '🔊 お手本を再生中…';
     };
     utterance.onboundary = event => {
@@ -2391,11 +2419,13 @@
       markByCharIndex(event.charIndex);
     };
     utterance.onend = () => {
+      if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
       stopVisual();
       restoreDisplay();
       if (statusElement) statusElement.innerText = 'お手本を聞いてから、自分の声を録音してみよう。';
     };
     utterance.onerror = () => {
+      if (retryTimer) { clearTimeout(retryTimer); retryTimer = null; }
       stopVisual();
       restoreDisplay();
       if (statusElement) statusElement.innerText = '音声を再生できませんでした。端末の音量・消音設定を確認してね。';
@@ -2411,9 +2441,25 @@
       }, delay);
     }
     // 一時停止状態が残るブラウザでも、必ず再開してから発話する。
-    if (typeof synth.resume === 'function') synth.resume();
-    synth.speak(utterance);
-    setTimeout(() => { if (typeof synth.resume === 'function' && synth.paused) synth.resume(); }, 80);
+    const speakNow = () => {
+      if (requestId !== speechRequestId) return;
+      applyEnglishVoice();
+      if (typeof synth.resume === 'function') synth.resume();
+      try {
+        synth.speak(utterance);
+      } catch (_) {
+        if (statusElement) statusElement.innerText = '音声を再生できませんでした。端末の音量・消音設定を確認してね。';
+      }
+    };
+    // cancel() の直後に speak() するとPCで無音になる場合があるため、
+    // タスクを1つ進めてから再生する。
+    setTimeout(speakNow, 40);
+    retryTimer = setTimeout(() => {
+      if (requestId !== speechRequestId || started || synth.speaking) return;
+      synth.cancel();
+      speakNow();
+    }, 700);
+    setTimeout(() => { if (typeof synth.resume === 'function' && synth.paused) synth.resume(); }, 120);
     return true;
   }
 
@@ -4647,3 +4693,4 @@
 
 </body>
 </html>
+
