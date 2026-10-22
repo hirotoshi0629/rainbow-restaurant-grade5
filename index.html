@@ -4364,6 +4364,13 @@
       .replace(/\s+/g,' ').trim();
   }
 
+  // 音声認識では、英語の「yen」が「m」「em」「and」「yeah」などに
+  // 置き換わることがある。値段を言う文の中だけ、これらを yen として
+  // 判定できるようにする（通常の英文の判定には影響させない）。
+  function normalizePriceSpeech(text) {
+    return normalizeSpeech(text).replace(/\b(?:m|em|mm|n|en|yeah|ya|yan|yenn|end|and)\b/g, 'yen');
+  }
+
   function normalizeVocabAnswer(text) {
     return normalizeSpeech(text)
       .replace(/^a /, '')
@@ -4380,6 +4387,7 @@
 
   function checkSpeechFlex(userText) {
     const user = normalizeSpeech(userText);
+    const priceUser = normalizePriceSpeech(userText);
     const target = normalizeSpeech(currentTargetSpeech);
     const userWords = user.split(' ').filter(Boolean);
     document.getElementById('heard-box').style.display = 'block';
@@ -4412,12 +4420,13 @@
       finishHint = '「Please come again!」まで言ってみよう。';
     } else if (isPriceStep || target.includes('your change')) {
       const nums = target.match(/\d+/g) || [];
-      const hasNumber = nums.length > 0 && nums.every(n => userWords.includes(n));
+      const priceWords = priceUser.split(' ').filter(Boolean);
+      const hasNumber = nums.length > 0 && nums.every(n => priceWords.includes(n));
       if (target.includes('your change')) {
-        ok = hasNumber && ['your','change','is','yen'].every(word => userWords.includes(word));
+        ok = hasNumber && ['your','change','is','yen'].every(word => priceWords.includes(word));
         finishHint = '「Your change is ～ yen.」と最後まで言ってみよう。';
       } else {
-        ok = hasNumber && userWords.includes("it's") && userWords.includes('yen');
+        ok = hasNumber && priceWords.includes("it's") && priceWords.includes('yen');
         finishHint = '数字だけでなく、「It’s ～ yen.」と最後まで言ってみよう。';
       }
     } else {
@@ -4635,7 +4644,8 @@
   const baseConversationCheck = checkSpeechFlex;
   checkSpeechFlex = function(userText) {
     const target = normalizeSpeech(currentTargetSpeech);
-    const user = normalizeSpeech(userText);
+    const isPriceSentence = /\d/.test(currentTargetSpeech) && /\byen\b/i.test(currentTargetSpeech);
+    const user = isPriceSentence ? normalizePriceSpeech(userText) : normalizeSpeech(userText);
     const userWords = new Set(user.split(' ').filter(Boolean));
     const targetNumber = (currentTargetSpeech.match(/\d+/) || [])[0];
     const expandedTarget = target.startsWith('i see') || target.startsWith('let me see') || target.startsWith('ok your change') || (target.includes('here you are') && targetNumber) || (target.endsWith('thank you') && targetNumber) || (target.endsWith('thank you') && target.includes('good')) || (target.endsWith('thank you') && selectedItems.length > 0 && !target.startsWith('thank you'));
