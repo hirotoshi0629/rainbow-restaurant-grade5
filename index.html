@@ -3073,6 +3073,14 @@
     return `${numberToEnglish(Number(number))} yen`;
   }
 
+  function customerPaymentSentence(number) {
+    return `Here you are. I have ${Number(number)} yen.`;
+  }
+
+  function customerPaymentSpeech(number) {
+    return `Here you are. I have ${spokenAmount(number)}.`;
+  }
+
   function randomPriceNumber() {
     return (Math.floor(Math.random() * 100) + 1) * 10;
   }
@@ -3830,8 +3838,8 @@
       } else if (currentStep === 3) {
         customerGivenMoney = generateCustomerPayment(total);
 
-        addChatBubble(`Here you are. (${customerGivenMoney} yen)`, false, "お客", `どうぞ。（${customerGivenMoney}円渡す）`);
-        playSpeech("Here you are.");
+        addChatBubble(customerPaymentSentence(customerGivenMoney), false, "お客", `どうぞ。${customerGivenMoney}円持っています。`);
+        playSpeech(customerPaymentSpeech(customerGivenMoney));
 
         const change = customerGivenMoney - total;
         setTargetText(`Your change is ${change} yen.`, `おつりは${change}円です`, true);
@@ -4531,7 +4539,7 @@
     const customerSteps = [
       { left: expandedRecommendationEnglish(), right: `I see. Well, I'd like ${itemText}.` },
       { left: `${itemText}. Thank you.`, right: 'How much is it?' },
-      { left: `Let me see. ${total} yen, please.`, right: `${total} yen? Here you are.` },
+      { left: `Let me see. ${total} yen, please.`, right: customerGivenMoney ? customerPaymentSentence(customerGivenMoney) : 'Here you are. I have ... yen.' },
       { left: `OK. Your change is ${change} yen.`, right: `${change} yen. Thank you.` },
       { left: 'Here you are.', right: '🎉 クリア！' }
     ];
@@ -4539,7 +4547,7 @@
       { left: `Thank you for coming. This is ${restaurantName} restaurant. What would you like?`, right: 'I see. Well, I\'d like ... .' },
       { left: expandedRecommendationEnglish(), right: `I see. Well, I'd like ${itemText}.` },
       { left: `${itemText}. Thank you.`, right: 'How much is it?' },
-      { left: `Let me see. ${total} yen, please.`, right: `${total} yen? Here you are.` },
+      { left: `Let me see. ${total} yen, please.`, right: customerGivenMoney ? customerPaymentSentence(customerGivenMoney) : 'Here you are. I have ... yen.' },
       { left: `OK. Your change is ${change} yen.`, right: `${change} yen. Thank you.` },
       { left: 'Here you are.', right: '🎉 クリア！' }
     ];
@@ -4616,8 +4624,8 @@
       document.getElementById('guide-msg').innerText = `「Let me see. ${total} yen, please.」と値段を伝えよう！`;
     } else if (currentStep === 5) {
       const change = customerGivenMoney - total;
-      addChatBubble(`${customerGivenMoney} yen? Here you are.`, false, 'お客', `${customerGivenMoney}円ですか？どうぞ。`);
-      playSpeech(`${spokenAmount(customerGivenMoney)}? Here you are.`);
+      addChatBubble(customerPaymentSentence(customerGivenMoney), false, 'お客', `どうぞ。${customerGivenMoney}円持っています。`);
+      playSpeech(customerPaymentSpeech(customerGivenMoney));
       setTargetText(`OK. Your change is ${change} yen.`, `はい、おつりは${change}円です。`, true);
       document.getElementById('guide-msg').innerText = `おつりを計算して、「OK. Your change is ${change} yen.」と言おう！`;
     } else if (currentStep === 6) {
