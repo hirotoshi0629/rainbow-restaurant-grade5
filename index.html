@@ -4368,7 +4368,10 @@
   // 置き換わることがある。値段を言う文の中だけ、これらを yen として
   // 判定できるようにする（通常の英文の判定には影響させない）。
   function normalizePriceSpeech(text) {
-    return normalizeSpeech(text).replace(/\b(?:m|em|mm|n|en|yeah|ya|yan|yenn|end|and)\b/g, 'yen');
+    // Edge/Windowsでは「yen」を、音声どおりに話していても「¥210」の
+    // ような通貨記号つきの数字へ変換することがある。
+    const withCurrencyWord = String(text ?? '').replace(/[¥￥]/g, ' yen ');
+    return normalizeSpeech(withCurrencyWord).replace(/\b(?:m|em|mm|n|en|yeah|ya|yan|yenn|end|and)\b/g, 'yen');
   }
 
   function normalizeVocabAnswer(text) {
