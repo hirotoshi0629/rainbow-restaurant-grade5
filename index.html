@@ -4451,9 +4451,15 @@
       ok = ['here','you','are'].every(word => userWords.includes(word));
       finishHint = '「Here you are.」と最後の「are」まで言ってみよう。';
     } else if (target.includes('what would you like')) {
-      const keys = ['thank','you','for','coming','this','is','restaurant','what','would','you','like'];
-      const matched = keys.filter(k => userWords.includes(k)).length;
-      ok = matched === keys.length && ['what','would','you','like'].every(word => userWords.includes(word));
+      // Speech recognition can occasionally drop a short function word such
+      // as "is" even when the child said the whole greeting correctly.  Keep
+      // the meaningful greeting and the final question required, but do not
+      // mark an otherwise complete answer wrong just because that tiny word
+      // was omitted from the transcript.
+      const greetingWords = ['thank','you','for','coming','this','restaurant'];
+      const questionWords = ['what','would','you','like'];
+      ok = greetingWords.every(word => userWords.includes(word))
+        && questionWords.every(word => userWords.includes(word));
       finishHint = '店員のせりふを、最後の「What would you like?」まで言ってみよう。';
     } else if (target.includes('thank you')) {
       ok = ['thank','you'].every(word => userWords.includes(word));
