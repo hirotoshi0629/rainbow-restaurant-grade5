@@ -3067,6 +3067,12 @@
     return `${hundreds} ${rest < 20 ? teens[rest - 10] : `${tens[Math.floor(rest / 10)]}${rest % 10 ? ` ${ones[rest % 10]}` : ''}`}`;
   }
 
+  // 会話の音声では、数字をそのまま渡さず英語の数詞にして発音させる。
+  // 画面表示はこれまで通り「210 yen」のままにして、聞こえ方だけを自然にする。
+  function spokenAmount(number) {
+    return `${numberToEnglish(Number(number))} yen`;
+  }
+
   function randomPriceNumber() {
     return (Math.floor(Math.random() * 100) + 1) * 10;
   }
@@ -3788,7 +3794,7 @@
         document.getElementById('guide-msg').innerText = "いくらか尋ねてみよう！";
       } else if (currentStep === 3) {
         addChatBubble(`It's ${total} yen.`, false, "店員", `${total}円です。`);
-        playSpeech(`It's ${total} yen.`);
+        playSpeech(`It's ${spokenAmount(total)}.`);
         setTargetText("Here you are.", "どうぞ（お金を払う）", false);
         document.getElementById('guide-msg').innerText = "お金ボタンでお金を合わせて「払う」を押してね！";
         document.getElementById('money-area').style.display = 'flex';
@@ -3800,7 +3806,7 @@
       } else if (currentStep === 5) {
         const change = insertedMoney - total;
         addChatBubble(`Your change is ${change} yen.`, false, "店員", `${change}円のおつりです。`);
-        playSpeech(`Your change is ${change} yen.`);
+        playSpeech(`Your change is ${spokenAmount(change)}.`);
         setTargetText("Thank you.", "ありがとうございます", false);
         document.getElementById('guide-msg').innerText = "最後に「Thank you.」とお礼を言おう！";
       } else if (currentStep === 6) {
@@ -4572,7 +4578,7 @@
         document.getElementById('guide-msg').innerText = '「How much is it?」と値段を聞こう！';
       } else if (currentStep === 3) {
         addChatBubble(`Let me see. ${total} yen, please.`, false, '店員', `ええと、${total}円です。`);
-        playSpeech(`Let me see. ${total} yen, please.`);
+        playSpeech(`Let me see. ${spokenAmount(total)}, please.`);
         setTargetText(`${total} yen? Here you are.`, `${total}円ですか？どうぞ。`, false);
         document.getElementById('guide-msg').innerText = '聞こえた値段を確認して、「Here you are.」とお金を渡そう！';
         document.getElementById('money-area').style.display = 'flex';
@@ -4581,7 +4587,7 @@
       } else if (currentStep === 4) {
         const change = insertedMoney - total;
         addChatBubble(`OK. Your change is ${change} yen.`, false, '店員', `はい、おつりは${change}円です。`);
-        playSpeech(`OK. Your change is ${change} yen.`);
+        playSpeech(`OK. Your change is ${spokenAmount(change)}.`);
         setTargetText(`${change} yen. Thank you.`, `${change}円です。ありがとうございます。`, true);
         document.getElementById('guide-msg').innerText = 'おつりの金額を言って、「Thank you.」と伝えよう！';
       } else if (currentStep === 5) {
@@ -4611,13 +4617,13 @@
     } else if (currentStep === 5) {
       const change = customerGivenMoney - total;
       addChatBubble(`${customerGivenMoney} yen? Here you are.`, false, 'お客', `${customerGivenMoney}円ですか？どうぞ。`);
-      playSpeech(`${customerGivenMoney} yen? Here you are.`);
+      playSpeech(`${spokenAmount(customerGivenMoney)}? Here you are.`);
       setTargetText(`OK. Your change is ${change} yen.`, `はい、おつりは${change}円です。`, true);
       document.getElementById('guide-msg').innerText = `おつりを計算して、「OK. Your change is ${change} yen.」と言おう！`;
     } else if (currentStep === 6) {
       const change = customerGivenMoney - total;
       addChatBubble(`${change} yen. Thank you.`, false, 'お客', `${change}円です。ありがとうございます。`);
-      playSpeech(`${change} yen. Thank you.`);
+      playSpeech(`${spokenAmount(change)}. Thank you.`);
       setTargetText('Here you are.', 'はい、どうぞ。', false);
       document.getElementById('guide-msg').innerText = '最後に「Here you are.」と言って渡そう！';
     } else if (currentStep === 7) {
