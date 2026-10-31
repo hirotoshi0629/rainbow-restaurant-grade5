@@ -574,6 +574,9 @@
     .tour-city.available { cursor:pointer; border-color:#1e88e5; }
     .tour-city.active { outline:4px solid #ffb300; border-color:#ff8f00; }
     .tour-lock { display:block; font-size:.72rem; font-weight:normal; }
+    .tour-feature { display:none; margin:12px 0 8px; padding:10px; border:2px solid #90caf9; border-radius:16px; background:#fff; }
+    .tour-feature img { display:block; width:100%; height:auto; max-height:300px; object-fit:contain; border-radius:11px; background:#f5f5f5; }
+    .tour-feature-title { margin:8px 0 0; color:#0d47a1; text-align:center; font-size:1.15rem; font-weight:bold; }
     .tour-mission { margin-top:12px; padding:11px; border-radius:12px; background:#fff; color:#37474f; text-align:center; font-weight:bold; }
     .daily-board { max-width:720px; margin:20px auto 4px; padding:16px; border:3px solid #455a64; border-radius:18px; background:#fff; text-align:left; box-shadow:0 7px 16px rgba(38,50,56,.13); }
     .daily-board h3 { margin:0 0 4px; color:#263238; text-align:center; letter-spacing:.04em; }
@@ -610,7 +613,7 @@
     .judge-overlay { font-family:inherit; width:auto!important; font-size:3rem!important; padding:24px 34px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:24px; background:rgba(255,255,255,.96); box-shadow:0 14px 40px rgba(0,0,0,.24); }
     .judge-batsu { color:#ef6c00!important; }
     @media (max-width:650px){ body{padding:6px}.container{padding:12px}.level-buttons{grid-template-columns:1fr}.step-row{font-size:.75rem}.hero-visual{max-height:180px}.restaurant-sign h1{font-size:1.35rem}.role-card{width:46%;padding:12px}.role-icon{font-size:3rem}.menu-grid{grid-template-columns:repeat(2,1fr)}.vocab-grid{grid-template-columns:repeat(2,1fr)}.practice-actions{grid-template-columns:1fr}.hard-toggle{grid-column:auto}.word-practice-panel{padding:17px}.listening-panel{padding:14px}.listening-choice{min-height:145px}.listening-picture{height:88px}.number-pointing-panel,.number-speaking-panel{padding:14px}.number-pointing-choice{min-height:74px;font-size:1.45rem}.number-speaking-target{min-height:96px;font-size:2.8rem}.number-speaking-mic,.number-speaking-answer{width:100%}.rush-choices,.rush-choices.choices-3,.rush-choices.choices-6{grid-template-columns:repeat(2,1fr)}.rush-choice img{height:90px}.rush-top{gap:4px}.rush-stat{font-size:.78rem;padding:7px}.rush-course-grid{grid-template-columns:1fr}.rush-course{min-height:0}.report-stats{grid-template-columns:repeat(2,1fr)}.activity-chart{gap:3px;padding:7px}.activity-bar-wrap{width:82%} }
-    @media (max-width:650px){ .restaurant-stage-image{height:210px}.management-stats{grid-template-columns:1fr}.stage-road{grid-template-columns:repeat(3,1fr)}header{align-items:flex-start;gap:6px}header>div{display:flex;flex-direction:column;gap:6px}.point-badge{font-size:.9rem;padding:7px 11px}.btn-stamp{padding:7px 11px;font-size:.9rem}.daily-board{padding:12px}.daily-mission{grid-template-columns:36px 1fr}.mission-reward{grid-column:2}.tour-grid{grid-template-columns:repeat(2,1fr)}.tour-city:last-child{grid-column:1/-1} }
+    @media (max-width:650px){ .restaurant-stage-image{height:210px}.management-stats{grid-template-columns:1fr}.stage-road{grid-template-columns:repeat(3,1fr)}header{align-items:flex-start;gap:6px}header>div{display:flex;flex-direction:column;gap:6px}.point-badge{font-size:.9rem;padding:7px 11px}.btn-stamp{padding:7px 11px;font-size:.9rem}.daily-board{padding:12px}.daily-mission{grid-template-columns:36px 1fr}.mission-reward{grid-column:2}.tour-grid{grid-template-columns:repeat(2,1fr)}.tour-feature img{max-height:190px} }
   
     /* 2026-09-25 新ホーム画面 */
     body{padding:0;background:#dff3ff;}
@@ -1435,15 +1438,20 @@
     <section class="weekly-box">
       <h3>ウィークリーチャレンジ</h3>
       <div class="weekly-list" id="weekly-challenge-list"></div>
+      <p class="career-note" style="margin:10px 2px 0;text-align:center;">レベル20から、週のチャレンジ3つ中2つ達成でスタンプ1個。3つすべて達成すると追加で400コイン！</p>
       <div class="daily-complete" id="weekly-complete">ウィークリークリア　全達成ボーナス +400 コイン</div>
     </section>
     <section class="world-tour-box">
       <h3>ワールドレストランツアー</h3>
-      <div class="tour-passport" id="tour-passport">レベル 30で世界ツアーがオープン</div>
+      <div class="tour-passport" id="tour-passport">レベル 20で世界ツアーがオープン</div>
       <div class="tour-grid" id="tour-grid"></div>
+      <div class="tour-feature" id="tour-city-feature">
+        <img id="tour-city-feature-image" src="assets/world-tour/new-york.webp" alt="">
+        <div class="tour-feature-title" id="tour-city-feature-title"></div>
+      </div>
       <div class="tour-mission" id="tour-mission">まずはレストランキャリアを進めよう。</div>
     </section>
-    <p class="career-note">同じ練習だけではなく、会話・聞き取り・単語をバランスよく続けると昇格できます。記録はこの端末に保存されます。</p>
+    <p class="career-note">売上・会話・聞き取り・単語の4つで昇格。店員役／お客さん役やヒントなし会話は、レベルアップの必須条件ではありません。記録はこの端末に保存されます。</p>
     <p style="color:#5d4037;font-weight:bold;">英語を練習して売上を増やし、世界一のレストランを目指そう。</p>
     <button onclick="closeMyRestaurant()">閉じる</button>
   </div>
@@ -1572,12 +1580,18 @@
 
   const careerLevelCount = 30;
   const careerRankNames = ['ルーキー','ブロンズ','シルバー','ゴールド','プラチナ'];
+  const worldTourUnlockLevel = 20;
   const worldTourCities = [
-    { name:'ニューヨーク', jp:'ニューヨーク', stamps:0, image:'assets/world-tour/new-york.webp', mission:'会話練習を今週8回クリア' },
-    { name:'ロンドン', jp:'ロンドン', stamps:2, image:'assets/world-tour/london.webp', mission:'聞き取りで今週50問正解' },
-    { name:'シドニー', jp:'シドニー', stamps:5, image:'assets/world-tour/sydney.webp', mission:'違う単語を今週25語練習' },
-    { name:'シンガポール', jp:'シンガポール', stamps:8, image:'assets/world-tour/singapore.webp', mission:'店員役・お客さん役を今週4回ずつクリア' },
-    { name:'パリ', jp:'パリ', stamps:12, image:'assets/world-tour/paris.webp', mission:'ヒントなし会話を今週5回クリア' }
+    { name:'ニューヨーク', jp:'ニューヨーク', stamps:0, image:'assets/world-tour/new-york.webp', mission:'会話練習を今週5回クリア', progress:'conversations', target:5, unit:'回' },
+    { name:'ロンドン', jp:'ロンドン', stamps:1, image:'assets/world-tour/london.webp', mission:'聞き取りで今週30問正解', progress:'listeningCorrect', target:30, unit:'問' },
+    { name:'シドニー', jp:'シドニー', stamps:2, image:'assets/world-tour/sydney.webp', mission:'違う単語を今週15語練習', progress:'vocabWords', target:15, unit:'語' },
+    { name:'シンガポール', jp:'シンガポール', stamps:3, image:'assets/world-tour/singapore.webp', mission:'店員役・お客さん役を今週2回ずつクリア', progress:'roles', target:2, unit:'回ずつ' },
+    { name:'パリ', jp:'パリ', stamps:4, image:'assets/world-tour/paris.webp', mission:'ヒントなし会話を今週3回クリア', progress:'noHint', target:3, unit:'回' },
+    { name:'東京', jp:'東京', stamps:5, image:'assets/world-tour/tokyo.webp', mission:'会話練習を今週4回クリア', progress:'conversations', target:4, unit:'回' },
+    { name:'ソウル', jp:'ソウル', stamps:6, image:'assets/world-tour/seoul.webp', mission:'聞き取りで今週25問正解', progress:'listeningCorrect', target:25, unit:'問' },
+    { name:'バンコク', jp:'バンコク', stamps:7, image:'assets/world-tour/bangkok.webp', mission:'違う単語を今週12語練習', progress:'vocabWords', target:12, unit:'語' },
+    { name:'ローマ', jp:'ローマ', stamps:8, image:'assets/world-tour/rome.webp', mission:'店員役・お客さん役を今週2回ずつクリア', progress:'roles', target:2, unit:'回ずつ' },
+    { name:'ホノルル', jp:'ホノルル', stamps:9, image:'assets/world-tour/honolulu.webp', mission:'ヒントなし会話を今週2回クリア', progress:'noHint', target:2, unit:'回' }
   ];
 
   let currentRole = 'customer';
@@ -1937,12 +1951,13 @@
     try { weeklyMissionState = JSON.parse(localStorage.getItem('restaurant_weekly_missions') || 'null'); }
     catch (_) { weeklyMissionState = null; }
     if (!weeklyMissionState || weeklyMissionState.week !== week) {
-      weeklyMissionState = { week, conversations:0, listeningCorrect:0, vocabWords:[], clerk:0, customer:0, noHint:0, rewards:[false,false,false], allBonus:false, tourReward:false };
+      weeklyMissionState = { week, conversations:0, listeningCorrect:0, vocabWords:[], clerk:0, customer:0, noHint:0, rewards:[false,false,false], allBonus:false, stampReward:false, tourReward:false };
       saveWeeklyMissions();
     }
     weeklyMissionState.clerk = weeklyMissionState.clerk || 0;
     weeklyMissionState.customer = weeklyMissionState.customer || 0;
     weeklyMissionState.noHint = weeklyMissionState.noHint || 0;
+    weeklyMissionState.stampReward = Boolean(weeklyMissionState.stampReward);
     weeklyMissionState.tourReward = Boolean(weeklyMissionState.tourReward);
   }
 
@@ -1971,10 +1986,15 @@
       weeklyMissionState.allBonus = true;
       points += 400;
       showMissionToast('ウィークリーオールクリア　売上 +400 コイン');
-      if (currentCareerLevel() >= careerLevelCount) {
+    }
+    const completedMissionCount = weeklyMissionDefinitions().filter(mission => mission.current >= mission.target).length;
+    if (completedMissionCount >= 2 && currentCareerLevel() >= worldTourUnlockLevel && !weeklyMissionState.stampReward) {
+      weeklyMissionState.stampReward = true;
+      const stampMaximum = worldTourCities[worldTourCities.length - 1].stamps;
+      if (worldTourStamps < stampMaximum) {
         worldTourStamps++;
         localStorage.setItem('restaurant_world_tour_stamps', worldTourStamps);
-      showMissionToast('パスポートスタンプゲット！ 世界ツアーのスタンプ +1');
+        showMissionToast('パスポートスタンプゲット！ 世界ツアーのスタンプ +1');
       }
     }
     saveWeeklyMissions();
@@ -4175,15 +4195,12 @@
   function careerRequirements(level) {
     if (level <= 1) return [];
     const n = level - 1;
-    const requirements = [
-      { label:'売上', current:points, target:Math.round(95 * Math.pow(n,1.55)), unit:' コイン' },
-      { label:'会話成功', current:completedConversations, target:Math.ceil(n * .75), unit:'回' },
-      { label:'聞き取り正解', current:totalListeningCorrect, target:n * 5, unit:'問' },
-      { label:'練習した単語', current:practicedWords.size, target:Math.min(44, Math.ceil(n * 1.5)), unit:'語' }
+    return [
+      { label:'売上', current:points, target:Math.round(70 * Math.pow(n,1.5)), unit:' コイン' },
+      { label:'会話成功', current:completedConversations, target:Math.ceil(n * .6), unit:'回' },
+      { label:'聞き取り正解', current:totalListeningCorrect, target:n * 4, unit:'問' },
+      { label:'練習した単語', current:practicedWords.size, target:Math.min(36, Math.ceil(n * 1.25)), unit:'語' }
     ];
-    if (level >= 7) requirements.push({ label:'店員役・お客さん役', current:Math.min(clerkClears,customerClears), target:Math.max(1,Math.floor(n/8)), unit:'回ずつ' });
-    if (level >= 11) requirements.push({ label:'ヒントなし会話', current:noHintClears, target:Math.floor(n/4), unit:'回' });
-    return requirements;
   }
 
   function currentCareerLevel() {
@@ -4196,30 +4213,29 @@
   }
 
   function tourCityUnlocked(index) {
-    return currentCareerLevel() >= careerLevelCount && worldTourStamps >= worldTourCities[index].stamps;
+    return currentCareerLevel() >= worldTourUnlockLevel && worldTourStamps >= worldTourCities[index].stamps;
   }
 
   function selectTourCity(index) {
     if (!tourCityUnlocked(index)) return;
     activeTourCity = index;
     localStorage.setItem('restaurant_active_tour_city', activeTourCity);
+    checkTourMission();
     renderWorldTour();
   }
 
   function activeTourMissionProgress() {
     const w = weeklyMissionState;
-    const data = [
-      { current:w.conversations, target:8, unit:'回' },
-      { current:w.listeningCorrect, target:50, unit:'問' },
-      { current:w.vocabWords.length, target:25, unit:'語' },
-      { current:Math.min(w.clerk,w.customer), target:4, unit:'回ずつ' },
-      { current:w.noHint, target:5, unit:'回' }
-    ];
-    return data[activeTourCity];
+    const city = worldTourCities[activeTourCity];
+    let current = 0;
+    if (city.progress === 'roles') current = Math.min(w.clerk,w.customer);
+    else if (city.progress === 'vocabWords') current = w.vocabWords.length;
+    else current = w[city.progress] || 0;
+    return { current, target:city.target, unit:city.unit };
   }
 
   function checkTourMission() {
-    if (currentCareerLevel() < careerLevelCount || !tourCityUnlocked(activeTourCity) || weeklyMissionState.tourReward) return;
+    if (currentCareerLevel() < worldTourUnlockLevel || !tourCityUnlocked(activeTourCity) || weeklyMissionState.tourReward) return;
     const progress = activeTourMissionProgress();
     if (progress.current >= progress.target) {
       weeklyMissionState.tourReward = true;
@@ -4234,8 +4250,10 @@
     const level = currentCareerLevel();
     const passport = document.getElementById('tour-passport');
     const grid = document.getElementById('tour-grid');
-    if (level < careerLevelCount) passport.innerText = `レベル 30で世界ツアーがオープン（現在 レベル ${level}）`;
-    else passport.innerText = `パスポートスタンプ　${worldTourStamps} / 12`;
+    const feature = document.getElementById('tour-city-feature');
+    if (level >= worldTourUnlockLevel && !tourCityUnlocked(activeTourCity)) activeTourCity = 0;
+    if (level < worldTourUnlockLevel) passport.innerText = `レベル ${worldTourUnlockLevel}で世界ツアーがオープン（現在 レベル ${level}）`;
+    else passport.innerText = `パスポートスタンプ　${worldTourStamps} / ${worldTourCities[worldTourCities.length - 1].stamps}`;
     grid.innerHTML = worldTourCities.map((city,index) => {
       const unlocked = tourCityUnlocked(index);
       return `<button class="tour-city ${unlocked?'available':'locked'} ${unlocked&&index===activeTourCity?'active':''}" onclick="selectTourCity(${index})" ${unlocked?'':'disabled'}>
@@ -4244,11 +4262,17 @@
       </button>`;
     }).join('');
     const mission = document.getElementById('tour-mission');
-    if (level < careerLevelCount) mission.innerText = '30レベルを達成すると、5都市の特別ミッションに挑戦できます。';
+    if (level < worldTourUnlockLevel) {
+      feature.style.display = 'none';
+      mission.innerText = `${worldTourUnlockLevel}レベルを達成すると、10都市の特別ミッションに挑戦できます。`;
+    }
     else {
-      if (!tourCityUnlocked(activeTourCity)) activeTourCity = 0;
       const city = worldTourCities[activeTourCity];
       const progress = activeTourMissionProgress();
+      feature.style.display = 'block';
+      document.getElementById('tour-city-feature-image').src = city.image;
+      document.getElementById('tour-city-feature-image').alt = `${city.jp}のレストラン風景`;
+      document.getElementById('tour-city-feature-title').innerText = `${city.jp}のレストラン`;
       mission.innerHTML = `<strong>${city.name} スペシャルミッション</strong><br>${city.mission}<br>${Math.min(progress.current,progress.target)} / ${progress.target}${progress.unit}${weeklyMissionState.tourReward?'　クリア！':'　｜　報酬 +500 コイン'}`;
     }
   }
