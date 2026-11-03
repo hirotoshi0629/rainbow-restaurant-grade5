@@ -234,7 +234,7 @@
     .number-speaking-panel { width:min(620px,100%); max-height:96vh; overflow:auto; padding:20px; border:5px solid #00897b; border-radius:24px; background:linear-gradient(180deg,#e0f2f1,#fff); text-align:center; box-shadow:0 18px 50px rgba(0,0,0,.32); }
     .number-speaking-panel h2 { margin:10px 0 8px; color:#00695c; font-size:1.35rem; }
     .number-speaking-help { margin:4px 0 12px; color:#38534e; font-weight:bold; }
-    .number-speaking-target { display:flex; align-items:center; justify-content:center; min-height:118px; margin:10px auto 14px; padding:12px 20px; border:4px solid #4db6ac; border-radius:20px; background:#fff; color:#004d40; font-family:Arial,sans-serif; font-size:3.7rem; font-weight:900; letter-spacing:.06em; box-shadow:0 4px 0 #b2dfdb; }
+    .number-speaking-target { display:flex; align-items:center; justify-content:center; min-height:118px; margin:10px auto 14px; padding:12px 20px; border:4px solid #4db6ac; border-radius:20px; background:#fff; color:#004d40; font-family:'NHHandwriting-Medium',sans-serif; font-size:3.7rem; font-weight:400; letter-spacing:.06em; box-shadow:0 4px 0 #b2dfdb; }
     .number-speaking-controls { display:flex; justify-content:center; gap:10px; flex-wrap:wrap; }
     .number-speaking-mic { min-width:210px; background:#00897b; }
     .number-speaking-mic.listening { background:#e53935; animation:pulse 1s infinite; }
@@ -541,38 +541,16 @@
     }
 
     .restaurant-modal-content { max-width:780px; border:5px solid #6a1b9a; border-radius:24px; background:linear-gradient(180deg,#fff,#fff8e1); }
-    .avatar-modal-content{max-width:900px;border:5px solid #16a085;border-radius:24px;background:linear-gradient(180deg,#f5fffb,#fff8e1)}
-    .avatar-balance{margin:8px auto;padding:9px;border-radius:12px;background:#e0f2f1;color:#00695c;font-size:1.1rem;font-weight:bold}
-    .avatar-open-button{display:block;margin:8px auto 12px;padding:12px 20px;border:0;border-radius:14px;background:linear-gradient(135deg,#26a69a,#00897b);color:#fff;font:inherit;font-size:1.05rem;font-weight:bold;cursor:pointer;box-shadow:0 4px 0 #00695c}
-    .avatar-open-button:hover{filter:brightness(1.06);transform:translateY(-1px)}
-    .avatar-preview{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:15px;min-height:170px;margin:12px 0;padding:14px;border:2px dashed #80cbc4;border-radius:18px;background:radial-gradient(circle at 50% 40%,#fff,#e8f5e9)}
-    .avatar-main,.avatar-companion{position:relative;display:grid;place-items:center;width:130px;height:130px;border-radius:50%;background:#fff;border:3px solid #ffca28;box-shadow:0 4px 12px #0002;font:76px/1 Arial,sans-serif}
-    .avatar-companion{width:94px;height:94px;font-size:52px;border-color:#80cbc4}
-    .avatar-companion-label{position:absolute;bottom:-25px;font:inherit;font-size:12px;font-weight:bold;color:#455a64;white-space:nowrap}
-    .avatar-equipped-list{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;width:100%;max-height:96px;overflow:auto}
-    .avatar-equipped-chip{display:flex;align-items:center;gap:5px;padding:4px 7px;border:1px solid #b2dfdb;border-radius:10px;background:#fff;color:#31534e;font-size:.72rem;font-weight:bold}
-    .avatar-equipped-chip img{width:34px;height:34px;object-fit:contain}
-    .avatar-section{margin:14px 0;padding:12px;border-radius:15px;background:#fff;border:1px solid #c8e6c9;text-align:left}
-    .avatar-section h3{margin:0 0 8px;color:#00695c;text-align:center}
-    .avatar-animal-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(86px,1fr));gap:7px;max-height:195px;overflow:auto}
-    .avatar-animal-choice{display:grid;place-items:center;gap:3px;min-height:78px;padding:6px 3px;border:2px solid #d7ccc8;border-radius:12px;background:#fffdf7;font:inherit;font-weight:bold;cursor:pointer}
-    .avatar-animal-choice span{font:32px/1 Arial,sans-serif}.avatar-animal-choice.selected{border-color:#ff9800;background:#fff3cd;box-shadow:0 0 0 2px #ffcc80}
-    .avatar-shop-tabs{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:7px;margin:8px 0}
-    .avatar-shop-tabs button{padding:8px 13px;border:2px solid #80cbc4;border-radius:999px;background:#fff;color:#00695c;font:inherit;font-weight:bold;cursor:pointer}
-    .avatar-shop-tabs button.active{background:#009688;color:#fff}
-    .avatar-item-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(125px,1fr));gap:8px;max-height:300px;overflow:auto;padding:3px}
-    .avatar-item-card{display:flex;flex-direction:column;align-items:center;justify-content:space-between;min-height:155px;padding:8px;border:1px solid #cfd8dc;border-radius:13px;background:#fff;text-align:center}
-    .avatar-item-card img{width:84px;height:82px;object-fit:contain}.avatar-item-card strong{font-size:.88rem}
-    .avatar-item-card button{margin-top:6px;padding:6px 9px;border:0;border-radius:999px;background:#00897b;color:#fff;font:inherit;font-weight:bold;cursor:pointer}
-    .avatar-item-card button:disabled{background:#78909c;cursor:default}
-    @media(max-width:650px){.avatar-modal-content{padding:12px}.avatar-main{width:105px;height:105px;font-size:62px}.avatar-companion{width:76px;height:76px;font-size:42px}.avatar-item-grid{grid-template-columns:repeat(2,1fr)}}
+    .restaurant-stage-visual { position:relative; max-width:560px; margin:0 auto; }
     .restaurant-stage-image { width:100%; max-width:560px; height:300px; object-fit:contain; border-radius:18px; background:#fff; }
+    .restaurant-stage-decor { position:absolute; right:10px; bottom:10px; display:none; padding:5px 10px; border:2px solid #f9a825; border-radius:999px; background:#fffde7; color:#5d4037; font-weight:bold; box-shadow:0 2px 7px #0002; }
+    .restaurant-stage-decor img { width:38px; height:34px; object-fit:contain; vertical-align:middle; }
     .restaurant-rank { margin:8px 0 2px; color:#4a148c; font-size:1.65rem; font-weight:bold; }
     .restaurant-level-label { color:#e65100; font-weight:bold; }
     .growth-track { height:18px; margin:12px auto 5px; max-width:560px; border-radius:999px; background:#e0e0e0; overflow:hidden; box-shadow:inset 0 2px 4px rgba(0,0,0,.15); }
     .growth-fill { width:0; height:100%; border-radius:999px; background:linear-gradient(90deg,#ffb300,#f4511e); transition:width .45s ease; }
     .growth-message { min-height:26px; color:#5d4037; font-weight:bold; }
-    .management-stats { display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:16px 0; }
+    .management-stats { display:grid; grid-template-columns:repeat(5,1fr); gap:10px; margin:16px 0; }
     .management-stat { padding:12px 8px; border:2px solid #ce93d8; border-radius:14px; background:#fff; }
     .management-stat strong { display:block; color:#6a1b9a; font-size:1.35rem; }
     .stage-road { display:grid; grid-template-columns:repeat(6,1fr); gap:6px; margin:12px 0; }
@@ -599,6 +577,21 @@
     .tour-city.available { cursor:pointer; border-color:#1e88e5; }
     .tour-city.active { outline:4px solid #ffb300; border-color:#ff8f00; }
     .tour-lock { display:block; font-size:.72rem; font-weight:normal; }
+    .tour-feature { display:none; margin:12px 0 8px; padding:10px; border:2px solid #90caf9; border-radius:16px; background:#fff; }
+    .tour-feature img { display:block; width:100%; height:auto; max-height:300px; object-fit:contain; border-radius:11px; background:#f5f5f5; }
+    .tour-feature-title { margin:8px 0 0; color:#0d47a1; text-align:center; font-size:1.15rem; font-weight:bold; }
+    .tour-food-collection,.coin-shop { margin:12px 0; padding:12px; border:2px solid #80cbc4; border-radius:15px; background:#f1fffb; }
+    .tour-food-collection h4,.coin-shop h3 { margin:0 0 8px; color:#00695c; text-align:center; }
+    .tour-food-grid,.coin-shop-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:8px; }
+    .tour-food-card,.coin-shop-card { padding:8px; border:1px solid #b0bec5; border-radius:12px; background:#fff; text-align:center; }
+    .tour-food-card img { width:100%; height:92px; object-fit:contain; }
+    .tour-food-card.locked img { filter:grayscale(1) brightness(.45); }
+    .tour-food-card strong,.tour-food-card span { display:block; font-size:.85rem; }
+    .coin-shop-card .decor-icon { display:block; width:100%; height:88px; margin:0 auto 4px; object-fit:contain; }
+    .coin-shop-card button { margin-top:5px; padding:6px 9px; font-size:.8rem; }
+    .coin-shop-balance { margin:0 0 8px; color:#6a1b9a; text-align:center; font-weight:bold; }
+    .restaurant-decor-display { display:inline-flex; align-items:center; gap:5px; margin:4px auto; padding:5px 12px; border-radius:999px; background:#fff3cd; color:#5d4037; font-weight:bold; }
+    .restaurant-decor-display img { width:32px; height:28px; object-fit:contain; }
     .tour-mission { margin-top:12px; padding:11px; border-radius:12px; background:#fff; color:#37474f; text-align:center; font-weight:bold; }
     .daily-board { max-width:720px; margin:20px auto 4px; padding:16px; border:3px solid #455a64; border-radius:18px; background:#fff; text-align:left; box-shadow:0 7px 16px rgba(38,50,56,.13); }
     .daily-board h3 { margin:0 0 4px; color:#263238; text-align:center; letter-spacing:.04em; }
@@ -635,7 +628,7 @@
     .judge-overlay { font-family:inherit; width:auto!important; font-size:3rem!important; padding:24px 34px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:24px; background:rgba(255,255,255,.96); box-shadow:0 14px 40px rgba(0,0,0,.24); }
     .judge-batsu { color:#ef6c00!important; }
     @media (max-width:650px){ body{padding:6px}.container{padding:12px}.level-buttons{grid-template-columns:1fr}.step-row{font-size:.75rem}.hero-visual{max-height:180px}.restaurant-sign h1{font-size:1.35rem}.role-card{width:46%;padding:12px}.role-icon{font-size:3rem}.menu-grid{grid-template-columns:repeat(2,1fr)}.vocab-grid{grid-template-columns:repeat(2,1fr)}.practice-actions{grid-template-columns:1fr}.hard-toggle{grid-column:auto}.word-practice-panel{padding:17px}.listening-panel{padding:14px}.listening-choice{min-height:145px}.listening-picture{height:88px}.number-pointing-panel,.number-speaking-panel{padding:14px}.number-pointing-choice{min-height:74px;font-size:1.45rem}.number-speaking-target{min-height:96px;font-size:2.8rem}.number-speaking-mic,.number-speaking-answer{width:100%}.rush-choices,.rush-choices.choices-3,.rush-choices.choices-6{grid-template-columns:repeat(2,1fr)}.rush-choice img{height:90px}.rush-top{gap:4px}.rush-stat{font-size:.78rem;padding:7px}.rush-course-grid{grid-template-columns:1fr}.rush-course{min-height:0}.report-stats{grid-template-columns:repeat(2,1fr)}.activity-chart{gap:3px;padding:7px}.activity-bar-wrap{width:82%} }
-    @media (max-width:650px){ .restaurant-stage-image{height:210px}.management-stats{grid-template-columns:1fr}.stage-road{grid-template-columns:repeat(3,1fr)}header{align-items:flex-start;gap:6px}header>div{display:flex;flex-direction:column;gap:6px}.point-badge{font-size:.9rem;padding:7px 11px}.btn-stamp{padding:7px 11px;font-size:.9rem}.daily-board{padding:12px}.daily-mission{grid-template-columns:36px 1fr}.mission-reward{grid-column:2}.tour-grid{grid-template-columns:repeat(2,1fr)}.tour-city:last-child{grid-column:1/-1} }
+    @media (max-width:650px){ .restaurant-stage-image{height:210px}.management-stats{grid-template-columns:repeat(2,1fr)}.stage-road{grid-template-columns:repeat(3,1fr)}header{align-items:flex-start;gap:6px}header>div{display:flex;flex-direction:column;gap:6px}.point-badge{font-size:.9rem;padding:7px 11px}.btn-stamp{padding:7px 11px;font-size:.9rem}.daily-board{padding:12px}.daily-mission{grid-template-columns:36px 1fr}.mission-reward{grid-column:2}.tour-grid{grid-template-columns:repeat(2,1fr)}.tour-feature img{max-height:190px}.tour-food-grid,.coin-shop-grid{grid-template-columns:repeat(2,1fr)} }
   
     /* 2026-09-25 新ホーム画面 */
     body{padding:0;background:#dff3ff;}
@@ -1137,7 +1130,7 @@
   <header>
     <h2 style="margin:0; color:#d81b60;">レストランで英語ゲーム 🍔</h2>
     <div>
-      <span class="point-badge" id="point-display">売上 0 コイン</span>
+      <span class="point-badge" id="point-display">累計売上 0 コイン</span>
       <button class="btn-stamp" onclick="openMyRestaurant()">マイレストラン</button>
     </div>
   </header>
@@ -1440,7 +1433,10 @@
   <div class="modal-content restaurant-modal-content">
     <div class="restaurant-level-label" id="restaurant-level-label">レストラン レベル 1</div>
     <div class="restaurant-rank" id="restaurant-rank-name">小さな屋台</div>
-    <img class="restaurant-stage-image" id="restaurant-stage-image" src="assets/restaurant-stages/stage-00.webp" alt="成長中のレストラン">
+    <div class="restaurant-stage-visual">
+      <img class="restaurant-stage-image" id="restaurant-stage-image" src="assets/restaurant-stages/stage-00.webp" alt="成長中のレストラン">
+      <div class="restaurant-stage-decor" id="restaurant-stage-decor"></div>
+    </div>
     <div class="growth-track" aria-label="次のレストランまでの成長度">
       <div class="growth-fill" id="growth-fill"></div>
     </div>
@@ -1449,6 +1445,7 @@
     <div class="stage-road" id="stage-road"></div>
     <div class="management-stats">
       <div class="management-stat"><span>累計売上</span><strong id="restaurant-coins">0</strong><small>レベルアップ用</small></div>
+      <div class="management-stat"><span>使えるコイン</span><strong id="restaurant-wallet-coins">0</strong><small>かざりと交換</small></div>
       <div class="management-stat"><span>会話成功</span><strong id="conversation-count">0</strong><small>回</small></div>
       <div class="management-stat"><span>聞き取り最高</span><strong id="listening-best">0 / 10</strong><small>自己ベスト</small></div>
       <div class="management-stat"><span>ランチラッシュ</span><strong id="rush-best">0</strong><small>ハイスコア</small></div>
@@ -1460,39 +1457,33 @@
     <section class="weekly-box">
       <h3>ウィークリーチャレンジ</h3>
       <div class="weekly-list" id="weekly-challenge-list"></div>
+      <p class="career-note" style="margin:10px 2px 0;text-align:center;">レベル20から、週のチャレンジ3つ中2つ達成でスタンプ1個。3つすべて達成すると追加で400コイン！</p>
       <div class="daily-complete" id="weekly-complete">ウィークリークリア　全達成ボーナス +400 コイン</div>
     </section>
     <section class="world-tour-box">
       <h3>ワールドレストランツアー</h3>
-      <div class="tour-passport" id="tour-passport">レベル 30で世界ツアーがオープン</div>
+      <div class="tour-passport" id="tour-passport">レベル 20で世界ツアーがオープン</div>
       <div class="tour-grid" id="tour-grid"></div>
+      <div class="tour-feature" id="tour-city-feature">
+        <img id="tour-city-feature-image" src="assets/world-tour/new-york.webp" alt="">
+        <div class="tour-feature-title" id="tour-city-feature-title"></div>
+      </div>
       <div class="tour-mission" id="tour-mission">まずはレストランキャリアを進めよう。</div>
+      <section class="tour-food-collection" id="tour-food-collection">
+        <h4 id="tour-food-title">ご当地メニューコレクション</h4>
+        <div class="tour-food-grid" id="tour-food-grid"></div>
+      </section>
     </section>
-    <div class="avatar-balance">🪙 交換に使えるコイン：<span id="avatar-balance-inline">0</span></div>
-    <button class="avatar-open-button" onclick="openAvatarWorkshop()">🐾 どうぶつアバター工房をひらく</button>
-    <p class="career-note">同じ練習だけではなく、会話・聞き取り・単語をバランスよく続けると昇格できます。記録はこの端末に保存されます。</p>
+    <section class="coin-shop">
+      <h3>レストランかざりショップ</h3>
+      <p class="coin-shop-balance">使えるコイン：<span id="wallet-coins">0</span> コイン</p>
+      <p class="career-note" style="text-align:center;margin:4px 0 10px;">練習でもらったコインで、お店のかざりを集めよう。</p>
+      <div class="coin-shop-grid" id="coin-shop-grid"></div>
+      <div class="restaurant-decor-display" id="restaurant-decor-display">かざり：まだ選んでいません</div>
+    </section>
+    <p class="career-note">累計売上はレベルアップに使い、使えるコインはお店のかざりと交換できます。コインを使っても累計売上やレベルは減りません。記録はこの端末に保存されます。</p>
     <p style="color:#5d4037;font-weight:bold;">英語を練習して売上を増やし、世界一のレストランを目指そう。</p>
     <button onclick="closeMyRestaurant()">閉じる</button>
-  </div>
-</div>
-
-<div class="modal" id="avatar-modal" role="dialog" aria-modal="true" aria-labelledby="avatar-title" onclick="if(event.target===this)closeAvatarWorkshop()">
-  <div class="modal-content avatar-modal-content">
-    <h2 id="avatar-title" style="margin:2px;color:#00796b">🐾 どうぶつアバター工房</h2>
-    <p style="margin:5px;color:#455a64">練習で集めたコインでアイテムを交換して、自分だけのチームを作ろう！</p>
-    <div class="avatar-balance">🪙 使えるコイン：<span id="avatar-balance">0</span></div>
-    <div class="avatar-preview" aria-label="アバターのプレビュー">
-      <div class="avatar-main" id="avatar-main-preview"><span id="avatar-main-face">🦊</span></div>
-      <div class="avatar-companion" id="avatar-companion-preview"><span id="avatar-companion-face">🐻</span><span class="avatar-companion-label">相棒</span></div>
-      <div class="avatar-equipped-list" id="avatar-equipped-list" aria-label="装着中のアイテム"></div>
-    </div>
-    <section class="avatar-section"><h3>アバターのどうぶつを選ぼう（20種類）</h3><div class="avatar-animal-grid" id="avatar-animal-grid"></div></section>
-    <section class="avatar-section"><h3>いっしょに冒険する相棒を選ぼう（20種類）</h3><div class="avatar-animal-grid" id="avatar-companion-grid"></div></section>
-    <section class="avatar-section"><h3>コイン交換ショップ（12カテゴリー・各30種類）</h3>
-      <div class="avatar-shop-tabs" id="avatar-shop-tabs"></div>
-      <div class="avatar-item-grid" id="avatar-item-grid"></div>
-    </section>
-    <button onclick="closeAvatarWorkshop()">閉じる</button>
   </div>
 </div>
 
@@ -1619,12 +1610,37 @@
 
   const careerLevelCount = 30;
   const careerRankNames = ['ルーキー','ブロンズ','シルバー','ゴールド','プラチナ'];
+  const worldTourUnlockLevel = 20;
   const worldTourCities = [
-    { name:'ニューヨーク', jp:'ニューヨーク', stamps:0, image:'assets/world-tour/new-york.webp', mission:'会話練習を今週8回クリア' },
-    { name:'ロンドン', jp:'ロンドン', stamps:2, image:'assets/world-tour/london.webp', mission:'聞き取りで今週50問正解' },
-    { name:'シドニー', jp:'シドニー', stamps:5, image:'assets/world-tour/sydney.webp', mission:'違う単語を今週25語練習' },
-    { name:'シンガポール', jp:'シンガポール', stamps:8, image:'assets/world-tour/singapore.webp', mission:'店員役・お客さん役を今週4回ずつクリア' },
-    { name:'パリ', jp:'パリ', stamps:12, image:'assets/world-tour/paris.webp', mission:'ヒントなし会話を今週5回クリア' }
+    { name:'ニューヨーク', jp:'ニューヨーク', stamps:0, image:'assets/world-tour/new-york.webp', foods:[{id:10,jp:'ハンバーガー'},{id:11,jp:'ホットドッグ'},{id:36,jp:'ドーナツ'}] },
+    { name:'ロンドン', jp:'ロンドン', stamps:1, image:'assets/world-tour/london.webp', foods:[{id:5,jp:'フィッシュ'},{id:12,jp:'チップス'},{id:28,jp:'紅茶'}] },
+    { name:'シドニー', jp:'シドニー', stamps:2, image:'assets/world-tour/sydney.webp', foods:[{id:15,jp:'ステーキ'},{id:5,jp:'グリルフィッシュ'},{id:19,jp:'サラダ'}] },
+    { name:'シンガポール', jp:'シンガポール', stamps:3, image:'assets/world-tour/singapore.webp', foods:[{id:3,jp:'カレーライス'},{id:21,jp:'焼きそば'},{id:1,jp:'ライス'}] },
+    { name:'パリ', jp:'パリ', stamps:4, image:'assets/world-tour/paris.webp', foods:[{id:6,jp:'パン'},{id:35,jp:'ケーキ'},{id:27,jp:'コーヒー'}] },
+    { name:'東京', jp:'東京', stamps:5, image:'assets/world-tour/tokyo.webp', foods:[{id:25,jp:'すし'},{id:22,jp:'ラーメン'},{id:26,jp:'天ぷら'}] },
+    { name:'ソウル', jp:'ソウル', stamps:6, image:'assets/world-tour/seoul.webp', foods:[{id:13,jp:'フライドチキン'},{id:21,jp:'焼きそば'},{id:40,jp:'かき氷'}] },
+    { name:'バンコク', jp:'バンコク', stamps:7, image:'assets/world-tour/bangkok.webp', foods:[{id:3,jp:'カレーライス'},{id:21,jp:'焼きそば'},{id:30,jp:'ジュース'}] },
+    { name:'ローマ', jp:'ローマ', stamps:8, image:'assets/world-tour/rome.webp', foods:[{id:9,jp:'ピザ'},{id:17,jp:'スパゲッティ'},{id:6,jp:'パン'}] },
+    { name:'ホノルル', jp:'ホノルル', stamps:9, image:'assets/world-tour/honolulu.webp', foods:[{id:30,jp:'トロピカルジュース'},{id:5,jp:'グリルフィッシュ'},{id:39,jp:'アイスクリーム'}] }
+  ];
+  const tourMissionStages = [
+    { text:'聞き取りで5問正解する', progress:'listeningCorrect', target:5, unit:'問' },
+    { text:'新しい単語を3語練習する', progress:'vocabWords', target:3, unit:'語' },
+    { text:'会話練習を1回クリアする', progress:'conversations', target:1, unit:'回' }
+  ];
+  const restaurantDecorations = [
+    { id:'flower-pot', name:'お花のプランター', image:'assets/decorations/flower-planter.webp', cost:100 },
+    { id:'rainbow-lamp', name:'にじいろランプ', image:'assets/decorations/rainbow-lamp.webp', cost:200 },
+    { id:'welcome-sign', name:'ウェルカム看板', image:'assets/decorations/welcome-sign.webp', cost:300 },
+    { id:'blue-table', name:'青いカフェテーブル', image:'assets/decorations/blue-table.webp', cost:400 },
+    { id:'gold-trophy', name:'金のトロフィー', image:'assets/decorations/gold-trophy.webp', cost:600 },
+    { id:'world-map', name:'世界旅行の地図', image:'assets/decorations/world-map.webp', cost:800 },
+    { id:'striped-parasol', name:'ストライプのパラソル', image:'assets/decorations/striped-parasol.webp', cost:700 },
+    { id:'herb-planter', name:'ハーブのプランター', image:'assets/decorations/herb-planter.webp', cost:800 },
+    { id:'cafe-clock', name:'カフェの時計', image:'assets/decorations/cafe-clock.webp', cost:900 },
+    { id:'rainbow-bunting', name:'にじいろガーランド', image:'assets/decorations/rainbow-bunting.webp', cost:1000 },
+    { id:'sunflower-vase', name:'ひまわりの花びん', image:'assets/decorations/sunflower-vase.webp', cost:1100 },
+    { id:'cake-cloche', name:'ケーキスタンド', image:'assets/decorations/cake-cloche.webp', cost:1200 }
   ];
 
   let currentRole = 'customer';
@@ -1675,72 +1691,11 @@
   let selectedItems = [];
   let currentCategory = 'food';
   let points = parseInt(localStorage.getItem('restaurant_pts') || '0');
-  const spendableCoinKey = 'restaurant_spendable_coins';
-  let spendableCoins = parseInt(localStorage.getItem(spendableCoinKey) ?? String(points), 10);
-  if (!Number.isFinite(spendableCoins) || spendableCoins < 0) spendableCoins = Math.max(0, points);
-  const avatarAnimals = [
-    ['キツネ','🦊'],['クマ','🐻'],['ウサギ','🐰'],['シカ','🦌'],['リス','🐿️'],['タヌキ','🦝'],['アナグマ','🦡'],['イノシシ','🐗'],['オオカミ','🐺'],['モグラ','🦫'],
-    ['シマリス','🐿️'],['ヤマネコ','🐱'],['カワウソ','🦦'],['パンダ','🐼'],['ペンギン','🐧'],['フクロウ','🦉'],['カメ','🐢'],['ハリネズミ','🦔'],['カエル','🐸'],['コアラ','🐨']
-  ];
-  const avatarLegacyNames = ['虹色スカーフ','どんぐりペンダント','星のペンダント','花のレイ','貝がらネックレス','星のつえ','星マークの本','花かご','赤いちょうちん','星形ふうせん','かえる雨ぼうし','雪うさぎ耳','雪の結晶ティアラ','赤い毛糸ぼうし','しましまニット帽','おでかけカメラ','お花のじょうろ','たんけん虫めがね','絵かきパレット','ぼうけん望遠鏡','虹色のかさ','森のバイオリン','星のタンバリン','うたのマイク','ピクニックバスケット','たんけんコンパス','虫とりあみ','ぼうけんフラッグ','にじいろ風車','お花のティーカップ','ひまわり麦わら帽子','たんけん帽','コック帽','海ぞく帽','星つき魔法使い帽','お花のかんむり','森の葉っぱかんむり','マリン帽','ひこうし帽','どんぐり帽子'];
-  const avatarLegacyFiles = ['rainbow_scarf','acorn_necklace','star_necklace','flower_lei','shell_necklace','star_wand','storybook','flower_basket','lantern','star_balloon','frog_hat','rabbit_headband','snowflake_tiara','red_beanie','striped_beanie','camera','watering_can','magnifier','artist_palette','telescope','rainbow_umbrella','violin','tambourine','microphone','picnic_basket','compass','bug_net','adventure_flag','pinwheel','flower_cup','straw_hat','explorer_hat','chef_hat','pirate_hat','wizard_hat','flower_crown','leaf_crown','sailor_hat','aviator_cap','acorn_cap'];
-  const avatarCategorySpecs = [
-    {key:'ぼうし',symbol:'🎩',names:'かえる雨ぼうし・雪うさぎ耳・雪の結晶ティアラ・赤い毛糸ぼうし・しましまニット帽・ひまわり麦わら帽子・たんけん帽・コック帽・海ぞく帽・星つき魔法使い帽・お花のかんむり・森の葉っぱかんむり・マリン帽・ひこうし帽・どんぐり帽子・さくらんぼベレー・雲のふわふわ帽・星空キャップ・みつばちハット・きつね耳フード・にじ色ヘルメット・デニムキャップ・チューリップ帽・ドラゴンフード・お月さまナイトキャップ・雪山ぼうし・いちごぼうし・駅長さん帽・パーティーぼうし・ちいさな騎士かぶと'},
-    {key:'アクセサリー',symbol:'📿',names:'虹色スカーフ・どんぐりペンダント・星のペンダント・花のレイ・貝がらネックレス・銀色お月さまブローチ・虹色うで時計・小花のヘアピン・真珠のバッジ・鈴つき首輪・ミニ王冠ピン・ハートのおまもり・どんぐり腕輪・貝がらブレスレット・水晶ブローチ・星ボタン・リボンバッジ・肉球ペンダント・葉っぱクリップ・虹色リボン・なかよしミサンガ・赤いネクタイ・青いちょうネクタイ・レースのえり飾り・オレンジバンダナ・雪の結晶ブローチ・小さな鍵チャーム・ひまわりピン・ねこ鈴・ちいさな金メダル'},
-    {key:'ぼうけん道具',symbol:'🧭',names:'星のつえ・星マークの本・花かご・赤いちょうちん・星形ふうせん・おでかけカメラ・お花のじょうろ・たんけん虫めがね・絵かきパレット・ぼうけん望遠鏡・虹色のかさ・森のバイオリン・星のタンバリン・うたのマイク・ピクニックバスケット・たんけんコンパス・虫とりあみ・ぼうけんフラッグ・にじいろ風車・お花のティーカップ・ポケットノート・ちいさな双眼鏡・地図の巻きもの・おもちゃ飛行機・ピクニックシート・しゃぼん玉つえ・星あかりランタン・たねのポーチ・バッジづくりセット・たんけんラジオ'},
-    {key:'ようふく',symbol:'👕',names:'虹色エプロン・空色オーバーオール・森のベスト・いちごワンピース・星空パーカー・しましまシャツ・コックさんの白衣・海ぞくジャケット・ひつじ雲セーター・さくら色コート・探検家のチョッキ・レモン色レインコート・青いデニムつなぎ・花柄ブラウス・赤チェックシャツ・かえるポンチョ・ペンギンのタキシード・きつね色マント・ミント色カーディガン・お月さまナイトウェア・小花もようスカート・黄色いサロペット・水玉の半そで・雪の日ダッフル・お店の制服・ピクニックシャツ・虹色パジャマ・ふわふわフリース・さわやかセーラー服・金ボタンの礼服'},
-    {key:'めがね',symbol:'👓',names:'まるい赤めがね・青いまるめがね・星のサングラス・たんけんゴーグル・水中めがね・ねこ目めがね・四角い黒めがね・金ぶちめがね・ハートめがね・虹色サングラス・ひこうきゴーグル・雪山ゴーグル・みどりのふちめがね・むらさきめがね・小花のめがね・望遠レンズめがね・お月さまモノクル・きらきらクリスタル眼鏡・水玉フレーム・しましまフレーム・オレンジスポーツ眼鏡・白いふちめがね・青空ゴーグル・ピンクのハート眼鏡・探偵モノクル・丸いべっこう眼鏡・星空フレーム・ミント色眼鏡・金色ハーフリム・雲もようサングラス'},
-    {key:'かばん',symbol:'🎒',names:'赤いランドセル・虹色リュック・青い探検かばん・花柄ポシェット・どんぐりポーチ・ねこ顔ショルダー・赤チェック布のピクニックバスケット・星空メッセンジャー・黄色いミニバッグ・海ぞく宝箱かばん・ペンギンリュック・きつね色ボディバッグ・水玉トートバッグ・緑の葉っぱかばん・月の形のポーチ・コックさんの道具袋・カメラバッグ・ふわふわ雲リュック・赤チェックかごバッグ・キャンディポーチ・青い通学バッグ・お花のバケットバッグ・ちいさな郵便かばん・パッチワークサッチェル・ひつじ雲ポーチ・恐竜リュック・レモン色トート・マリンボストン・紫の巾着袋・星のきんちゃく'},
-    {key:'くつ',symbol:'👟',names:'赤いスニーカー・青空スニーカー・星のブーツ・黄色い長ぐつ・花柄サンダル・探検家のブーツ・ふわふわルームシューズ・海ぞくのくつ・緑の森ブーツ・虹色ローラーシューズ・ピンクのバレエ靴・コックさんの靴・雪山スノーブーツ・しましまソックス靴・きつね色ローファー・ペンギンの防寒靴・水玉レインブーツ・月夜のスリッパ・デニムのハイカット・いちごサンダル・青いマリンシューズ・小花のくつ・金色ダンスシューズ・赤チェックブーツ・雲もようスニーカー・かえるの水かき靴・ピクニックサンダル・紫色の運動靴・白いキャンバス靴・どんぐりブーツ'},
-    {key:'お花・植物',symbol:'🌼',names:'ひまわりブーケ・虹色チューリップ・小さなバラの鉢・すずらんの花束・青いあじさい・さくらの枝飾り・四つ葉のクローバー・ミントの植木鉢・たんぽぽのわた毛・赤いポピー・ラベンダーのかご・どんぐりの苗木・白いデイジー・黄色いガーベラ・森のきのこ鉢・ハート葉っぱの鉢・ピンクのコスモス・雪の結晶リース・オレンジのマリーゴールド・小さな盆栽・にじ色の花輪・青いわすれな草・いちごの葉っぱ鉢・つたのミニアーチ・赤いカーネーション・ふわふわ綿花・金色の麦の穂・月見草のポット・野原の草花かご・新芽のガラス瓶'},
-    {key:'がっき',symbol:'🎵',names:'木のミニギター・青いウクレレ・赤いバイオリン・青空の鈴タンバリン・虹色マラカス・森のフルート・金色トランペット・小太鼓・ピンクのハーモニカ・青空カスタネット・鈴のついたリコーダー・花柄アコーディオン・ミニキーボード・どんぐりシェイカー・月のオルゴール・しずくチャイム・子ねこの琴・赤いドラムスティック・お花のベル・木琴セット・虹色カリンバ・小さなチェロ・銀のトライアングル・ペンギン太鼓・星空の笛・カエルのギロ・ミント色リュート・金色の鈴・リズムボンゴ・歌うマイクスタンド'},
-    {key:'お店のかざり',symbol:'🏮',names:'虹色ウェルカム旗・花のテーブルランプ・青い壁かけ時計・小さな金トロフィー・木のメニューボード・星空ガーランド・赤い窓辺ランタン・ひまわりの花びん・カラフル植木鉢・レインボー風見どり・パンケーキ看板・にこにこドアベル・小鳥の壁飾り・ピンクのテーブルクロス・青いお店ののれん・ミニチョークボード・金色の星オーナメント・花模様のカーテン・木製ナプキン立て・キャンディの置き時計・レモンの壁かざり・虹色の小旗・コーヒーカップの置物・赤チェックのクッション・世界地図ポスター・お店のミニ黒板・ねこ店長プレート・ガラスの風鈴・木の花台・月と星のモビール'},
-    {key:'まほうアイテム',symbol:'✨',names:'星ふる魔法のつえ・青い水晶玉・月のしずくボトル・虹色の魔法薬・金色の願い星・花びらの魔法びん・雲を呼ぶベル・きらきら魔法の本・お月さまの杖・雪の結晶チャーム・光るきのこランプ・ちいさな妖精の羽・虹のしずくペンダント・星空の砂時計・魔法使いの手ぶくろ・ハートの魔法石・ふくろうの羽根ペン・花の妖精コンパクト・きらめく鍵・青い魔法のほうき・月光のランタン・金の星バッジ・夢色の小瓶・虹色の魔法リング・光のシャボン玉・森の守り石・星くずのオルゴール・ふしぎな羽根飾り・おひさまの魔法鏡・流れ星のブローチ'},
-    {key:'たびのおまもり',symbol:'🗺️',names:'虹色コンパス・世界地図チャーム・小さな汽車のおもちゃ・青い気球バッジ・飛行機の模型・海の貝がらお守り・山の木の実チャーム・星空の旅券ケース・赤いキャンピングランプ・小さな羅針盤・ピクニック水筒・森の道しるべ・お月さまの旅行枕・ミニ帆船のおもちゃ・青いトランク・きつねの旅人バッジ・雲の飛行船・花畑の切符入れ・雪山ケーブルカー・黄色い旅のポーチ・小さな地球儀・虹の橋チャーム・キャンプの火おこし・森のテント飾り・海辺の灯台チャーム・星の旅行カメラ・どんぐりの乗車券・青空パラシュート・旅するペンギン人形・世界一周メダル'}
-  ];
-  function makeAvatarItemArt(categoryIndex,itemIndex) {
-    const palettes=[['#ef704f','#ffd17c'],['#df6d9b','#f6c6dc'],['#58a9a0','#bde7d5'],['#629bd0','#c7e5f7'],['#ab7ac6','#e4cbf1'],['#d5a238','#ffe39b'],['#87a85a','#d4e7a6'],['#df8b4a','#f8d5a0'],['#6f9bba','#c7e5ee'],['#d96f69','#f6c0a9'],['#7d83c4','#c6caf1'],['#62a991','#bfe9cb']];
-    const [primary,light]=palettes[(categoryIndex*7+itemIndex*5)%palettes.length];
-    const ink='#514238';
-    let shape='';
-    switch(categoryIndex){
-      case 0: shape=`<path d="M30 76 Q33 54 45 37 Q59 19 75 38 Q88 53 91 76 Q60 83 30 76Z"/><path d="M23 77 Q60 68 97 78 Q90 91 61 91 Q32 91 23 77Z"/>`; break;
-      case 1: shape=`<path d="M31 42 Q60 87 89 42" fill="none" stroke="${primary}" stroke-width="7"/><path d="M60 63 L76 78 L60 96 L44 78Z"/>`; break;
-      case 2: shape=`<path d="M38 30 L82 30 L91 46 L82 55 L76 46 L76 83 Q60 97 44 83 L44 46 L38 55 L29 46Z"/><path d="M48 40 L72 40 L70 64 L50 64Z" fill="${light}"/>`; break;
-      case 3: shape=`<path d="M39 34 L52 39 Q60 33 68 39 L81 34 L96 52 L85 61 L80 54 L80 92 L40 92 L40 54 L35 61 L24 52Z"/><path d="M55 41 L60 48 L65 41 L68 65 L60 74 L52 65Z"/>`; break;
-      case 4: shape=`<circle cx="43" cy="60" r="22"/><circle cx="77" cy="60" r="22"/><path d="M65 58 Q60 52 55 58" fill="none" stroke="${ink}" stroke-width="5"/><path d="M22 54 L15 49 M98 54 L105 49" fill="none" stroke="${ink}" stroke-width="4"/>`; break;
-      case 5: shape=`<path d="M34 48 Q34 34 48 34 L72 34 Q86 34 86 48 L91 88 Q60 99 29 88Z"/><path d="M44 38 Q44 20 60 20 Q76 20 76 38" fill="none" stroke="${ink}" stroke-width="5"/><path d="M34 58 Q60 68 86 58 L88 77 Q60 87 32 77Z" fill="${light}"/>`; break;
-      case 6: shape=`<path d="M24 73 Q45 69 61 64 Q78 57 89 59 Q100 61 98 76 Q96 87 80 87 L28 87 Q20 84 24 73Z"/><path d="M26 72 L77 69 Q88 69 89 76 L28 80Z" fill="${light}"/>`; break;
-      case 7: shape=`<path d="M60 89 Q57 72 60 53" fill="none" stroke="#5f9a59" stroke-width="7"/><path d="M58 72 Q39 53 30 67 Q38 82 58 78 M62 65 Q80 45 91 59 Q83 73 62 73" fill="#79b76b"/><circle cx="60" cy="39" r="15"/><circle cx="43" cy="43" r="13"/><circle cx="77" cy="43" r="13"/><circle cx="49" cy="28" r="12"/><circle cx="70" cy="27" r="12"/><circle cx="60" cy="42" r="9" fill="#ffd85f"/>`; break;
-      case 8: shape=`<path d="M59 23 L70 31 L67 48 Q87 38 95 55 Q100 72 81 82 Q65 92 50 83 Q29 77 34 57 Q39 42 56 48Z"/><path d="M66 31 L91 24 M70 41 L98 38 M52 53 L61 68 L75 61" fill="none" stroke="${ink}" stroke-width="3"/>`; break;
-      case 9: shape=`<path d="M29 55 L60 32 L91 55 L91 88 L29 88Z"/><path d="M22 54 L60 24 L98 54" fill="none" stroke="${ink}" stroke-width="5"/><path d="M45 61 L75 61 M45 72 L75 72" stroke="${light}" stroke-width="5"/>`; break;
-      case 10: shape=`<path d="M60 88 L60 52" stroke="${ink}" stroke-width="6"/><path d="M60 52 L43 39 M60 52 L78 35 M60 52 L82 65" stroke="${primary}" stroke-width="6" stroke-linecap="round"/><path d="M83 25 L86 33 L95 35 L87 40 L85 48 L80 41 L72 40 L78 34Z"/>`; break;
-      default: shape=`<circle cx="60" cy="60" r="34"/><path d="M60 29 L67 55 L88 60 L66 67 L60 91 L53 66 L32 60 L54 54Z"/><path d="M25 29 L30 38 L40 40 L32 46 L30 56 L24 48 L15 46 L22 39Z" fill="${light}"/>`;
-    }
-    const variantMarks=Array.from({length:4},(_,i)=>{
-      const x=36+((itemIndex*11+i*17)%49),y=36+((itemIndex*7+i*13)%42);
-      return i%2?`<path d="M${x} ${y} l5 3" stroke="${light}" stroke-width="2.4" stroke-linecap="round"/>`:`<circle cx="${x}" cy="${y}" r="${1.5+(itemIndex%3)*.3}" fill="${light}"/>`;
-    }).join('');
-    const svg=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 120 120"><defs><linearGradient id="wash" x1="0" y1="0" x2="1" y2="1"><stop stop-color="${light}"/><stop offset="1" stop-color="${primary}"/></linearGradient><filter id="pencil" x="-8%" y="-8%" width="116%" height="116%"><feTurbulence type="fractalNoise" baseFrequency=".55" numOctaves="2" seed="${categoryIndex*31+itemIndex+1}" result="grain"/><feDisplacementMap in="SourceGraphic" in2="grain" scale=".55"/></filter></defs><g fill="url(#wash)" stroke="${ink}" stroke-width="3.4" stroke-linejoin="round" stroke-linecap="round" filter="url(#pencil)">${shape}</g><g fill="none" stroke="#fff8e7" stroke-width="2" stroke-linecap="round" opacity=".82"><path d="M43 47 Q52 41 56 44 M35 72 Q48 76 53 73 M68 79 Q80 77 84 72"/></g><g opacity=".8">${variantMarks}</g></svg>`;
-    return `data:image/svg+xml;charset=UTF-8,${encodeURIComponent(svg)}`;
-  }
-  if (avatarCategorySpecs.length !== 12 || avatarCategorySpecs.some(category=>category.names.split('・').length !== 30)) throw new Error('アバター商品カタログは12カテゴリー各30種類で設定してください。');
-  const avatarLegacyIdByName = new Map(avatarLegacyNames.map((name,index)=>[name,index+1]));
-  const avatarItems = [];
-  let nextAvatarItemId = 41;
-  avatarCategorySpecs.forEach((category,categoryIndex)=>category.names.split('・').forEach((name,itemIndex)=>{
-    const legacyId = avatarLegacyIdByName.get(name);
-    const id = legacyId || nextAvatarItemId++;
-    const oldFile = legacyId ? `${String(legacyId).padStart(2,'0')}_${avatarLegacyFiles[legacyId-1]}.webp` : null;
-    const oldCategory = legacyId ? (legacyId>=11&&legacyId<=15||legacyId>=31?'ぼうし':legacyId<=5?'アクセサリー':'ぼうけん道具') : null;
-    const price = oldCategory==='ぼうし'?100:oldCategory==='アクセサリー'?80:oldCategory==='ぼうけん道具'?120:80+(itemIndex%4)*20;
-    avatarItems.push({id,name,category:category.key,categoryIndex,itemIndex,price,src:oldFile?`assets/avatar-items/${oldFile}`:makeAvatarItemArt(categoryIndex,itemIndex)});
-  }));
-  let avatarAnimal = localStorage.getItem('restaurant_avatar_animal') || 'キツネ';
-  let avatarCompanion = localStorage.getItem('restaurant_avatar_companion') || 'クマ';
-  let avatarOwnedItems = new Set(JSON.parse(localStorage.getItem('restaurant_avatar_owned') || '[]'));
-  let avatarEquippedItems = JSON.parse(localStorage.getItem('restaurant_avatar_equipped') || '{}');
-  let avatarShopCategory = 'ぼうし';
+  const savedWalletCoins = localStorage.getItem('restaurant_wallet_coins');
+  let walletCoins = savedWalletCoins === null ? Math.max(0,points) : Math.max(0,parseInt(savedWalletCoins,10) || 0);
+  let ownedRestaurantDecorations = [];
+  try { ownedRestaurantDecorations = JSON.parse(localStorage.getItem('restaurant_decor_owned') || '[]'); } catch (_) { ownedRestaurantDecorations = []; }
+  let selectedRestaurantDecoration = localStorage.getItem('restaurant_decor_selected') || '';
   let completedConversations = parseInt(localStorage.getItem('restaurant_completed') || '0');
   let listeningBest = parseInt(localStorage.getItem('restaurant_listening_best') || '0');
   let totalListeningCorrect = parseInt(localStorage.getItem('restaurant_listening_total_correct') || '0');
@@ -1754,6 +1709,8 @@
   try { trainingHistory = JSON.parse(localStorage.getItem('restaurant_training_history') || '{}'); } catch (_) { trainingHistory = {}; }
   let worldTourStamps = parseInt(localStorage.getItem('restaurant_world_tour_stamps') || '0');
   let activeTourCity = parseInt(localStorage.getItem('restaurant_active_tour_city') || '0');
+  let tourMissionState = null;
+  try { tourMissionState = JSON.parse(localStorage.getItem('restaurant_tour_mission_progress') || 'null'); } catch (_) { tourMissionState = null; }
   let rushQuestions = [];
   let rushIndex = 0;
   let rushCorrect = 0;
@@ -2050,17 +2007,24 @@
     try { weeklyMissionState = JSON.parse(localStorage.getItem('restaurant_weekly_missions') || 'null'); }
     catch (_) { weeklyMissionState = null; }
     if (!weeklyMissionState || weeklyMissionState.week !== week) {
-      weeklyMissionState = { week, conversations:0, listeningCorrect:0, vocabWords:[], clerk:0, customer:0, noHint:0, rewards:[false,false,false], allBonus:false, tourReward:false };
+      weeklyMissionState = { week, conversations:0, listeningCorrect:0, vocabWords:[], clerk:0, customer:0, noHint:0, rewards:[false,false,false], allBonus:false, stampReward:false };
       saveWeeklyMissions();
     }
     weeklyMissionState.clerk = weeklyMissionState.clerk || 0;
     weeklyMissionState.customer = weeklyMissionState.customer || 0;
     weeklyMissionState.noHint = weeklyMissionState.noHint || 0;
-    weeklyMissionState.tourReward = Boolean(weeklyMissionState.tourReward);
+    weeklyMissionState.stampReward = Boolean(weeklyMissionState.stampReward);
+    delete weeklyMissionState.tourReward;
   }
 
   function saveWeeklyMissions() {
     localStorage.setItem('restaurant_weekly_missions', JSON.stringify(weeklyMissionState));
+  }
+
+  function awardRestaurantCoins(amount) {
+    const reward = Math.max(0,Math.floor(Number(amount) || 0));
+    points += reward;
+    walletCoins += reward;
   }
 
   function weeklyMissionDefinitions() {
@@ -2076,18 +2040,23 @@
     weeklyMissionDefinitions().forEach((mission,index) => {
       if (mission.current >= mission.target && !weeklyMissionState.rewards[index]) {
         weeklyMissionState.rewards[index] = true;
-        awardSales(mission.reward);
+        awardRestaurantCoins(mission.reward);
         showMissionToast(`ウィークリークリア　売上 +${mission.reward} コイン`);
       }
     });
     if (weeklyMissionState.rewards.every(Boolean) && !weeklyMissionState.allBonus) {
       weeklyMissionState.allBonus = true;
-      awardSales(400);
+      awardRestaurantCoins(400);
       showMissionToast('ウィークリーオールクリア　売上 +400 コイン');
-      if (currentCareerLevel() >= careerLevelCount) {
+    }
+    const completedMissionCount = weeklyMissionDefinitions().filter(mission => mission.current >= mission.target).length;
+    if (completedMissionCount >= 2 && currentCareerLevel() >= worldTourUnlockLevel && !weeklyMissionState.stampReward) {
+      weeklyMissionState.stampReward = true;
+      const stampMaximum = worldTourCities[worldTourCities.length - 1].stamps;
+      if (worldTourStamps < stampMaximum) {
         worldTourStamps++;
         localStorage.setItem('restaurant_world_tour_stamps', worldTourStamps);
-      showMissionToast('パスポートスタンプゲット！ 世界ツアーのスタンプ +1');
+        showMissionToast('パスポートスタンプゲット！ 世界ツアーのスタンプ +1');
       }
     }
     saveWeeklyMissions();
@@ -2165,13 +2134,13 @@
     missions.forEach((mission,index) => {
       if (mission.current >= mission.target && !dailyMissionState.rewards[index]) {
         dailyMissionState.rewards[index] = true;
-        awardSales(mission.reward);
+        awardRestaurantCoins(mission.reward);
         showMissionToast(`ミッションクリア　売上 +${mission.reward} コイン`);
       }
     });
     if (dailyMissionState.rewards.every(Boolean) && !dailyMissionState.allBonus) {
       dailyMissionState.allBonus = true;
-      awardSales(150);
+      awardRestaurantCoins(150);
       showMissionToast('オールクリア　全達成ボーナス +150 コイン');
     }
     saveDailyMissions();
@@ -2188,7 +2157,7 @@
   }
 
   function updatePoints() {
-    document.getElementById('point-display').innerText = `売上 ${points} コイン`;
+    document.getElementById('point-display').innerText = `累計売上 ${points} コイン`;
     const homePoints = document.getElementById('home-live-points');
     const homeClears = document.getElementById('home-live-clears');
     if (homePoints) homePoints.innerText = Number.isFinite(points) ? points : 0;
@@ -2198,80 +2167,11 @@
       homeClears.innerText = `${cleared} / ${careerLevelCount}`;
     }
     localStorage.setItem('restaurant_pts', points);
-    localStorage.setItem(spendableCoinKey, spendableCoins);
-    const purseDisplay = document.getElementById('avatar-balance');
-    const inlinePurseDisplay = document.getElementById('avatar-balance-inline');
-    if (purseDisplay) purseDisplay.innerText = spendableCoins;
-    if (inlinePurseDisplay) inlinePurseDisplay.innerText = spendableCoins;
-  }
-
-  function awardSales(amount) {
-    const earned = Math.max(0, Math.floor(Number(amount) || 0));
-    points += earned;
-    spendableCoins += earned;
-    updatePoints();
-  }
-
-  function openAvatarWorkshop() {
-    renderAvatarWorkshop();
-    document.getElementById('avatar-modal').style.display = 'flex';
-  }
-  function closeAvatarWorkshop() { document.getElementById('avatar-modal').style.display = 'none'; }
-  function selectAvatarCategory(category,button) {
-    avatarShopCategory = category;
-    document.querySelectorAll('#avatar-shop-tabs button').forEach(tab => tab.classList.toggle('active',tab===button));
-    renderAvatarItems();
-  }
-  function chooseAvatarAnimal(name,kind) {
-    if (kind === 'companion') {
-      avatarCompanion = name;
-      localStorage.setItem('restaurant_avatar_companion',name);
-    } else {
-      avatarAnimal = name;
-      localStorage.setItem('restaurant_avatar_animal',name);
-    }
-    renderAvatarWorkshop();
-  }
-  function toggleAvatarItem(id) {
-    const item = avatarItems.find(entry => entry.id === id);
-    if (!item) return;
-    if (!avatarOwnedItems.has(id)) {
-      if (spendableCoins < item.price) { showMissionToast(`あと${item.price-spendableCoins}コイン必要です`); return; }
-      spendableCoins -= item.price;
-      avatarOwnedItems.add(id);
-      localStorage.setItem('restaurant_avatar_owned',JSON.stringify([...avatarOwnedItems]));
-    }
-    avatarEquippedItems[item.category] = avatarEquippedItems[item.category] === id ? null : id;
-    localStorage.setItem('restaurant_avatar_equipped',JSON.stringify(avatarEquippedItems));
-    updatePoints();
-    renderAvatarWorkshop();
-  }
-  function renderAvatarWorkshop() {
-    const animalGrid = document.getElementById('avatar-animal-grid');
-    const companionGrid = document.getElementById('avatar-companion-grid');
-    if (!animalGrid || !companionGrid) return;
-    const choiceMarkup = (kind,selected) => avatarAnimals.map(([name,emoji]) => `<button class="avatar-animal-choice ${selected===name?'selected':''}" onclick="chooseAvatarAnimal('${name}','${kind}')"><span>${emoji}</span>${name}</button>`).join('');
-    animalGrid.innerHTML = choiceMarkup('avatar',avatarAnimal);
-    companionGrid.innerHTML = choiceMarkup('companion',avatarCompanion);
-    document.getElementById('avatar-main-face').innerText = (avatarAnimals.find(([name])=>name===avatarAnimal)||avatarAnimals[0])[1];
-    document.getElementById('avatar-companion-face').innerText = (avatarAnimals.find(([name])=>name===avatarCompanion)||avatarAnimals[1])[1];
-    document.getElementById('avatar-balance').innerText = spendableCoins;
-    document.getElementById('avatar-balance-inline').innerText = spendableCoins;
-    const tabs = document.getElementById('avatar-shop-tabs');
-    tabs.innerHTML = avatarCategorySpecs.map(category=>`<button class="${avatarShopCategory===category.key?'active':''}" data-category="${category.key}" onclick="selectAvatarCategory('${category.key}',this)">${category.symbol} ${category.key}<small style="display:block;font-size:.72rem;font-weight:normal">30種類</small></button>`).join('');
-    const equipped = avatarItems.filter(item=>avatarEquippedItems[item.category]===item.id);
-    document.getElementById('avatar-equipped-list').innerHTML = equipped.length ? equipped.map(item=>`<span class="avatar-equipped-chip"><img src="${item.src}" alt=""><span>${item.category}<br>${item.name}</span></span>`).join('') : '<span style="color:#71847f;font-size:.8rem">交換したアイテムはここに表示されます</span>';
-    renderAvatarItems();
-  }
-  function renderAvatarItems() {
-    const grid = document.getElementById('avatar-item-grid');
-    if (!grid) return;
-    const categoryItems = avatarItems.filter(item=>item.category===avatarShopCategory);
-    grid.innerHTML = categoryItems.map(item => {
-      const owned = avatarOwnedItems.has(item.id);
-      const equipped = avatarEquippedItems[item.category]===item.id;
-      return `<div class="avatar-item-card"><img src="${item.src}" alt="${item.name}" loading="lazy"><strong>${item.name}</strong><small>${owned?'交換済み':`${item.price}コイン`}</small><button onclick="toggleAvatarItem(${item.id})" ${!owned&&spendableCoins<item.price?'disabled':''}>${equipped?'装着中':owned?'装着する':'交換する'}</button></div>`;
-    }).join('');
+    localStorage.setItem('restaurant_wallet_coins', walletCoins);
+    const walletDisplay = document.getElementById('wallet-coins');
+    if (walletDisplay) walletDisplay.innerText = walletCoins;
+    const careerWalletDisplay = document.getElementById('restaurant-wallet-coins');
+    if (careerWalletDisplay) careerWalletDisplay.innerText = walletCoins;
   }
 
   function startGame(role) {
@@ -2982,7 +2882,7 @@
     const earned = listeningCorrect * 5;
     listeningBest = Math.max(listeningBest, listeningCorrect);
     localStorage.setItem('restaurant_listening_best', listeningBest);
-    awardSales(earned);
+    awardRestaurantCoins(earned);
     totalListeningCorrect += listeningCorrect;
     recordTrainingActivity('listening');
     localStorage.setItem('restaurant_listening_total_correct', totalListeningCorrect);
@@ -3206,7 +3106,7 @@
 
   function finishOrderListening() {
     const earned = orderListeningCorrect * 8;
-    awardSales(earned);
+    awardRestaurantCoins(earned);
     totalListeningCorrect += orderListeningCorrect;
     localStorage.setItem('restaurant_listening_total_correct', totalListeningCorrect);
     updatePoints();
@@ -3367,7 +3267,7 @@
 
   function finishNumberPointing() {
     const earned = numberPointingCorrect * 5;
-    awardSales(earned);
+    awardRestaurantCoins(earned);
     totalListeningCorrect += numberPointingCorrect;
     localStorage.setItem('restaurant_listening_total_correct', totalListeningCorrect);
     updatePoints();
@@ -3589,7 +3489,7 @@
 
   function finishNumberSpeaking() {
     const earned = numberSpeakingCorrect * 5;
-    awardSales(earned);
+    awardRestaurantCoins(earned);
     updatePoints();
     recordTrainingActivity('speaking');
     document.getElementById('number-speaking-mic').style.display = 'none';
@@ -3775,7 +3675,7 @@
     localStorage.setItem('restaurant_lunch_rush_best',lunchRushBest);
     const rate = rushRewardRate();
     const earned = Math.round((rushCorrect * 20 + rushBestCombo * 5) * rate * rushModes[rushMode].multiplier);
-    awardSales(earned);
+    awardRestaurantCoins(earned);
     recordTrainingActivity('rush');
     totalListeningCorrect += rushCorrect;
     localStorage.setItem('restaurant_listening_total_correct',totalListeningCorrect);
@@ -4346,7 +4246,7 @@
   }
 
   function finishPractice() {
-    awardSales(100);
+    awardRestaurantCoins(100);
     completedConversations++;
     localStorage.setItem('restaurant_completed', completedConversations);
     if (!dailyMissionState) initDailyMissions();
@@ -4362,15 +4262,12 @@
   function careerRequirements(level) {
     if (level <= 1) return [];
     const n = level - 1;
-    const requirements = [
-      { label:'売上', current:points, target:Math.round(95 * Math.pow(n,1.55)), unit:' コイン' },
-      { label:'会話成功', current:completedConversations, target:Math.ceil(n * .75), unit:'回' },
-      { label:'聞き取り正解', current:totalListeningCorrect, target:n * 5, unit:'問' },
-      { label:'練習した単語', current:practicedWords.size, target:Math.min(44, Math.ceil(n * 1.5)), unit:'語' }
+    return [
+      { label:'累計売上', current:points, target:Math.round(70 * Math.pow(n,1.5)), unit:' コイン' },
+      { label:'会話成功', current:completedConversations, target:Math.ceil(n * .6), unit:'回' },
+      { label:'聞き取り正解', current:totalListeningCorrect, target:n * 4, unit:'問' },
+      { label:'練習した単語', current:practicedWords.size, target:Math.min(36, Math.ceil(n * 1.25)), unit:'語' }
     ];
-    if (level >= 7) requirements.push({ label:'店員役・お客さん役', current:Math.min(clerkClears,customerClears), target:Math.max(1,Math.floor(n/8)), unit:'回ずつ' });
-    if (level >= 11) requirements.push({ label:'ヒントなし会話', current:noHintClears, target:Math.floor(n/4), unit:'回' });
-    return requirements;
   }
 
   function currentCareerLevel() {
@@ -4383,46 +4280,88 @@
   }
 
   function tourCityUnlocked(index) {
-    return currentCareerLevel() >= careerLevelCount && worldTourStamps >= worldTourCities[index].stamps;
+    return currentCareerLevel() >= worldTourUnlockLevel && worldTourStamps >= worldTourCities[index].stamps;
   }
 
   function selectTourCity(index) {
     if (!tourCityUnlocked(index)) return;
     activeTourCity = index;
     localStorage.setItem('restaurant_active_tour_city', activeTourCity);
+    ensureTourCityMissionState(index);
+    checkTourMission();
     renderWorldTour();
   }
 
+  function weeklyTourPracticeSnapshot() {
+    if (!weeklyMissionState) initWeeklyMissions();
+    return {
+      listeningCorrect:Number(weeklyMissionState.listeningCorrect) || 0,
+      vocabWords:Array.isArray(weeklyMissionState.vocabWords) ? weeklyMissionState.vocabWords.length : 0,
+      conversations:Number(weeklyMissionState.conversations) || 0
+    };
+  }
+
+  function ensureTourCityMissionState(index) {
+    const snapshot = weeklyTourPracticeSnapshot();
+    const week = weeklyMissionState.week || localWeekKey();
+    if (!tourMissionState || !tourMissionState.cities || tourMissionState.week !== week) {
+      const oldCities = tourMissionState && tourMissionState.cities ? tourMissionState.cities : {};
+      const cities = {};
+      Object.keys(oldCities).forEach(cityIndex => {
+        cities[cityIndex] = { completed:Number(oldCities[cityIndex].completed) || 0, baseline:{...snapshot} };
+      });
+      tourMissionState = { week, cities };
+    }
+    if (!tourMissionState.cities[index]) tourMissionState.cities[index] = { completed:0, baseline:{...snapshot} };
+    if (!tourMissionState.cities[index].baseline) tourMissionState.cities[index].baseline = {...snapshot};
+    localStorage.setItem('restaurant_tour_mission_progress',JSON.stringify(tourMissionState));
+    return tourMissionState.cities[index];
+  }
+
   function activeTourMissionProgress() {
-    const w = weeklyMissionState;
-    const data = [
-      { current:w.conversations, target:8, unit:'回' },
-      { current:w.listeningCorrect, target:50, unit:'問' },
-      { current:w.vocabWords.length, target:25, unit:'語' },
-      { current:Math.min(w.clerk,w.customer), target:4, unit:'回ずつ' },
-      { current:w.noHint, target:5, unit:'回' }
-    ];
-    return data[activeTourCity];
+    const cityState = ensureTourCityMissionState(activeTourCity);
+    const stageIndex = cityState.completed % tourMissionStages.length;
+    const stage = tourMissionStages[stageIndex];
+    const snapshot = weeklyTourPracticeSnapshot();
+    const current = Math.max(0,(snapshot[stage.progress] || 0) - (cityState.baseline[stage.progress] || 0));
+    return { current, target:stage.target, unit:stage.unit, stage, stageIndex, cityState };
   }
 
   function checkTourMission() {
-    if (currentCareerLevel() < careerLevelCount || !tourCityUnlocked(activeTourCity) || weeklyMissionState.tourReward) return;
+    if (currentCareerLevel() < worldTourUnlockLevel || !tourCityUnlocked(activeTourCity)) return;
     const progress = activeTourMissionProgress();
     if (progress.current >= progress.target) {
-      weeklyMissionState.tourReward = true;
-      awardSales(500);
-      saveWeeklyMissions();
+      const city = worldTourCities[activeTourCity];
+      const foodIndex = progress.cityState.completed;
+      progress.cityState.completed++;
+      progress.cityState.baseline = weeklyTourPracticeSnapshot();
+      awardRestaurantCoins(100);
+      localStorage.setItem('restaurant_tour_mission_progress',JSON.stringify(tourMissionState));
       updatePoints();
-      showMissionToast(`${worldTourCities[activeTourCity].name} ミッションクリア　+500 コイン`);
+      showMissionToast(foodIndex < city.foods.length ? `${city.jp}の料理「${city.foods[foodIndex].jp}」をゲット！ +100 コイン` : `${city.jp} ミッションクリア！ +100 コイン`);
     }
+  }
+
+  function renderTourFoodCollection(city,cityState) {
+    const collectedCount = Math.min(city.foods.length,cityState.completed);
+    document.getElementById('tour-food-title').innerText = `${city.jp}のご当地メニュー　${collectedCount} / ${city.foods.length}`;
+    document.getElementById('tour-food-grid').innerHTML = city.foods.map((food,index) => {
+      const item = menuData.find(entry => entry.id === food.id);
+      const collected = index < collectedCount;
+      return `<div class="tour-food-card ${collected?'':'locked'}"><img src="${vocabImageUrl(item)}" alt="${collected?food.jp:'まだ集めていない料理'}"><strong>${collected?food.jp:'？？？'}</strong><span>${collected?'ゲット！':'ミッションでゲット'}</span></div>`;
+    }).join('');
   }
 
   function renderWorldTour() {
     const level = currentCareerLevel();
     const passport = document.getElementById('tour-passport');
     const grid = document.getElementById('tour-grid');
-    if (level < careerLevelCount) passport.innerText = `レベル 30で世界ツアーがオープン（現在 レベル ${level}）`;
-    else passport.innerText = `パスポートスタンプ　${worldTourStamps} / 12`;
+    const feature = document.getElementById('tour-city-feature');
+    const foodCollection = document.getElementById('tour-food-collection');
+    if (!Number.isInteger(activeTourCity) || activeTourCity < 0 || activeTourCity >= worldTourCities.length) activeTourCity = 0;
+    if (level >= worldTourUnlockLevel && !tourCityUnlocked(activeTourCity)) activeTourCity = 0;
+    if (level < worldTourUnlockLevel) passport.innerText = `レベル ${worldTourUnlockLevel}で世界ツアーがオープン（現在 レベル ${level}）`;
+    else passport.innerText = `パスポートスタンプ　${worldTourStamps} / ${worldTourCities[worldTourCities.length - 1].stamps}`;
     grid.innerHTML = worldTourCities.map((city,index) => {
       const unlocked = tourCityUnlocked(index);
       return `<button class="tour-city ${unlocked?'available':'locked'} ${unlocked&&index===activeTourCity?'active':''}" onclick="selectTourCity(${index})" ${unlocked?'':'disabled'}>
@@ -4431,13 +4370,58 @@
       </button>`;
     }).join('');
     const mission = document.getElementById('tour-mission');
-    if (level < careerLevelCount) mission.innerText = '30レベルを達成すると、5都市の特別ミッションに挑戦できます。';
+    if (level < worldTourUnlockLevel) {
+      feature.style.display = 'none';
+      foodCollection.style.display = 'none';
+      mission.innerText = `${worldTourUnlockLevel}レベルを達成すると、10都市の特別ミッションに挑戦できます。`;
+    }
     else {
-      if (!tourCityUnlocked(activeTourCity)) activeTourCity = 0;
       const city = worldTourCities[activeTourCity];
       const progress = activeTourMissionProgress();
-      mission.innerHTML = `<strong>${city.name} スペシャルミッション</strong><br>${city.mission}<br>${Math.min(progress.current,progress.target)} / ${progress.target}${progress.unit}${weeklyMissionState.tourReward?'　クリア！':'　｜　報酬 +500 コイン'}`;
+      feature.style.display = 'block';
+      foodCollection.style.display = 'block';
+      document.getElementById('tour-city-feature-image').src = city.image;
+      document.getElementById('tour-city-feature-image').alt = `${city.jp}のレストラン風景`;
+      document.getElementById('tour-city-feature-title').innerText = `${city.jp}のレストラン`;
+      renderTourFoodCollection(city,progress.cityState);
+      const reward = progress.cityState.completed < city.foods.length ? `${city.foods[progress.cityState.completed].jp} ＋100コイン` : '+100コイン';
+      mission.innerHTML = `<strong>${city.name} スペシャルミッション　${progress.stageIndex+1} / ${tourMissionStages.length}</strong><br>${progress.stage.text}<br>${Math.min(progress.current,progress.target)} / ${progress.target}${progress.unit}<br>クリア報酬：${reward}`;
     }
+  }
+
+  function renderRestaurantShop() {
+    const grid = document.getElementById('coin-shop-grid');
+    if (!grid) return;
+    grid.innerHTML = restaurantDecorations.map(item => {
+      const owned = ownedRestaurantDecorations.includes(item.id);
+      const selected = selectedRestaurantDecoration === item.id;
+      const disabled = !owned && walletCoins < item.cost;
+      const label = selected ? 'かざり中' : owned ? 'かざる' : `${item.cost} コインで交換`;
+      return `<div class="coin-shop-card"><img class="decor-icon" src="${item.image}" alt=""><strong>${item.name}</strong><br><button onclick="buyRestaurantDecoration('${item.id}')" ${disabled?'disabled':''}>${label}</button></div>`;
+    }).join('');
+    const selected = restaurantDecorations.find(item => item.id === selectedRestaurantDecoration);
+    document.getElementById('restaurant-decor-display').innerHTML = selected ? `<img src="${selected.image}" alt="">かざり：${selected.name}` : 'かざり：まだ選んでいません';
+    const stageDecor = document.getElementById('restaurant-stage-decor');
+    if (stageDecor) {
+      stageDecor.style.display = selected ? 'block' : 'none';
+      stageDecor.innerHTML = selected ? `<img src="${selected.image}" alt="">${selected.name}` : '';
+    }
+  }
+
+  function buyRestaurantDecoration(id) {
+    const item = restaurantDecorations.find(entry => entry.id === id);
+    if (!item) return;
+    if (!ownedRestaurantDecorations.includes(item.id)) {
+      if (walletCoins < item.cost) return;
+      walletCoins -= item.cost;
+      ownedRestaurantDecorations.push(item.id);
+      localStorage.setItem('restaurant_decor_owned',JSON.stringify(ownedRestaurantDecorations));
+      showMissionToast(`${item.name}と交換したよ！`);
+    }
+    selectedRestaurantDecoration = item.id;
+    localStorage.setItem('restaurant_decor_selected',selectedRestaurantDecoration);
+    updatePoints();
+    renderRestaurantShop();
   }
 
   function openMyRestaurant() {
@@ -4459,7 +4443,12 @@
     document.getElementById('restaurant-rank-name').innerText = `${stage.name}　${rank}`;
     document.getElementById('restaurant-stage-image').src = stage.image;
     document.getElementById('restaurant-stage-image').alt = `${stage.name}のイラスト`;
+    const selectedDecoration = restaurantDecorations.find(item => item.id === selectedRestaurantDecoration);
+    const stageDecor = document.getElementById('restaurant-stage-decor');
+    stageDecor.style.display = selectedDecoration ? 'block' : 'none';
+    stageDecor.innerHTML = selectedDecoration ? `<img src="${selectedDecoration.image}" alt="">${selectedDecoration.name}` : '';
     document.getElementById('restaurant-coins').innerText = points;
+    document.getElementById('restaurant-wallet-coins').innerText = walletCoins;
     document.getElementById('conversation-count').innerText = completedConversations;
     document.getElementById('listening-best').innerText = `${listeningBest} / 10`;
     document.getElementById('rush-best').innerText = lunchRushBest;
@@ -4490,6 +4479,7 @@
     }).join('');
     document.getElementById('weekly-complete').style.display = weeklyMissionState.allBonus ? 'block' : 'none';
     renderWorldTour();
+    renderRestaurantShop();
   }
 </script>
 <script>
@@ -4686,7 +4676,7 @@
     const bonus = hintUsedThisRound ? 0 : 50;
     const retryBonus = retryCountThisRound === 0 ? 50 : 0;
     const earned = 100 + bonus + retryBonus;
-    awardSales(earned);
+    awardRestaurantCoins(earned);
     completedConversations++;
     recordTrainingActivity('conversations');
     localStorage.setItem('restaurant_completed', completedConversations);
@@ -4715,7 +4705,7 @@
     checkTourMission();
     playSound('correct');
     const grade = retryCountThisRound === 0 && !hintUsedThisRound ? 'S' : retryCountThisRound <= 1 ? 'A' : 'B';
-    alert(`やり取りクリア！\nサービス評価 ${grade}\n売上 ${earned} コイン アップ！${bonus ? '\nヒントなしボーナス +50 コイン' : ''}`);
+    alert(`やり取りクリア！\nサービス評価 ${grade}\n累計売上 +${earned} コイン\n使えるコインも +${earned} コイン${bonus ? '\nヒントなしボーナス +50 コイン' : ''}`);
     goHome();
   };
 
