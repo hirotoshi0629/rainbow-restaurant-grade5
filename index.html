@@ -1457,10 +1457,10 @@
       <div class="requirement-list" id="promotion-requirements"></div>
     </section>
     <section class="weekly-box">
-      <h3>ウィークリーチャレンジ</h3>
-      <div class="weekly-list" id="weekly-challenge-list"></div>
-      <p class="career-note" style="margin:10px 2px 0;text-align:center;">レベル20から、週のチャレンジ3つ中2つ達成でスタンプ1個。3つすべて達成すると追加で400コイン！</p>
-      <div class="daily-complete" id="weekly-complete">ウィークリークリア　全達成ボーナス +400 コイン</div>
+      <h3>デイリーチャレンジ</h3>
+      <div class="weekly-list" id="daily-challenge-list"></div>
+      <p class="career-note" style="margin:10px 2px 0;text-align:center;">毎日チャレンジが更新されるよ。3つ中2つ達成でスタンプ1個。3つすべて達成すると追加で400コイン！</p>
+      <div class="daily-complete" id="daily-challenge-complete">デイリーチャレンジクリア　全達成ボーナス +400 コイン</div>
     </section>
     <section class="world-tour-box">
       <h3>ワールドレストランツアー</h3>
@@ -1706,6 +1706,7 @@
   let noHintClears = parseInt(localStorage.getItem('restaurant_no_hint_clears') || '0');
   let practicedWords = new Set(JSON.parse(localStorage.getItem('restaurant_practiced_words') || '[]'));
   let dailyMissionState = null;
+  let dailyChallengeState = null;
   let weeklyMissionState = null;
   let trainingHistory;
   try { trainingHistory = JSON.parse(localStorage.getItem('restaurant_training_history') || '{}'); } catch (_) { trainingHistory = {}; }
@@ -1789,6 +1790,7 @@
     renderMenu();
     initSpeechRecognition();
     initDailyMissions();
+    initDailyChallenges();
     initWeeklyMissions();
   };
 
@@ -1972,7 +1974,7 @@
     if (customerClears === 0) return '次はお客さん役に挑戦しよう。“I’d like ～.” を使って注文してみよう。';
     if ((lunchRushBests.expert || 0) === 0) return '聞き取りが伸びています。ランチラッシュのエキスパートに一度挑戦してみよう。';
     if (noHintClears < 5) return '会話練習の「チャレンジ」で、ヒントなしクリアを目指そう。';
-    return 'バランスよく練習できています。週間チャレンジと世界ツアーを進めよう。';
+    return 'バランスよく練習できています。デイリーチャレンジと世界ツアーを進めよう。';
   }
 
   function renderTrainingReport() {
@@ -2038,31 +2040,80 @@
   }
 
   function checkWeeklyMissions() {
+    // Weekly counters remain for World Tour practice only.
     if (!weeklyMissionState) initWeeklyMissions();
-    weeklyMissionDefinitions().forEach((mission,index) => {
-      if (mission.current >= mission.target && !weeklyMissionState.rewards[index]) {
-        weeklyMissionState.rewards[index] = true;
-        awardRestaurantCoins(mission.reward);
-        showMissionToast(`ウィークリークリア　売上 +${mission.reward} コイン`);
+    saveWeeklyMissions();
+  }
+
+  function initDailyChallenges() {
+    const today=localDateKey();
+    try { dailyChallengeState=JSON.parse(localStorage.getItem('restaurant_daily_challenges')||'null'); }
+    catch (_) { dailyChallengeState=null; }
+    if (!dailyChallengeState||dailyChallengeState.date!==today) {
+      dailyChallengeState={date:today,conversations:0,listeningCorrect:0,vocabWords:[],rewards:[false,false,false],allBonus:false,stampReward:false};
+      saveDailyChallenges();
+    }
+    if (!Array.isArray(dailyChallengeState.vocabWords)) dailyChallengeState.vocabWords=[];
+    if (!Array.isArray(dailyChallengeState.rewards)) dailyChallengeState.rewards=[false,false,false];
+    dailyChallengeState.conversations=Number(dailyChallengeState.conversations)||0;
+    dailyChallengeState.listeningCorrect=Number(dailyChallengeState.listeningCorrect)||0;
+    dailyChallengeState.allBonus=Boolean(dailyChallengeState.allBonus);
+    dailyChallengeState.stampReward=Boolean(dailyChallengeState.stampReward);
+    renderDailyChallenges();
+  }
+
+  function saveDailyChallenges() {
+    localStorage.setItem('restaurant_daily_challenges',JSON.stringify(dailyChallengeState));
+  }
+
+  function dailyChallengeDefinitions() {
+    return [
+      {text:'会話練習を5回クリア',current:dailyChallengeState.conversations,target:5,reward:300},
+      {text:'聞き取りで合計35問正解',current:dailyChallengeState.listeningCorrect,target:35,reward:250},
+      {text:'違う単語を15語練習',current:dailyChallengeState.vocabWords.length,target:15,reward:200}
+    ];
+  }
+
+  function renderDailyChallenges() {
+    if (!dailyChallengeState) return;
+    const list=document.getElementById('daily-challenge-list');
+    if (!list) return;
+    list.innerHTML=dailyChallengeDefinitions().map((challenge,index)=>{
+      const done=challenge.current>=challenge.target;
+      return `<div class="weekly-item ${done?'done':''}"><span class="requirement-mark">${done?'OK':index+1}</span><span>${challenge.text}<br><small>${Math.min(challenge.current,challenge.target)} / ${challenge.target}</small></span><span class="weekly-reward">+${challenge.reward} コイン</span></div>`;
+    }).join('');
+    const complete=document.getElementById('daily-challenge-complete');
+    if (complete) complete.style.display=dailyChallengeState.allBonus?'block':'none';
+  }
+
+  function checkDailyChallenges() {
+    if (!dailyChallengeState) initDailyChallenges();
+    const challenges=dailyChallengeDefinitions();
+    challenges.forEach((challenge,index)=>{
+      if (challenge.current>=challenge.target&&!dailyChallengeState.rewards[index]) {
+        dailyChallengeState.rewards[index]=true;
+        awardRestaurantCoins(challenge.reward);
+        showMissionToast(`デイリーチャレンジ達成　売上 +${challenge.reward} コイン`);
       }
     });
-    if (weeklyMissionState.rewards.every(Boolean) && !weeklyMissionState.allBonus) {
-      weeklyMissionState.allBonus = true;
+    if (dailyChallengeState.rewards.every(Boolean)&&!dailyChallengeState.allBonus) {
+      dailyChallengeState.allBonus=true;
       awardRestaurantCoins(400);
-      showMissionToast('ウィークリーオールクリア　売上 +400 コイン');
+      showMissionToast('デイリーチャレンジ全達成　売上 +400 コイン');
     }
-    const completedMissionCount = weeklyMissionDefinitions().filter(mission => mission.current >= mission.target).length;
-    if (completedMissionCount >= 2 && currentCareerLevel() >= worldTourUnlockLevel && !weeklyMissionState.stampReward) {
-      weeklyMissionState.stampReward = true;
-      const stampMaximum = worldTourCities[worldTourCities.length - 1].stamps;
-      if (worldTourStamps < stampMaximum) {
+    const completed=dailyChallengeDefinitions().filter(challenge=>challenge.current>=challenge.target).length;
+    if (completed>=2&&currentCareerLevel()>=worldTourUnlockLevel&&!dailyChallengeState.stampReward) {
+      dailyChallengeState.stampReward=true;
+      const maximum=worldTourCities[worldTourCities.length-1].stamps;
+      if (worldTourStamps<maximum) {
         worldTourStamps++;
-        localStorage.setItem('restaurant_world_tour_stamps', worldTourStamps);
+        localStorage.setItem('restaurant_world_tour_stamps',worldTourStamps);
         showMissionToast('パスポートスタンプゲット！ 世界ツアーのスタンプ +1');
       }
     }
-    saveWeeklyMissions();
+    saveDailyChallenges();
     updatePoints();
+    renderDailyChallenges();
   }
 
   function initDailyMissions() {
@@ -2369,6 +2420,11 @@
     if (!weeklyMissionState.vocabWords.includes(item.name)) {
       weeklyMissionState.vocabWords.push(item.name);
       checkWeeklyMissions();
+    }
+    if (!dailyChallengeState) initDailyChallenges();
+    if (!dailyChallengeState.vocabWords.includes(item.name)) {
+      dailyChallengeState.vocabWords.push(item.name);
+      checkDailyChallenges();
     }
     checkTourMission();
     document.getElementById('practice-word-icon').innerHTML = vocabPicture(item, 'practice-word-picture');
@@ -2894,6 +2950,9 @@
     if (!weeklyMissionState) initWeeklyMissions();
     weeklyMissionState.listeningCorrect += listeningCorrect;
     checkWeeklyMissions();
+    if (!dailyChallengeState) initDailyChallenges();
+    dailyChallengeState.listeningCorrect += listeningCorrect;
+    checkDailyChallenges();
     checkTourMission();
     document.getElementById('listening-choices').style.display = 'none';
     document.getElementById('listening-hear-button').style.display = 'none';
@@ -3119,6 +3178,9 @@
     if (!weeklyMissionState) initWeeklyMissions();
     weeklyMissionState.listeningCorrect += orderListeningCorrect;
     checkWeeklyMissions();
+    if (!dailyChallengeState) initDailyChallenges();
+    dailyChallengeState.listeningCorrect += orderListeningCorrect;
+    checkDailyChallenges();
     checkTourMission();
     document.getElementById('order-listening-choices').style.display = 'none';
     document.getElementById('order-listening-answer').style.display = 'none';
@@ -3280,6 +3342,9 @@
     if (!weeklyMissionState) initWeeklyMissions();
     weeklyMissionState.listeningCorrect += numberPointingCorrect;
     checkWeeklyMissions();
+    if (!dailyChallengeState) initDailyChallenges();
+    dailyChallengeState.listeningCorrect += numberPointingCorrect;
+    checkDailyChallenges();
     checkTourMission();
     document.getElementById('number-pointing-choices').style.display = 'none';
     document.getElementById('number-pointing-next').style.display = 'none';
@@ -3808,6 +3873,9 @@
     if (!weeklyMissionState) initWeeklyMissions();
     weeklyMissionState.listeningCorrect += rushCorrect;
     checkWeeklyMissions();
+    if (!dailyChallengeState) initDailyChallenges();
+    dailyChallengeState.listeningCorrect += rushCorrect;
+    checkDailyChallenges();
     checkTourMission();
     updatePoints();
     const title = timeUp ? 'タイムアップ！' : rushCorrect === rushTotalQuestions ? 'パーフェクトサービス！' : 'ランチラッシュクリア！';
@@ -4592,15 +4660,10 @@
     } else {
       document.getElementById('growth-fill').style.width = '100%';
       document.getElementById('growth-message').innerText = 'レストランキャリアコンプリート！';
-      requirementBox.innerHTML = '<div class="requirement done"><span class="requirement-mark">OK</span><span>全30レベル達成！週間チャレンジで記録を伸ばそう。</span></div>';
+      requirementBox.innerHTML = '<div class="requirement done"><span class="requirement-mark">OK</span><span>全30レベル達成！デイリーチャレンジで記録を伸ばそう。</span></div>';
     }
     document.getElementById('career-summary').innerText = `建物ステージ ${stageIndex+1} / 6　｜　ランク ${rank}`;
-    const weekly = weeklyMissionDefinitions();
-    document.getElementById('weekly-challenge-list').innerHTML = weekly.map((mission,index) => {
-      const done = mission.current >= mission.target;
-      return `<div class="weekly-item ${done?'done':''}"><span class="requirement-mark">${done?'OK':index+1}</span><span>${mission.text}<br><small>${Math.min(mission.current,mission.target)} / ${mission.target}</small></span><span class="weekly-reward">+${mission.reward} コイン</span></div>`;
-    }).join('');
-    document.getElementById('weekly-complete').style.display = weeklyMissionState.allBonus ? 'block' : 'none';
+    renderDailyChallenges();
     renderWorldTour();
     renderRestaurantShop();
   }
@@ -4825,6 +4888,9 @@
     else weeklyMissionState.customer++;
     if (!hintUsedThisRound) weeklyMissionState.noHint++;
     checkWeeklyMissions();
+    if (!dailyChallengeState) initDailyChallenges();
+    dailyChallengeState.conversations++;
+    checkDailyChallenges();
     checkTourMission();
     playSound('correct');
     const grade = retryCountThisRound === 0 && !hintUsedThisRound ? 'S' : retryCountThisRound <= 1 ? 'A' : 'B';
