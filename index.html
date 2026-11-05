@@ -3317,7 +3317,7 @@
     numberSpeakingIndex = 0;
     numberSpeakingCorrect = 0;
     numberSpeakingAnswered = false;
-    document.getElementById('number-speaking-title').innerText = '🎤 数字を英語で言ってみよう！';
+    document.getElementById('number-speaking-title').innerText = '💴 値段を英語で言ってみよう！';
     document.getElementById('number-speaking-result').style.display = 'none';
     document.getElementById('number-speaking-overlay').style.display = 'flex';
     showNumberSpeakingQuestion();
@@ -3336,7 +3336,7 @@
     micButton.innerText = '🎤 発音チェック';
     document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'none'; });
     document.getElementById('number-speaking-feedback').className = 'number-speaking-feedback';
-    document.getElementById('number-speaking-feedback').innerText = '数字を英語で言って、「発音チェック」を押してね。';
+    document.getElementById('number-speaking-feedback').innerText = 'AIの質問を聞いてから、表示された値段を「○○ yen, please.」と言ってね。';
     const nextButton = document.getElementById('number-speaking-next');
     nextButton.innerText = numberSpeakingIndex === numberSpeakingQuestions.length - 1 ? '結果を見る ➜' : '次の問題へ ➜';
     nextButton.style.display = 'none';
@@ -3391,57 +3391,110 @@
       feedback.innerText = 'このブラウザでは発音チェックを使えません。ChromeまたはEdgeで開いてね。';
       return;
     }
-    speechSynthesis.cancel();
+
+    // 先にAIの質問を最後まで再生し、その音声をマイクが拾わないようにしてから聞き取りを始める。
     if (numberSpeakingRecognition) {
       try { numberSpeakingRecognition.abort(); } catch (_) {}
+      numberSpeakingRecognition = null;
     }
-    const question = numberSpeakingQuestions[numberSpeakingIndex];
-    const recognition = new SpeechRecognitionClass();
-    numberSpeakingRecognition = recognition;
-    recognition.lang = 'en-US';
-    recognition.continuous = false;
-    recognition.interimResults = false;
-    recognition.maxAlternatives = 5;
-    let receivedResult = false;
-    micButton.disabled = true;
-    micButton.classList.add('listening');
-    micButton.innerText = '🎙️ 聞いています…';
-    feedback.className = 'number-speaking-feedback';
-    feedback.innerText = 'AIの質問を聞いたら、「'+question.english+' yen, please.」と言ってね。'; speakEnglishText('How much is it?',0.72);
-    recognition.onresult = event => {
-      receivedResult = true;
-      const transcripts = Array.from(event.results[0]).map(item => item.transcript.trim()).filter(Boolean);
-      answerNumberSpeaking(transcripts);
-    };
-    recognition.onerror = event => {
-      if (event.error === 'aborted') return;
-      micButton.disabled = false;
-      micButton.classList.remove('listening');
-      micButton.innerText = '🎤 発音チェック';
+    const synth = window.speechSynthesis;
+    if (!synth || typeof window.SpeechSynthesisUtterance !== 'function') {
       feedback.className = 'number-speaking-feedback retry';
-      feedback.innerText = event.error === 'not-allowed'
-        ? 'マイクの使用を許可してから、もう一度押してね。'
-        : '声を聞き取れませんでした。少し大きな声でもう一度試そう。';
-    };
-    recognition.onend = () => {
-      if (numberSpeakingRecognition === recognition) numberSpeakingRecognition = null;
-      if (!numberSpeakingAnswered) {
+      feedback.innerText = '質問の音声を再生できません。端末の音量・音声設定を確認してね。';
+      return;
+    }
+    synth.cancel();
+    const question = numberSpeakingQuestions[numberSpeakingIndex];
+    const micRecognition = new SpeechRecognitionClass();
+    numberSpeakingRecognition = micRecognition;
+    micRecognition.lang = 'en-US';
+    micRecognition.continuous = false;
+    micRecognition.interimResults = false;
+    micRecognition.maxAlternatives = 5;
+
+    micButton.disabled = true;
+    micButton.classList.remove('listening');
+    micButton.innerText = '🔊 質問を聞いています…';
+    feedback.className = 'number-speaking-feedback';
+    feedback.innerText = 'AIの質問を聞いてから、値段を英語で答えてね。';
+
+    let receivedSpeech = false;
+    const startListening = () => {
+      if (numberSpeakingRecognition !== micRecognition || numberSpeakingAnswered) return;
+      micButton.classList.add('listening');
+      micButton.innerText = '🎙️ 話してね…';
+      feedback.innerText = '「'+question.english+' yen, please.」と言ってね。';
+      micRecognition.onresult = event => {
+        const transcripts = Array.from(event.results || [])
+          .flatMap(result => Array.from(result || []))
+          .map(item => String(item.transcript || '').trim())
+          .filter(Boolean);
+        if (!transcripts.length) return;
+        receivedSpeech = true;
+        answerNumberSpeaking(transcripts);
+      };
+      micRecognition.onerror = event => {
+        if (event.error === 'aborted') return;
         micButton.disabled = false;
         micButton.classList.remove('listening');
         micButton.innerText = '🎤 発音チェック';
-        if (!receivedResult && feedback.className === 'number-speaking-feedback') {
-          feedback.className = 'number-speaking-feedback retry';
-          feedback.innerText = '声を聞き取れませんでした。もう一度試そう。';
+        feedback.className = 'number-speaking-feedback retry';
+        feedback.innerText = event.error === 'not-allowed'
+          ? 'マイクの使用を許可してから、もう一度押してね。'
+          : '声を聞き取れませんでした。少し大きな声でもう一度試そう。';
+        if (numberSpeakingRecognition === micRecognition) numberSpeakingRecognition = null;
+      };
+      micRecognition.onend = () => {
+        if (numberSpeakingRecognition === micRecognition) numberSpeakingRecognition = null;
+        if (!numberSpeakingAnswered) {
+          micButton.disabled = false;
+          micButton.classList.remove('listening');
+          micButton.innerText = '🎤 発音チェック';
+          if (!receivedSpeech) {
+            feedback.className = 'number-speaking-feedback retry';
+            feedback.innerText = '声を確認できませんでした。値段を言ってから、もう一度押してね。';
+          }
         }
+      };
+      try {
+        micRecognition.start();
+      } catch (_) {
+        if (numberSpeakingRecognition === micRecognition) numberSpeakingRecognition = null;
+        micButton.disabled = false;
+        micButton.classList.remove('listening');
+        micButton.innerText = '🎤 発音チェック';
+        feedback.className = 'number-speaking-feedback retry';
+        feedback.innerText = '少し待ってから、もう一度押してね。';
       }
     };
-    try { recognition.start(); }
-    catch (_) {
+
+    const utterance = new SpeechSynthesisUtterance('How much is it?');
+    utterance.lang = 'en-US';
+    utterance.rate = 0.72;
+    utterance.pitch = 1;
+    utterance.volume = 1;
+    const englishVoice = (synth.getVoices ? synth.getVoices() : [])
+      .find(voice => /^en(?:-|_)/i.test(voice.lang))
+      || (synth.getVoices ? synth.getVoices() : [])
+        .find(voice => /english|英語/i.test(voice.name+' '+voice.lang));
+    if (englishVoice) utterance.voice = englishVoice;
+    utterance.onend = () => setTimeout(startListening, 300);
+    utterance.onerror = () => {
+      if (numberSpeakingRecognition === micRecognition) numberSpeakingRecognition = null;
       micButton.disabled = false;
       micButton.classList.remove('listening');
       micButton.innerText = '🎤 発音チェック';
       feedback.className = 'number-speaking-feedback retry';
-      feedback.innerText = '少し待ってから、もう一度押してね。';
+      feedback.innerText = 'AIの質問を再生できませんでした。もう一度試してね。';
+    };
+    try {
+      synth.speak(utterance);
+    } catch (_) {
+      if (numberSpeakingRecognition === micRecognition) numberSpeakingRecognition = null;
+      micButton.disabled = false;
+      micButton.innerText = '🎤 発音チェック';
+      feedback.className = 'number-speaking-feedback retry';
+      feedback.innerText = 'AIの質問を再生できませんでした。もう一度試してね。';
     }
   }
 
@@ -3455,7 +3508,7 @@
   }
 
   function answerNumberSpeaking(transcripts) {
-    if (numberSpeakingAnswered) return;
+    if (numberSpeakingAnswered || !Array.isArray(transcripts) || !transcripts.some(text => String(text || '').trim())) return;
     numberSpeakingAnswered = true;
     const question = numberSpeakingQuestions[numberSpeakingIndex];
     const micButton = document.getElementById('number-speaking-mic');
