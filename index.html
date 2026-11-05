@@ -3357,14 +3357,24 @@
   function parseNumberSpeech(text) {
     const normalized = normalizeNumberSpeech(text);
     if (!normalized) return null;
-    const digit = normalized.match(/\b\d{1,3}\b/);
-    if (digit) return Number(digit[0]);
+    const digitParts = normalized.match(/\b\d{1,3}\b/g);
+    if (digitParts) {
+      const values = digitParts.map(Number);
+      if (values.length === 1) return values[0] < 1000 ? values[0] : null;
+      // “two hundred and sixty” may be transcribed as “200 to 60”.
+      if (values.length === 2 && values[0] >= 100 && values[0] % 100 === 0 && values[1] < 100) {
+        return values[0] + values[1];
+      }
+      return null;
+    }
     const ones = { zero:0, one:1, two:2, three:3, four:4, five:5, six:6, seven:7, eight:8, nine:9 };
     const teens = { ten:10, eleven:11, twelve:12, thirteen:13, fourteen:14, fifteen:15, sixteen:16, seventeen:17, eighteen:18, nineteen:19 };
     const tens = { twenty:20, thirty:30, forty:40, fifty:50, sixty:60, seventy:70, eighty:80, ninety:90 };
     let total = 0;
     let current = 0;
+    const ignored = new Set(['and','to','too','yen','m','em','mm','n','en','yeah','ya','yan','yenn','end','please','jpy']);
     for (const token of normalized.split(' ')) {
+      if (ignored.has(token)) continue;
       if (Object.prototype.hasOwnProperty.call(ones, token)) current += ones[token];
       else if (Object.prototype.hasOwnProperty.call(teens, token)) current += teens[token];
       else if (Object.prototype.hasOwnProperty.call(tens, token)) current += tens[token];
@@ -3510,9 +3520,11 @@
       const heard = normalizeNumberSpeech(original);
       const words = heard.split(' ').filter(Boolean);
       // 日本語環境の音声認識は「yen」を「¥870」「870円」と表記することがある。
-      const hasYenMarker = /\byen\b|\bjpy\b|[¥￥円]/i.test(original);
+      // “yen” が単独の m / em などに誤認識された場合も通貨を伝えたとみなす。
+      const currencyAliases = new Set(['yen','jpy','m','em','mm','n','en','yeah','ya','yan','yenn','end']);
+      const hasYenMarker = /\byen\b|\bjpy\b|\b(?:m|em|mm|n|en|yeah|ya|yan|yenn|end)\b|[¥￥円]/i.test(original);
       if (!hasYenMarker || !words.includes('please')) return false;
-      const numberWords = words.filter(word => !['yen', 'jpy', 'please'].includes(word));
+      const numberWords = words.filter(word => !currencyAliases.has(word) && word !== 'please');
       const numberOnly = numberWords.join(' ');
       if (numberSpeechWasUnderstood([numberOnly], targetNumber)) return true;
 
