@@ -241,6 +241,7 @@
     .number-speaking-answer { display:none; min-width:0; flex:1 1 30%; background:#1565c0; white-space:normal; line-height:1.2; }
     .number-speaking-answer-slow { background:#1976d2; }
     .number-speaking-answer-slower { background:#3949ab; }
+    .number-speaking-retry { display:none; margin:8px auto 4px; background:#00897b; }
     .number-speaking-feedback { min-height:50px; margin:12px 0 4px; color:#38534e; font-size:1.05rem; font-weight:bold; white-space:pre-line; }
     .number-speaking-feedback.good { color:#1b5e20; }
     .number-speaking-feedback.retry { color:#bf360c; }
@@ -1292,7 +1293,7 @@
         <span id="number-speaking-score">せいかい 0</span>
       </div>
       <h2 id="number-speaking-title">💴 値段を英語で言ってみよう！</h2>
-      <div class="number-speaking-help">AIの質問「How much is it?」を聞いて、表示された値段を「○○ yen, please.」と言おう。全部で10問だよ。</div>
+      <div class="number-speaking-help">お店の人の質問「How much is it?」を聞いて、表示された値段を「○○ yen, please.」と言おう。全部で10問だよ。</div>
       <div class="number-speaking-target" id="number-speaking-target" aria-label="英語で言う値段">？</div>
       <div class="number-speaking-controls">
         <button class="practice-btn number-speaking-mic" id="number-speaking-mic" onclick="checkNumberSpeaking()">🎤 発音チェック</button>
@@ -1301,6 +1302,7 @@
         <button class="practice-btn number-speaking-answer number-speaking-answer-slower" id="number-speaking-answer-slower" onclick="playNumberSpeakingAnswer(0.28)">🐢 正解を聞く（かなりゆっくり）</button>
       </div>
       <div class="number-speaking-feedback" id="number-speaking-feedback" role="status" aria-live="polite">「How much is it?」と聞かれたら、「○○ yen, please.」と答えてね。</div>
+      <button class="practice-btn number-speaking-retry" id="number-speaking-retry" onclick="retryNumberSpeaking()">🎤 もう一度言ってみる</button>
       <button class="listening-next" id="number-speaking-next" onclick="nextNumberSpeaking()">次の問題へ ➜</button>
       <div class="number-speaking-result" id="number-speaking-result"></div>
       <button class="practice-close" onclick="closeNumberSpeaking()">練習を終わる</button>
@@ -3336,7 +3338,8 @@
     micButton.innerText = '🎤 発音チェック';
     document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'none'; });
     document.getElementById('number-speaking-feedback').className = 'number-speaking-feedback';
-    document.getElementById('number-speaking-feedback').innerText = 'AIの質問を聞いてから、表示された値段を「○○ yen, please.」と言ってね。';
+    document.getElementById('number-speaking-feedback').innerText = '質問を聞いてから、表示された値段を「○○ yen, please.」と言ってね。';
+    document.getElementById('number-speaking-retry').style.display = 'none';
     const nextButton = document.getElementById('number-speaking-next');
     nextButton.innerText = numberSpeakingIndex === numberSpeakingQuestions.length - 1 ? '結果を見る ➜' : '次の問題へ ➜';
     nextButton.style.display = 'none';
@@ -3392,7 +3395,7 @@
       return;
     }
 
-    // 先にAIの質問を最後まで再生し、その音声をマイクが拾わないようにしてから聞き取りを始める。
+    // 先に質問の音声を最後まで再生し、その音声をマイクが拾わないようにしてから聞き取りを始める。
     if (numberSpeakingRecognition) {
       try { numberSpeakingRecognition.abort(); } catch (_) {}
       numberSpeakingRecognition = null;
@@ -3416,7 +3419,7 @@
     micButton.classList.remove('listening');
     micButton.innerText = '🔊 質問を聞いています…';
     feedback.className = 'number-speaking-feedback';
-    feedback.innerText = 'AIの質問を聞いてから、値段を英語で答えてね。';
+    feedback.innerText = '質問を聞いてから、値段を英語で答えてね。';
 
     let receivedSpeech = false;
     const startListening = () => {
@@ -3440,8 +3443,9 @@
         micButton.innerText = '🎤 発音チェック';
         feedback.className = 'number-speaking-feedback retry';
         feedback.innerText = event.error === 'not-allowed'
-          ? 'マイクの使用を許可してから、もう一度押してね。'
-          : '声を聞き取れませんでした。少し大きな声でもう一度試そう。';
+          ? 'マイクの使用を許可してから、「もう一度言ってみる」を押してね。'
+          : '声を聞き取れませんでした。「もう一度言ってみる」を押して、もう一度答えよう。';
+        document.getElementById('number-speaking-retry').style.display = 'inline-flex';
         if (numberSpeakingRecognition === micRecognition) numberSpeakingRecognition = null;
       };
       micRecognition.onend = () => {
@@ -3452,7 +3456,8 @@
           micButton.innerText = '🎤 発音チェック';
           if (!receivedSpeech) {
             feedback.className = 'number-speaking-feedback retry';
-            feedback.innerText = '声を確認できませんでした。値段を言ってから、もう一度押してね。';
+            feedback.innerText = '声を確認できませんでした。値段を言ってから、「もう一度言ってみる」を押してね。';
+            document.getElementById('number-speaking-retry').style.display = 'inline-flex';
           }
         }
       };
@@ -3485,7 +3490,7 @@
       micButton.classList.remove('listening');
       micButton.innerText = '🎤 発音チェック';
       feedback.className = 'number-speaking-feedback retry';
-      feedback.innerText = 'AIの質問を再生できませんでした。もう一度試してね。';
+      feedback.innerText = '質問の音声を再生できませんでした。もう一度試してね。';
     };
     try {
       synth.speak(utterance);
@@ -3494,7 +3499,7 @@
       micButton.disabled = false;
       micButton.innerText = '🎤 発音チェック';
       feedback.className = 'number-speaking-feedback retry';
-      feedback.innerText = 'AIの質問を再生できませんでした。もう一度試してね。';
+      feedback.innerText = '質問の音声を再生できませんでした。もう一度試してね。';
     }
   }
 
@@ -3553,6 +3558,7 @@
       feedback.className = 'number-speaking-feedback good';
       feedback.innerText = '⭕ 正解！「'+question.english+' yen, please.」と言えたね。';
       document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'none'; });
+      document.getElementById('number-speaking-retry').style.display = 'none';
       playSound('correct');
     } else {
       feedback.className = 'number-speaking-feedback retry';
@@ -3561,6 +3567,7 @@
         ? '聞こえたことば：「'+heard+'」\n値段の数字と「yen, please.」を確認して、もう一度言ってみよう。'
         : '声を聞き取れませんでした。値段を言ってから、もう一度試そう。';
       document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'inline-flex'; });
+      document.getElementById('number-speaking-retry').style.display = 'inline-flex';
       playSound('wrong');
     }
     document.getElementById('number-speaking-score').innerText = `せいかい ${numberSpeakingCorrect}`;
@@ -3572,6 +3579,14 @@
     if (!question) return;
     document.getElementById('number-speaking-feedback').innerText = '🔊 お手本を聞いているよ。まねして言ってみよう。';
     speakEnglishText(`${question.english} yen, please.`, rate);
+  }
+
+  function retryNumberSpeaking() {
+    if (!numberSpeakingQuestions[numberSpeakingIndex]) return;
+    numberSpeakingAnswered = false;
+    document.getElementById('number-speaking-retry').style.display = 'none';
+    document.getElementById('number-speaking-next').style.display = 'none';
+    checkNumberSpeaking();
   }
 
   function nextNumberSpeaking() {
