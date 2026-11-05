@@ -3509,15 +3509,17 @@
       if (numberSpeechWasUnderstood([numberOnly], targetNumber)) return true;
 
       // 音声認識が「7 3 0」のように数字を一桁ずつ返す場合も許容する。
-      if (numberWords.length >= 2 && numberWords.every(word => Object.prototype.hasOwnProperty.call(digitWords, word))) {
-        const spokenDigits = numberWords.map(word => digitWords[word]).join('');
+      if (numberWords.length >= 2 && numberWords.every(word =>
+          Object.prototype.hasOwnProperty.call(digitWords, word) || /^\d+$/.test(word))) {
+        const spokenDigits = numberWords.map(word =>
+          Object.prototype.hasOwnProperty.call(digitWords, word) ? digitWords[word] : word).join('');
         if (Number(spokenDigits) === Number(targetNumber)) return true;
       }
-      // 数字表記の「7 30」を「730」のような値段として認識した場合も許容する。
-      if (numberWords.length === 2 && numberWords.every(word => /^\\d+$/.test(word))) {
+      // 数字表記の「7 30」や英語の「seven thirty」を値段として認識した場合も許容する。
+      if (numberWords.length === 2 && /^\d+$/.test(numberWords[0])) {
         const leadingDigit = Number(numberWords[0]);
-        const remainder = Number(numberWords[1]);
-        if (leadingDigit >= 1 && leadingDigit <= 9 && remainder < 100
+        const remainder = parseNumberSpeech(numberWords[1]);
+        if (leadingDigit >= 1 && leadingDigit <= 9 && remainder !== null && remainder < 100
             && leadingDigit * 100 + remainder === Number(targetNumber)) return true;
       }
 
