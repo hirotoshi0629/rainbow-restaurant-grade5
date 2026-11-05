@@ -3513,6 +3513,13 @@
         const spokenDigits = numberWords.map(word => digitWords[word]).join('');
         if (Number(spokenDigits) === Number(targetNumber)) return true;
       }
+      // 数字表記の「7 30」を「730」のような値段として認識した場合も許容する。
+      if (numberWords.length === 2 && numberWords.every(word => /^\\d+$/.test(word))) {
+        const leadingDigit = Number(numberWords[0]);
+        const remainder = Number(numberWords[1]);
+        if (leadingDigit >= 1 && leadingDigit <= 9 && remainder < 100
+            && leadingDigit * 100 + remainder === Number(targetNumber)) return true;
+      }
 
       // 700台などを「seven thirty」のように省略して認識した場合の一般的な読みも補う。
       if (numberWords.length === 2
