@@ -2075,7 +2075,10 @@
   }
 
   function renderDailyChallenges() {
-    if (!dailyChallengeState) return;
+    if (!dailyChallengeState || dailyChallengeState.date !== localDateKey()) {
+      initDailyChallenges();
+      return;
+    }
     const list=document.getElementById('daily-challenge-list');
     if (!list) return;
     list.innerHTML=dailyChallengeDefinitions().map((challenge,index)=>{
