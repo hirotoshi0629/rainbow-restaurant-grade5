@@ -3501,10 +3501,13 @@
   function priceSpeechWasUnderstood(transcripts, targetNumber) {
     const digitWords = { zero:'0', oh:'0', one:'1', two:'2', three:'3', four:'4', five:'5', six:'6', seven:'7', eight:'8', nine:'9' };
     return transcripts.some(transcript => {
-      const heard = normalizeNumberSpeech(transcript);
+      const original = String(transcript || '');
+      const heard = normalizeNumberSpeech(original);
       const words = heard.split(' ').filter(Boolean);
-      if (!words.includes('yen') || !words.includes('please')) return false;
-      const numberWords = words.filter(word => word !== 'yen' && word !== 'please');
+      // 日本語環境の音声認識は「yen」を「¥870」「870円」と表記することがある。
+      const hasYenMarker = /\byen\b|\bjpy\b|[¥￥円]/i.test(original);
+      if (!hasYenMarker || !words.includes('please')) return false;
+      const numberWords = words.filter(word => !['yen', 'jpy', 'please'].includes(word));
       const numberOnly = numberWords.join(' ');
       if (numberSpeechWasUnderstood([numberOnly], targetNumber)) return true;
 
