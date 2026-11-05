@@ -3498,12 +3498,31 @@
     }
   }
 
-  function priceSpeechWasUnderstood(transcripts,targetNumber) {
+  function priceSpeechWasUnderstood(transcripts, targetNumber) {
+    const digitWords = { zero:'0', oh:'0', one:'1', two:'2', three:'3', four:'4', five:'5', six:'6', seven:'7', eight:'8', nine:'9' };
     return transcripts.some(transcript => {
-      const heard=normalizeNumberSpeech(transcript);
-      if(!heard.split(' ').includes('yen')||!heard.split(' ').includes('please')) return false;
-      const numberOnly=heard.split(' ').filter(word=>word!=='yen'&&word!=='please').join(' ');
-      return numberSpeechWasUnderstood([numberOnly],targetNumber);
+      const heard = normalizeNumberSpeech(transcript);
+      const words = heard.split(' ').filter(Boolean);
+      if (!words.includes('yen') || !words.includes('please')) return false;
+      const numberWords = words.filter(word => word !== 'yen' && word !== 'please');
+      const numberOnly = numberWords.join(' ');
+      if (numberSpeechWasUnderstood([numberOnly], targetNumber)) return true;
+
+      // 音声認識が「7 3 0」のように数字を一桁ずつ返す場合も許容する。
+      if (numberWords.length >= 2 && numberWords.every(word => Object.prototype.hasOwnProperty.call(digitWords, word))) {
+        const spokenDigits = numberWords.map(word => digitWords[word]).join('');
+        if (Number(spokenDigits) === Number(targetNumber)) return true;
+      }
+
+      // 700台などを「seven thirty」のように省略して認識した場合の一般的な読みも補う。
+      if (numberWords.length === 2
+          && /^(one|two|three|four|five|six|seven|eight|nine)$/.test(numberWords[0])) {
+        const hundreds = ({one:100,two:200,three:300,four:400,five:500,six:600,seven:700,eight:800,nine:900})[numberWords[0]];
+        const remainder = parseNumberSpeech(numberWords[1]);
+        if (remainder !== null && remainder >= 0 && remainder < 100
+            && hundreds + remainder === Number(targetNumber)) return true;
+      }
+      return false;
     });
   }
 
@@ -3525,7 +3544,10 @@
       playSound('correct');
     } else {
       feedback.className = 'number-speaking-feedback retry';
-      feedback.innerText = 'おしい！「正解を聞く」を押して、「○○ yen, please.」を聞いてみよう。';
+      const heard = String(transcripts.find(text => String(text || '').trim()) || '').trim();
+      feedback.innerText = heard
+        ? '聞こえたことば：「'+heard+'」\n値段の数字と「yen, please.」を確認して、もう一度言ってみよう。'
+        : '声を聞き取れませんでした。値段を言ってから、もう一度試そう。';
       document.querySelectorAll('.number-speaking-answer').forEach(button => { button.style.display = 'inline-flex'; });
       playSound('wrong');
     }
