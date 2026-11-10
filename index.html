@@ -624,7 +624,6 @@
     .mic-level-wrap { display:none; width:min(420px,88%); height:18px; margin:8px auto 0; overflow:hidden; background:#eceff1; border:2px solid #b0bec5; border-radius:999px; }
     .mic-level-bar { width:0; height:100%; background:linear-gradient(90deg,#66bb6a,#00c853,#ffd600); border-radius:999px; transition:width .08s linear; }
     .btn-voice-fallback { display:none; margin:10px auto 0; padding:11px 20px; background:#ff9800; color:#fff; font-weight:bold; border:0; border-radius:999px; box-shadow:0 4px 0 #e65100; cursor:pointer; }
-    .btn-new-tab { display:none; margin:8px auto 0; background:#455a64; color:#fff; }
     .stars { color:#ffb300; letter-spacing:2px; font-size:1.2rem; }
     .judge-overlay { font-family:inherit; width:auto!important; font-size:3rem!important; padding:24px 34px; left:50%; top:50%; transform:translate(-50%,-50%); border-radius:24px; background:rgba(255,255,255,.96); box-shadow:0 14px 40px rgba(0,0,0,.24); }
     .judge-batsu { color:#ef6c00!important; }
@@ -1412,7 +1411,6 @@
     <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
     <div class="mic-level-wrap" id="mic-level-wrap" aria-label="マイクの音量"><div class="mic-level-bar" id="mic-level-bar"></div></div>
     <button class="btn-voice-fallback" id="voice-fallback-btn" onclick="acceptDetectedVoice()">🔊 お手本を聞いて、もう一度</button>
-    <button class="btn-new-tab" id="btn-new-tab" onclick="window.open(location.href, '_blank', 'noopener')">↗ 新しいタブで開く</button>
 
     <!-- お金支払いエリア（お客役のみ） -->
     <div class="money-area" id="money-area" style="display:none;">
@@ -4206,7 +4204,6 @@
     recognition.onerror = (event) => {
       console.error("音声認識エラー:", event.error);
       const status = document.getElementById('mic-status');
-      const newTab = document.getElementById('btn-new-tab');
       if (event.error === 'no-speech') {
         recognitionHadError = false;
         status.innerText = "まだ話せます。全部言い終えてから「話し終わった」を押してね。";
@@ -4215,17 +4212,15 @@
       recognitionHadError = true;
       stopMicControls();
       stopMicMonitor();
-      if (event.error === 'not-allowed' || event.error === 'service-not-allowed') {
-        status.innerText = "マイクが許可されていません。ブラウザのマイクを許可してください。";
-        status.classList.add('error');
-        newTab.style.display = 'block';
-      } else if (event.error === 'audio-capture') {
-        status.innerText = "マイクを一時的に使えませんでした。少し待ってから、もう一度押してください。";
-        status.classList.add('error');
-      } else {
-        status.innerText = "マイクを開始できませんでした。もう一度押してみてください。";
-        status.classList.add('error');
-      }
+      const errorMessages = {
+        'not-allowed': 'ブラウザがマイクの使用を拒否しました。Safariでこのページを開き、Webサイトのマイク設定を「許可」にしてから、もう一度試してください。',
+        'service-not-allowed': '音声認識サービスを利用できませんでした。これはマイクの許可とは別の問題です。Safariアプリでこのページを直接開いて再度お試しください。それでも続く場合は、この端末・ブラウザでは音声認識を利用できない可能性があります。',
+        'audio-capture': 'マイクを開始できませんでした。ほかのアプリがマイクを使用していないか確認し、少し待ってからもう一度試してください。',
+        'network': '音声認識サービスに接続できませんでした。インターネット接続を確認して、もう一度試してください。',
+        'language-not-supported': 'この端末・ブラウザでは英語の音声認識を利用できません。別のブラウザまたは端末でお試しください。'
+      };
+      status.innerText = errorMessages[event.error] || `音声認識を開始できませんでした（${event.error || '原因不明'}）。少し待ってからもう一度試してください。`;
+      status.classList.add('error');
     };
   }
 
@@ -4233,7 +4228,6 @@
     if (audioCtx.state === 'suspended') audioCtx.resume();
     const status = document.getElementById('mic-status');
     const micButton = document.getElementById('mic-btn');
-    const newTab = document.getElementById('btn-new-tab');
 
     if (!recognition) {
       status.innerText = "音声認識を利用できません。ChromeまたはEdgeで開いてください。";
@@ -4245,7 +4239,6 @@
       finishSpeechInput();
     } else {
       status.classList.remove('error');
-      newTab.style.display = 'none';
       micButton.innerText = "⏳ マイクを準備中…";
       status.innerText = "マイクの使用を確認しています…";
 
@@ -4276,9 +4269,11 @@
       } catch (error) {
         stopMicControls();
         stopMicMonitor();
-        status.innerText = error && error.name === 'NotAllowedError'
-          ? "マイクが許可されていません。アドレスバー左の鍵マークからマイクを許可してください。"
-          : "マイクを開始できませんでした。少し待ってから、もう一度押してください。";
+        if (error && (error.name === 'NotAllowedError' || error.name === 'SecurityError')) {
+          status.innerText = 'ブラウザがマイクの使用を拒否しました。Safariでこのページを開き、Webサイトのマイク設定を「許可」にしてから、もう一度試してください。';
+        } else {
+          status.innerText = `音声認識を開始できませんでした（${error && error.name ? error.name : '原因不明'}）。少し待ってからもう一度試してください。`;
+        }
         status.classList.add('error');
       }
     }
