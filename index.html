@@ -491,7 +491,18 @@
       text-align: center;
       margin-bottom: 15px;
     }
-    body.voice-answer-active .target-speech-box { position:sticky; top:6px; z-index:40; box-shadow:0 5px 14px rgba(20,65,80,.18); scroll-margin-top:6px; }
+    body.voice-answer-active .game-screen > :not(#target-speech-box):not(#voice-answer-panel) { display:none !important; }
+    body.voice-answer-active .target-speech-box {
+      position:fixed; box-sizing:border-box; top:var(--voice-viewport-top, 8px); left:50%;
+      width:calc(100vw - 24px); max-width:760px; transform:translateX(-50%);
+      z-index:1002; margin:0; box-shadow:0 5px 14px rgba(20,65,80,.22);
+    }
+    body.voice-answer-active .voice-answer-panel {
+      position:fixed; box-sizing:border-box; top:calc(var(--voice-viewport-top, 8px) + var(--voice-target-height, 108px) + 10px);
+      left:50%; transform:translateX(-50%); width:calc(100vw - 24px); max-width:760px;
+      max-height:calc(var(--voice-viewport-height, 100vh) - var(--voice-target-height, 108px) - 34px);
+      overflow-y:auto; overscroll-behavior:contain; z-index:1001; margin:0;
+    }
     #heard-box { display:none !important; }
     .voice-answer-panel input::placeholder { color:#738792; opacity:1; }
     .voice-answer-panel input { scroll-margin-bottom:180px; }
@@ -1427,11 +1438,11 @@
     <div class="voice-answer-panel" id="voice-answer-panel">
       <label for="voice-answer-input">英語で答えよう（iPadの音声入力が使えます）</label>
       <p>入力欄をタップし、英語キーボードのマイクを押して話そう。英文は画面に表示せず、言い終わったら判定できます。</p>
-      <input id="voice-answer-input" class="voice-capture-only" type="text" lang="en-US" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="英語の音声入力欄。認識された英文は表示せず、判定結果のみ表示します。" placeholder="ここをタップして英語で話してください">
+      <input id="voice-answer-input" class="voice-capture-only" type="text" lang="en-US" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="英語の音声入力欄。認識された英文は表示せず、判定結果のみ表示します。" placeholder="ここをタップして英語で話してください" onfocus="activateVoiceLayout()">
       <button type="button" class="voice-answer-submit" onclick="checkVoiceAnswer()">✅ 言い終わった。判定する</button>
       <small>音声入力はiPadの機能を使います。アプリは入力された英文だけを採点し、録音を保存・送信しません。</small>
+      <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
     </div>
-    <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
 
     <!-- お金支払いエリア（お客役のみ） -->
     <div class="money-area" id="money-area" style="display:none;">
@@ -5032,18 +5043,34 @@
 
 
 <script>
+  function updateVoiceViewport() {
+    const viewport = window.visualViewport;
+    const top = viewport ? viewport.offsetTop : 0;
+    const height = viewport ? viewport.height : window.innerHeight;
+    document.documentElement.style.setProperty('--voice-viewport-top', Math.max(0, top) + 'px');
+    document.documentElement.style.setProperty('--voice-viewport-height', height + 'px');
+    const target = document.getElementById('target-speech-box');
+    if (target) document.documentElement.style.setProperty('--voice-target-height', target.getBoundingClientRect().height + 'px');
+  }
+
   function activateVoiceLayout() {
     document.body.classList.add('voice-answer-active');
-    const target = document.getElementById('target-speech-box');
-    if (target) window.requestAnimationFrame(() => target.scrollIntoView({ block: 'start', behavior: 'smooth' }));
+    updateVoiceViewport();
+    window.requestAnimationFrame(updateVoiceViewport);
   }
+
+  if (window.visualViewport) {
+    window.visualViewport.addEventListener('resize', updateVoiceViewport);
+    window.visualViewport.addEventListener('scroll', updateVoiceViewport);
+  }
+  window.addEventListener('resize', updateVoiceViewport);
 
   function focusVoiceAnswer() {
     const field = document.getElementById('voice-answer-input');
     if (!field) return;
     activateVoiceLayout();
     document.getElementById('mic-status').classList.remove('error');
-    document.getElementById('mic-status').innerText = '英文が画面上部に見えています。英語キーボードのマイクから話してください。';
+    document.getElementById('mic-status').innerText = '英文を上に表示しました。英語キーボードのマイクから話してください。';
     window.setTimeout(() => field.focus({ preventScroll: true }), 120);
   }
 
