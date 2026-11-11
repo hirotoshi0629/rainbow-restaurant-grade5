@@ -4731,7 +4731,7 @@
     const target = normalizeSpeech(currentTargetSpeech);
     // iPad音声入力が語頭を重ねて「tthank」のように返すことがあるため、
     // 判定時だけ語頭の重複を1文字に整える（画面の聞こえた英文表示はそのまま）。
-    const userWords = user.split(' ').filter(Boolean).map(word => word.replace(/^([a-z])\\1(?=[a-z]{2,})/, '$1'));
+    const userWords = user.split(' ').filter(Boolean).map(word => word.replace(/^([a-z])\1(?=[a-z]{2,})/, '$1'));
     document.getElementById('heard-box').style.display = 'block';
     document.getElementById('heard-text').innerText = userText;
 
