@@ -5111,7 +5111,6 @@
     // 先にフォーカスを外して音声入力を確定し、文字列が落ち着いてから採点する。
     const target = normalizeSpeech(currentTargetSpeech);
     const wasGreeting = target.includes('what would you like');
-    const beforeBlur = field.value;
     field.blur();
     status.classList.remove('error');
     status.innerText = '音声入力を確定しています…';
