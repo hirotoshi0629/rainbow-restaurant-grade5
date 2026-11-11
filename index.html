@@ -620,6 +620,13 @@
     .heard-box { display:none; margin:8px 0; padding:9px 12px; background:#eef8ff; border-left:5px solid #2196f3; border-radius:8px; }
     .heard-box strong { color:#1565c0; }
     .mic-status { margin-top:8px; min-height:24px; text-align:center; font-weight:bold; color:#37474f; }
+    .voice-answer-panel { max-width:760px; margin:12px auto; padding:16px; border:2px solid #7ab8d2; border-radius:16px; background:#eef9ff; color:#24485b; text-align:center; }
+    .voice-answer-panel label { display:block; font-size:1.08rem; font-weight:800; }
+    .voice-answer-panel p { margin:7px 0 12px; line-height:1.6; }
+    .voice-answer-panel input { box-sizing:border-box; width:100%; min-height:54px; padding:10px 14px; border:2px solid #8dbbca; border-radius:12px; background:#fff; color:#20343d; font:inherit; font-size:1.15rem; }
+    .voice-answer-submit { margin-top:10px; min-height:48px; padding:10px 20px; border:0; border-radius:12px; background:#008f83; color:white; font:inherit; font-weight:800; cursor:pointer; }
+    .voice-answer-panel small { display:block; margin-top:9px; line-height:1.5; color:#526873; }
+    @media (max-width:600px) { .voice-answer-panel { padding:12px; } .voice-answer-panel input { font-size:16px; } }
     .recording-review-panel { display:none; max-width:760px; margin:12px auto; padding:14px; border:2px solid #7ab8d2; border-radius:16px; background:#eef9ff; color:#24485b; text-align:center; }
     .recording-review-panel p { margin:4px 0 10px; line-height:1.5; }
     .recording-review-actions { display:flex; flex-wrap:wrap; justify-content:center; gap:9px; }
@@ -1399,7 +1406,7 @@
 
     <!-- 発音ターゲット英文ボックス -->
     <div class="target-speech-box" id="target-speech-box">
-      <div class="target-label">🗣️ あなたがマイクで言う英文：</div>
+      <div class="target-label">🗣️ あなたが言う英文：</div>
       <div class="target-text" id="target-text">Select items...</div>
       <div class="jp-subtext" id="jp-subtext"></div>
     </div>
@@ -1409,20 +1416,16 @@
     <div class="controls">
       <button class="btn-hint" onclick="playCurrentTargetHint(0.6)">🔊 お手本を聞く（ゆっくり）</button>
       <button class="btn-hint btn-hint-slower" onclick="playCurrentTargetHint(0.3)">🐢 お手本を聞く（かなりゆっくり）</button>
-      <button class="btn-mic" id="mic-btn" onclick="toggleMic()">🎙️ 録音を始める</button>
+      <button class="btn-mic" id="mic-btn" type="button" onclick="focusVoiceAnswer()">🎙️ 音声入力欄を開く</button>
     </div>
-    <button class="btn-speech-finish" id="speech-finish-btn" onclick="finishSpeechInput()" style="display:none">⏹️ 録音を止める</button>
-    <div class="speech-finish-help" id="speech-finish-help" style="display:none">言い終えたら録音を止めて、自分の声を聞き返そう。</div>
+    <div class="voice-answer-panel" id="voice-answer-panel">
+      <label for="voice-answer-input">英語で答えよう（iPadの音声入力が使えます）</label>
+      <p>入力欄をタップし、英語キーボードのマイクを押して話そう。認識された英文を確認してから判定できます。</p>
+      <input id="voice-answer-input" type="text" lang="en-US" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="例：Two hundred yen, please.">
+      <button type="button" class="voice-answer-submit" onclick="checkVoiceAnswer()">✅ この英文で判定する</button>
+      <small>音声入力はiPadの機能を使います。アプリは入力された英文だけを採点し、録音を保存・送信しません。</small>
+    </div>
     <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
-    <div class="recording-review-panel" id="recording-review-panel">
-      <p>自分の声を最後まで聞いて、お手本と比べてみよう。録音はこの端末内で再生し、保存・送信しません。</p>
-      <audio id="practice-recording-audio" preload="none"></audio>
-      <div class="recording-review-actions">
-        <button type="button" id="recording-play-btn" onclick="playOwnRecording()">▶ 自分の声を聞く</button>
-        <button type="button" id="recording-confirm-btn" onclick="confirmOwnRecording()" disabled>✅ 聞き比べて次へ</button>
-        <button type="button" id="recording-retry-btn" onclick="retryOwnRecording()">🔁 もう一度録音</button>
-      </div>
-    </div>
 
     <!-- お金支払いエリア（お客役のみ） -->
     <div class="money-area" id="money-area" style="display:none;">
@@ -5022,5 +5025,34 @@
 
 
 
+<script>
+  function focusVoiceAnswer() {
+    const field = document.getElementById('voice-answer-input');
+    if (!field) return;
+    document.getElementById('mic-status').classList.remove('error');
+    document.getElementById('mic-status').innerText = '入力欄をタップして英語キーボードを選び、キーボードのマイクから話してください。';
+    field.focus();
+  }
+
+  function checkVoiceAnswer() {
+    const field = document.getElementById('voice-answer-input');
+    const answer = field ? field.value.trim() : '';
+    const status = document.getElementById('mic-status');
+    if (!answer) {
+      status.classList.add('error');
+      status.innerText = '先に英文を音声入力してから、判定ボタンを押してください。';
+      if (field) field.focus();
+      return;
+    }
+    status.classList.remove('error');
+    const stepBeforeCheck = currentStep;
+    checkSpeechFlex(answer);
+    if (currentStep !== stepBeforeCheck) {
+      window.setTimeout(() => {
+        if (field) field.value = '';
+      }, 800);
+    }
+  }
+</script>
 </body>
 </html>
