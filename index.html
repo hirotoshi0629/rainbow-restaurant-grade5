@@ -503,7 +503,7 @@
       max-height:calc(var(--voice-viewport-height, 100vh) - var(--voice-target-height, 108px) - 34px);
       overflow-y:auto; overscroll-behavior:contain; z-index:1001; margin:0;
     }
-    #heard-box { display:none !important; }
+    #heard-text { display:block; margin-top:5px; overflow-wrap:anywhere; line-height:1.5; }
     .voice-answer-panel input::placeholder { color:#738792; opacity:1; }
     .voice-answer-panel input { scroll-margin-bottom:180px; }
 
@@ -633,6 +633,7 @@
     .mission-card strong { color:#e65100; font-size:1.05rem; }
     .customer-chip { display:inline-flex; align-items:center; gap:7px; margin-top:7px; padding:5px 10px; border-radius:999px; background:#fff; border:1px solid #ffcc80; font-weight:bold; }
     .heard-box { display:none; margin:8px 0; padding:9px 12px; background:#eef8ff; border-left:5px solid #2196f3; border-radius:8px; }
+    .voice-answer-panel .heard-box { text-align:left; color:#24485b; font-size:1rem; }
     .heard-box strong { color:#1565c0; }
     .mic-status { margin-top:8px; min-height:24px; text-align:center; font-weight:bold; color:#37474f; }
     .voice-answer-panel { max-width:760px; margin:12px auto; padding:16px; border:2px solid #7ab8d2; border-radius:16px; background:#eef9ff; color:#24485b; text-align:center; }
@@ -1430,7 +1431,7 @@
       <div class="target-text" id="target-text">Select items...</div>
       <div class="jp-subtext" id="jp-subtext"></div>
     </div>
-    <div class="heard-box" id="heard-box" aria-hidden="true"><strong>聞こえた英語：</strong><span id="heard-text"></span></div>
+    
 
     <!-- 操作ボタン -->
     <div class="controls">
@@ -1443,11 +1444,12 @@
         <button type="button" class="voice-answer-back" onclick="leaveVoiceAnswerMode()">← 戻る</button>
         <label for="voice-answer-input">英語で答えよう（iPadの音声入力が使えます）</label>
       </div>
-      <p>入力欄をタップし、英語キーボードのマイクを押して話そう。英文は画面に表示せず、言い終わったら判定できます。</p>
+      <p>入力欄をタップし、英語キーボードのマイクから話そう。判定後に、聞こえた英文が表示されます。</p>
       <input id="voice-answer-input" class="voice-capture-only" type="text" lang="en-US" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="英語の音声入力欄。認識された英文は表示せず、判定結果のみ表示します。" placeholder="ここをタップして英語で話してください" onfocus="activateVoiceLayout()">
       <button type="button" class="voice-answer-submit" onclick="checkVoiceAnswer()">✅ 言い終わった。判定する</button>
       <small>音声入力はiPadの機能を使います。アプリは入力された英文だけを採点し、録音を保存・送信しません。</small>
       <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
+      <div class="heard-box" id="heard-box" role="status" aria-live="polite"><strong>聞こえた英文：</strong><span id="heard-text"></span></div>
     </div>
 
     <!-- お金支払いエリア（お客役のみ） -->
@@ -5060,6 +5062,10 @@
   }
 
   function activateVoiceLayout() {
+    const heardBox = document.getElementById('heard-box');
+    const heardText = document.getElementById('heard-text');
+    if (heardBox) heardBox.style.display = 'none';
+    if (heardText) heardText.innerText = '';
     document.body.classList.add('voice-answer-active');
     updateVoiceViewport();
     window.requestAnimationFrame(updateVoiceViewport);
@@ -5111,9 +5117,7 @@
     if (currentStep !== stepBeforeCheck) {
       window.setTimeout(() => {
         document.body.classList.remove('voice-answer-active');
-      }, 900);
-    } else if (field) {
-      window.setTimeout(() => field.focus({ preventScroll: true }), 250);
+      }, 2200);
     }
   }
 </script>
