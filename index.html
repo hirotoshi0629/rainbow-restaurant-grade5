@@ -491,6 +491,10 @@
       text-align: center;
       margin-bottom: 15px;
     }
+    body.voice-answer-active .target-speech-box { position:sticky; top:6px; z-index:40; box-shadow:0 5px 14px rgba(20,65,80,.18); scroll-margin-top:6px; }
+    #heard-box { display:none !important; }
+    .voice-answer-panel input::placeholder { color:#738792; opacity:1; }
+    .voice-answer-panel input { scroll-margin-bottom:180px; }
 
     .target-label { font-size: 0.8rem; color: #2e7d32; font-weight: bold; }
     .target-text { font-size: 1.2rem; font-weight: bold; color: #1b5e20; margin: 4px 0; }
@@ -1410,7 +1414,7 @@
       <div class="target-text" id="target-text">Select items...</div>
       <div class="jp-subtext" id="jp-subtext"></div>
     </div>
-    <div class="heard-box" id="heard-box"><strong>聞こえた英語：</strong><span id="heard-text"></span></div>
+    <div class="heard-box" id="heard-box" aria-hidden="true"><strong>聞こえた英語：</strong><span id="heard-text"></span></div>
 
     <!-- 操作ボタン -->
     <div class="controls">
@@ -1422,7 +1426,7 @@
       <label for="voice-answer-input">英語で答えよう（iPadの音声入力が使えます）</label>
       <p>入力欄をタップし、英語キーボードのマイクを押して話そう。認識された英文を確認してから判定できます。</p>
       <input id="voice-answer-input" type="text" lang="en-US" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" placeholder="例：Two hundred yen, please.">
-      <button type="button" class="voice-answer-submit" onclick="checkVoiceAnswer()">✅ この英文で判定する</button>
+      <button type="button" class="voice-answer-submit" onclick="checkVoiceAnswer()">✅ 言い終わった。判定する</button>
       <small>音声入力はiPadの機能を使います。アプリは入力された英文だけを採点し、録音を保存・送信しません。</small>
     </div>
     <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
@@ -5026,12 +5030,19 @@
 
 
 <script>
+  function activateVoiceLayout() {
+    document.body.classList.add('voice-answer-active');
+    const target = document.getElementById('target-speech-box');
+    if (target) window.requestAnimationFrame(() => target.scrollIntoView({ block: 'start', behavior: 'smooth' }));
+  }
+
   function focusVoiceAnswer() {
     const field = document.getElementById('voice-answer-input');
     if (!field) return;
+    activateVoiceLayout();
     document.getElementById('mic-status').classList.remove('error');
-    document.getElementById('mic-status').innerText = '入力欄をタップして英語キーボードを選び、キーボードのマイクから話してください。';
-    field.focus();
+    document.getElementById('mic-status').innerText = '英文が画面上部に見えています。英語キーボードのマイクから話してください。';
+    window.setTimeout(() => field.focus({ preventScroll: true }), 120);
   }
 
   function checkVoiceAnswer() {
@@ -5041,16 +5052,19 @@
     if (!answer) {
       status.classList.add('error');
       status.innerText = '先に英文を音声入力してから、判定ボタンを押してください。';
-      if (field) field.focus();
+      if (field) field.focus({ preventScroll: true });
       return;
     }
     status.classList.remove('error');
     const stepBeforeCheck = currentStep;
+    if (field) field.value = '';
     checkSpeechFlex(answer);
     if (currentStep !== stepBeforeCheck) {
       window.setTimeout(() => {
-        if (field) field.value = '';
-      }, 800);
+        document.body.classList.remove('voice-answer-active');
+      }, 900);
+    } else if (field) {
+      window.setTimeout(() => field.focus({ preventScroll: true }), 250);
     }
   }
 </script>
