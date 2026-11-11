@@ -557,10 +557,19 @@
     }
 
     .restaurant-modal-content { max-width:780px; border:5px solid #6a1b9a; border-radius:24px; background:linear-gradient(180deg,#fff,#fff8e1); }
-    .restaurant-stage-visual { position:relative; max-width:560px; margin:0 auto; }
-    .restaurant-stage-image { width:100%; max-width:560px; height:300px; object-fit:contain; border-radius:18px; background:#fff; }
-    .restaurant-stage-decor { position:absolute; right:10px; bottom:10px; display:none; padding:5px 10px; border:2px solid #f9a825; border-radius:999px; background:#fffde7; color:#5d4037; font-weight:bold; box-shadow:0 2px 7px #0002; }
-    .restaurant-stage-decor img { width:38px; height:34px; object-fit:contain; vertical-align:middle; }
+    .restaurant-stage-visual { position:relative; width:min(100%,560px); height:clamp(220px,53vw,300px); margin:0 auto; overflow:hidden; border-radius:18px; background:#fff; touch-action:pan-y; }
+    .restaurant-stage-image { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; border-radius:18px; background:#fff; pointer-events:none; }
+    .restaurant-stage-decor { position:absolute; inset:0; display:block; pointer-events:none; }
+    .restaurant-stage-piece { position:absolute; display:block; max-width:none; max-height:none; height:auto; object-fit:contain; transform:translate(-50%,-50%); pointer-events:auto; cursor:grab; user-select:none; -webkit-user-drag:none; touch-action:none; filter:drop-shadow(0 3px 3px rgba(55,40,20,.28)); }
+    .restaurant-stage-piece:active { cursor:grabbing; }
+    .restaurant-stage-piece.selected { outline:2px dashed #ff9800; outline-offset:3px; filter:drop-shadow(0 0 5px rgba(255,152,0,.85)); }
+    .decor-editor-tools { display:flex; justify-content:center; align-items:center; flex-wrap:wrap; gap:8px; max-width:560px; margin:8px auto 4px; padding:9px; border-radius:13px; background:#fff3e0; color:#5d4037; }
+    .decor-editor-tools button { min-height:40px; padding:7px 12px; border:2px solid #ffb74d; border-radius:10px; background:#fff; color:#5d4037; font:inherit; font-weight:bold; cursor:pointer; }
+    .decor-editor-tools button:disabled,.decor-editor-tools input:disabled { opacity:.45; cursor:not-allowed; }
+    .decor-size-control { display:flex; align-items:center; gap:8px; font-weight:bold; }
+    .decor-size-control input { width:min(180px,35vw); accent-color:#ef6c00; }
+    .decor-editor-hint { margin:2px auto 9px; color:#6d4c41; font-size:.9rem; text-align:center; }
+    .restaurant-stage-piece-count { font-size:.9rem; font-weight:bold; }
     .restaurant-rank { margin:8px 0 2px; color:#4a148c; font-size:1.65rem; font-weight:bold; }
     .restaurant-level-label { color:#e65100; font-weight:bold; }
     .growth-track { height:18px; margin:12px auto 5px; max-width:560px; border-radius:999px; background:#e0e0e0; overflow:hidden; box-shadow:inset 0 2px 4px rgba(0,0,0,.15); }
@@ -1473,10 +1482,19 @@
   <div class="modal-content restaurant-modal-content">
     <div class="restaurant-level-label" id="restaurant-level-label">レストラン レベル 1</div>
     <div class="restaurant-rank" id="restaurant-rank-name">小さな屋台</div>
-    <div class="restaurant-stage-visual">
+    <div class="restaurant-stage-visual" id="restaurant-stage-board" aria-label="飾りを自由に配置するレストラン">
       <img class="restaurant-stage-image" id="restaurant-stage-image" src="assets/restaurant-stages/stage-00.webp" alt="成長中のレストラン">
       <div class="restaurant-stage-decor" id="restaurant-stage-decor"></div>
     </div>
+    <div class="decor-editor-tools">
+      <span class="restaurant-stage-piece-count" id="restaurant-stage-piece-count">飾り 0こ</span>
+      <label class="decor-size-control" for="restaurant-decor-size">大きさ
+        <input id="restaurant-decor-size" type="range" min="8" max="55" step="1" value="20" disabled oninput="setSelectedRestaurantDecorationSize(this.value)">
+        <span id="restaurant-decor-size-label">—</span>
+      </label>
+      <button type="button" id="restaurant-decor-remove" onclick="removeSelectedRestaurantDecoration()" disabled>選択した飾りを片づける</button>
+    </div>
+    <p class="decor-editor-hint">飾りをドラッグして好きな場所へ。選んだ飾りは大きさも変えられるよ。</p>
     <div class="growth-track" aria-label="次のレストランまでの成長度">
       <div class="growth-fill" id="growth-fill"></div>
     </div>
@@ -1519,7 +1537,7 @@
       <p class="coin-shop-balance">使えるコイン：<span id="wallet-coins">0</span> コイン</p>
       <p class="career-note" style="text-align:center;margin:4px 0 10px;">練習でもらったコインで、お店のかざりを集めよう。</p>
       <div class="coin-shop-grid" id="coin-shop-grid"></div>
-      <div class="restaurant-decor-display" id="restaurant-decor-display">かざり：まだ選んでいません</div>
+      <p class="career-note" style="text-align:center;margin:8px 0 0;">買った飾りは上のお店の絵に追加されます。ドラッグして好きな場所に置こう。</p>
     </section>
     <p class="career-note">累計売上はレベルアップに使い、使えるコインはお店のかざりと交換できます。コインを使っても累計売上やレベルは減りません。記録はこの端末に保存されます。</p>
     <p style="color:#5d4037;font-weight:bold;">英語を練習して売上を増やし、世界一のレストランを目指そう。</p>
@@ -1736,6 +1754,17 @@
   let ownedRestaurantDecorations = [];
   try { ownedRestaurantDecorations = JSON.parse(localStorage.getItem('restaurant_decor_owned') || '[]'); } catch (_) { ownedRestaurantDecorations = []; }
   let selectedRestaurantDecoration = localStorage.getItem('restaurant_decor_selected') || '';
+  let restaurantDecorPlacements = [];
+  try { restaurantDecorPlacements = JSON.parse(localStorage.getItem('restaurant_decor_placements') || '[]'); } catch (_) { restaurantDecorPlacements = []; }
+  let selectedRestaurantPlacementId = '';
+  if (!restaurantDecorPlacements.length && selectedRestaurantDecoration) {
+    const oldDecoration = restaurantDecorations.find(item => item.id === selectedRestaurantDecoration);
+    if (oldDecoration) {
+      restaurantDecorPlacements.push({ instanceId:'legacy-' + oldDecoration.id, itemId:oldDecoration.id, x:78, y:70, size:20 });
+      selectedRestaurantPlacementId = 'legacy-' + oldDecoration.id;
+      localStorage.setItem('restaurant_decor_placements', JSON.stringify(restaurantDecorPlacements));
+    }
+  }
   let completedConversations = parseInt(localStorage.getItem('restaurant_completed') || '0');
   let listeningBest = parseInt(localStorage.getItem('restaurant_listening_best') || '0');
   let totalListeningCorrect = parseInt(localStorage.getItem('restaurant_listening_total_correct') || '0');
@@ -4515,23 +4544,114 @@
     }
   }
 
+  function saveRestaurantDecorPlacements() {
+    localStorage.setItem('restaurant_decor_placements', JSON.stringify(restaurantDecorPlacements));
+  }
+
+  function renderRestaurantDecorationTools() {
+    const placement = restaurantDecorPlacements.find(item => item.instanceId === selectedRestaurantPlacementId);
+    const slider = document.getElementById('restaurant-decor-size');
+    const label = document.getElementById('restaurant-decor-size-label');
+    const remove = document.getElementById('restaurant-decor-remove');
+    const count = document.getElementById('restaurant-stage-piece-count');
+    if (count) count.innerText = '飾り ' + restaurantDecorPlacements.length + 'こ';
+    if (slider) { slider.disabled = !placement; if (placement) slider.value = String(placement.size); }
+    if (label) label.innerText = placement ? placement.size + '%' : '—';
+    if (remove) remove.disabled = !placement;
+  }
+
+  function renderRestaurantStageDecorations() {
+    const stageDecor = document.getElementById('restaurant-stage-decor');
+    if (!stageDecor) return;
+    stageDecor.innerHTML = '';
+    restaurantDecorPlacements.forEach(placement => {
+      const item = restaurantDecorations.find(entry => entry.id === placement.itemId);
+      if (!item) return;
+      const piece = document.createElement('img');
+      piece.className = 'restaurant-stage-piece' + (placement.instanceId === selectedRestaurantPlacementId ? ' selected' : '');
+      piece.src = item.image; piece.alt = item.name; piece.draggable = false;
+      piece.dataset.placementId = placement.instanceId;
+      piece.style.left = placement.x + '%'; piece.style.top = placement.y + '%'; piece.style.width = placement.size + '%';
+      piece.addEventListener('pointerdown', event => startRestaurantDecorationDrag(event, placement.instanceId));
+      piece.addEventListener('click', () => selectRestaurantDecorationPlacement(placement.instanceId));
+      stageDecor.appendChild(piece);
+    });
+    renderRestaurantDecorationTools();
+  }
+
+  function selectRestaurantDecorationPlacement(instanceId) {
+    selectedRestaurantPlacementId = instanceId;
+    renderRestaurantStageDecorations();
+  }
+
+  function startRestaurantDecorationDrag(event, instanceId) {
+    event.preventDefault();
+    const piece = event.currentTarget;
+    const placement = restaurantDecorPlacements.find(item => item.instanceId === instanceId);
+    const board = document.getElementById('restaurant-stage-board');
+    if (!placement || !board) return;
+    selectedRestaurantPlacementId = instanceId;
+    document.querySelectorAll('.restaurant-stage-piece').forEach(el => el.classList.toggle('selected', el.dataset.placementId === instanceId));
+    renderRestaurantDecorationTools();
+    const bounds = board.getBoundingClientRect();
+    const startX = event.clientX, startY = event.clientY;
+    const originX = placement.x, originY = placement.y;
+    try { piece.setPointerCapture(event.pointerId); } catch (_) {}
+    const move = moveEvent => {
+      placement.x = Math.max(4, Math.min(96, originX + (moveEvent.clientX - startX) / bounds.width * 100));
+      placement.y = Math.max(5, Math.min(95, originY + (moveEvent.clientY - startY) / bounds.height * 100));
+      piece.style.left = placement.x + '%'; piece.style.top = placement.y + '%';
+    };
+    const finish = () => {
+      piece.removeEventListener('pointermove', move);
+      piece.removeEventListener('pointerup', finish);
+      piece.removeEventListener('pointercancel', finish);
+      saveRestaurantDecorPlacements();
+      renderRestaurantStageDecorations();
+    };
+    piece.addEventListener('pointermove', move);
+    piece.addEventListener('pointerup', finish);
+    piece.addEventListener('pointercancel', finish);
+  }
+
+  function setSelectedRestaurantDecorationSize(value) {
+    const placement = restaurantDecorPlacements.find(item => item.instanceId === selectedRestaurantPlacementId);
+    if (!placement) return;
+    placement.size = Math.max(8, Math.min(55, Number(value) || 20));
+    saveRestaurantDecorPlacements();
+    const piece = document.querySelector('.restaurant-stage-piece[data-placement-id="' + selectedRestaurantPlacementId + '"]');
+    if (piece) piece.style.width = placement.size + '%';
+    renderRestaurantDecorationTools();
+  }
+
+  function removeSelectedRestaurantDecoration() {
+    if (!selectedRestaurantPlacementId) return;
+    restaurantDecorPlacements = restaurantDecorPlacements.filter(item => item.instanceId !== selectedRestaurantPlacementId);
+    selectedRestaurantPlacementId = '';
+    saveRestaurantDecorPlacements();
+    renderRestaurantStageDecorations();
+  }
+
+  function addRestaurantDecorationPlacement(item) {
+    const instanceId = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : 'decor-' + Date.now() + '-' + Math.floor(Math.random() * 100000);
+    const spots = [{x:18,y:68},{x:82,y:68},{x:50,y:32},{x:30,y:42},{x:70,y:42},{x:50,y:78},{x:15,y:35},{x:85,y:35}];
+    const spot = spots[restaurantDecorPlacements.length % spots.length];
+    restaurantDecorPlacements.push({ instanceId:instanceId, itemId:item.id, x:spot.x, y:spot.y, size:20 });
+    selectedRestaurantPlacementId = instanceId;
+    saveRestaurantDecorPlacements();
+    renderRestaurantStageDecorations();
+  }
+
   function renderRestaurantShop() {
     const grid = document.getElementById('coin-shop-grid');
     if (!grid) return;
     grid.innerHTML = restaurantDecorations.map(item => {
       const owned = ownedRestaurantDecorations.includes(item.id);
-      const selected = selectedRestaurantDecoration === item.id;
       const disabled = !owned && walletCoins < item.cost;
-      const label = selected ? 'かざり中' : owned ? 'かざる' : `${item.cost} コインで交換`;
-      return `<div class="coin-shop-card"><img class="decor-icon" src="${item.image}" alt=""><strong>${item.name}</strong><br><button onclick="buyRestaurantDecoration('${item.id}')" ${disabled?'disabled':''}>${label}</button></div>`;
+      const label = owned ? 'お店に置く' : item.cost + ' コインで交換';
+      return '<div class="coin-shop-card"><img class="decor-icon" src="' + item.image + '" alt=""><strong>' + item.name + '</strong><br><button onclick="buyRestaurantDecoration(\'' + item.id + '\')" ' + (disabled ? 'disabled' : '') + '>' + label + '</button></div>';
     }).join('');
-    const selected = restaurantDecorations.find(item => item.id === selectedRestaurantDecoration);
-    document.getElementById('restaurant-decor-display').innerHTML = selected ? `<img src="${selected.image}" alt="">かざり：${selected.name}` : 'かざり：まだ選んでいません';
-    const stageDecor = document.getElementById('restaurant-stage-decor');
-    if (stageDecor) {
-      stageDecor.style.display = selected ? 'block' : 'none';
-      stageDecor.innerHTML = selected ? `<img src="${selected.image}" alt="">${selected.name}` : '';
-    }
+    renderRestaurantStageDecorations();
   }
 
   function buyRestaurantDecoration(id) {
@@ -4541,11 +4661,12 @@
       if (walletCoins < item.cost) return;
       walletCoins -= item.cost;
       ownedRestaurantDecorations.push(item.id);
-      localStorage.setItem('restaurant_decor_owned',JSON.stringify(ownedRestaurantDecorations));
-      showMissionToast(`${item.name}と交換したよ！`);
+      localStorage.setItem('restaurant_decor_owned', JSON.stringify(ownedRestaurantDecorations));
+      showMissionToast(item.name + 'と交換したよ！');
     }
     selectedRestaurantDecoration = item.id;
-    localStorage.setItem('restaurant_decor_selected',selectedRestaurantDecoration);
+    localStorage.setItem('restaurant_decor_selected', selectedRestaurantDecoration);
+    addRestaurantDecorationPlacement(item);
     updatePoints();
     renderRestaurantShop();
   }
@@ -4568,11 +4689,8 @@
     document.getElementById('restaurant-level-label').innerText = `レストラン レベル ${level} / ${careerLevelCount}`;
     document.getElementById('restaurant-rank-name').innerText = `${stage.name}　${rank}`;
     document.getElementById('restaurant-stage-image').src = stage.image;
-    document.getElementById('restaurant-stage-image').alt = `${stage.name}のイラスト`;
-    const selectedDecoration = restaurantDecorations.find(item => item.id === selectedRestaurantDecoration);
-    const stageDecor = document.getElementById('restaurant-stage-decor');
-    stageDecor.style.display = selectedDecoration ? 'block' : 'none';
-    stageDecor.innerHTML = selectedDecoration ? `<img src="${selectedDecoration.image}" alt="">${selectedDecoration.name}` : '';
+    document.getElementById('restaurant-stage-image').alt = stage.name + 'のイラスト';
+    renderRestaurantStageDecorations();
     document.getElementById('restaurant-coins').innerText = points;
     document.getElementById('restaurant-wallet-coins').innerText = walletCoins;
     document.getElementById('conversation-count').innerText = completedConversations;
