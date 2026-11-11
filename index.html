@@ -5102,20 +5102,41 @@
     document.body.classList.remove('voice-answer-active');
   }
 
-  function checkVoiceAnswer() {
+  async function checkVoiceAnswer() {
     const field = document.getElementById('voice-answer-input');
-    const answer = field ? field.value.trim() : '';
     const status = document.getElementById('mic-status');
+    if (!field) return;
+
+    // iPadの音声入力は、最後の語を入力欄へ反映するまで少し遅れることがある。
+    // 先にフォーカスを外して音声入力を確定し、文字列が落ち着いてから採点する。
+    const target = normalizeSpeech(currentTargetSpeech);
+    const wasGreeting = target.includes('what would you like');
+    const beforeBlur = field.value;
+    field.blur();
+    status.classList.remove('error');
+    status.innerText = '音声入力を確定しています…';
+    await new Promise(resolve => window.setTimeout(resolve, 500));
+
+    let answer = field.value.trim();
+    const words = normalizeSpeech(answer).split(' ').filter(Boolean);
+    const questionPrefixPresent = ['what','would','you'].every(word => words.includes(word));
+    // 質問の最後の like だけがまだ反映されていない場合は、末尾語の確定をもう少し待つ。
+    if (wasGreeting && questionPrefixPresent && !words.some(word => ['like','likes','liked','light','life'].includes(word))) {
+      await new Promise(resolve => window.setTimeout(resolve, 900));
+      answer = field.value.trim();
+    }
+
     if (!answer) {
       status.classList.add('error');
       status.innerText = '先に英文を音声入力してから、判定ボタンを押してください。';
-      if (field) field.focus({ preventScroll: true });
+      field.focus({ preventScroll: true });
       return;
     }
     status.classList.remove('error');
+    status.innerText = '';
     const stepBeforeCheck = currentStep;
-    if (field) field.value = '';
     checkSpeechFlex(answer);
+    field.value = '';
     if (currentStep !== stepBeforeCheck) {
       window.setTimeout(() => {
         document.body.classList.remove('voice-answer-active');
