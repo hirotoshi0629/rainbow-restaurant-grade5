@@ -1513,7 +1513,7 @@
     </section>
     <section class="world-tour-box">
       <h3>ワールドレストランツアー</h3>
-      <div class="tour-passport" id="tour-passport">レベル 20で世界ツアーがオープン</div>
+      <div class="tour-passport" id="tour-passport">レベル 2で世界ツアーがオープン</div>
       <div class="tour-grid" id="tour-grid"></div>
       <div class="tour-feature" id="tour-city-feature">
         <img id="tour-city-feature-image" src="assets/world-tour/new-york.webp" alt="">
@@ -1661,7 +1661,12 @@
 
   const careerLevelCount = 30;
   const careerRankNames = ['ルーキー','ブロンズ','シルバー','ゴールド','プラチナ'];
-  const worldTourUnlockLevel = 20;
+  // 6つの建物ステージをレベル12までに達成し、以降は最終ステージを維持する。
+  const restaurantStageLevelRanges = [
+    { from:1, to:2 }, { from:3, to:4 }, { from:5, to:6 },
+    { from:7, to:8 }, { from:9, to:9 }, { from:10, to:12 }
+  ];
+  const worldTourUnlockLevel = 2;
   const worldTourCities = [
     { name:'ニューヨーク', jp:'ニューヨーク', stamps:0, image:'assets/world-tour/new-york.webp', foods:[{id:10,jp:'ハンバーガー'},{id:11,jp:'ホットドッグ'},{id:36,jp:'ドーナツ'}] },
     { name:'ロンドン', jp:'ロンドン', stamps:1, image:'assets/world-tour/london.webp', foods:[{id:5,jp:'フィッシュ'},{id:12,jp:'チップス'},{id:28,jp:'紅茶'}] },
@@ -4676,7 +4681,7 @@
   function renderMyRestaurant() {
     if (!weeklyMissionState) initWeeklyMissions();
     const level = currentCareerLevel();
-    const stageIndex = Math.min(restaurantStages.length - 1, Math.floor((level - 1) / 5));
+    const stageIndex = Math.max(0, restaurantStageLevelRanges.findIndex(range => level >= range.from && level <= range.to)) < 0 ? restaurantStages.length - 1 : restaurantStageLevelRanges.findIndex(range => level >= range.from && level <= range.to);
     const stage = restaurantStages[stageIndex];
     const rank = careerRankNames[(level - 1) % 5];
     document.getElementById('restaurant-level-label').innerText = `レストラン レベル ${level} / ${careerLevelCount}`;
@@ -4691,7 +4696,7 @@
     document.getElementById('rush-best').innerText = lunchRushBest;
     const road = document.getElementById('stage-road');
     road.innerHTML = restaurantStages.map((item, index) =>
-      `<div class="stage-step ${index <= stageIndex ? 'reached' : ''} ${index === stageIndex ? 'current' : ''}">Lv.${index*5+1}–${index*5+5}<br>${item.name}</div>`
+      `<div class="stage-step ${index <= stageIndex ? 'reached' : ''} ${index === stageIndex ? 'current' : ''}">Lv.${restaurantStageLevelRanges[index].from}–${restaurantStageLevelRanges[index].to}<br>${item.name}</div>`
     ).join('');
     const requirementBox = document.getElementById('promotion-requirements');
     if (level < careerLevelCount) {
