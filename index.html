@@ -4681,7 +4681,8 @@
   function renderMyRestaurant() {
     if (!weeklyMissionState) initWeeklyMissions();
     const level = currentCareerLevel();
-    const stageIndex = Math.max(0, restaurantStageLevelRanges.findIndex(range => level >= range.from && level <= range.to)) < 0 ? restaurantStages.length - 1 : restaurantStageLevelRanges.findIndex(range => level >= range.from && level <= range.to);
+    const matchedStageIndex = restaurantStageLevelRanges.findIndex(range => level >= range.from && level <= range.to);
+    const stageIndex = matchedStageIndex < 0 ? restaurantStages.length - 1 : matchedStageIndex;
     const stage = restaurantStages[stageIndex];
     const rank = careerRankNames[(level - 1) % 5];
     document.getElementById('restaurant-level-label').innerText = `レストラン レベル ${level} / ${careerLevelCount}`;
