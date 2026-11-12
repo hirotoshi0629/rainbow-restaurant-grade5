@@ -5250,20 +5250,20 @@
   // 認識結果の英文は画面に表示せず、結果と再挑戦の案内だけを表示する。
   checkSpeechFlex = function(userText) {
     const targetSource = String(currentTargetSpeech || '');
-    const priceMode = /\\d/.test(targetSource) && /\\byen\\b/i.test(targetSource);
+    const priceMode = /\d/.test(targetSource) && /\byen\b/i.test(targetSource);
     const target = (priceMode ? normalizePriceSpeech(targetSource) : normalizeSpeech(targetSource))
       .split(' ').filter(Boolean);
     const heard = (priceMode ? normalizePriceSpeech(userText) : normalizeSpeech(userText))
       .split(' ').filter(Boolean)
-      .map(word => word.replace(/^([a-z])\\1(?=[a-z]{2,})/, '$1'));
+      .map(word => word.replace(/^([a-z])\1(?=[a-z]{2,})/, '$1'));
     const used = new Set();
     let matched = 0;
-    const numericTarget = target.find(word => /^\\d+$/.test(word));
+    const numericTarget = target.find(word => /^\d+$/.test(word));
     const numberMatched = numericTarget
       ? (heard.includes(numericTarget) || (typeof expandedNumberMatches === 'function' && expandedNumberMatches(userText, Number(numericTarget))))
       : false;
     for (const word of target) {
-      if (/^\\d+$/.test(word)) {
+      if (/^\d+$/.test(word)) {
         if (numberMatched) matched++;
         continue;
       }
@@ -5283,7 +5283,7 @@
       showJudge(false);
       const percentage = Math.round(ratio * 100);
       document.getElementById('mic-status').innerText = 'もう少し！英文の8割以上を目指して、もう一度言ってみよう。';
-      setTimeout(() => alert(`もう少し！\\n正しく認識できた語：${percentage}%\\nお手本を聞いて、もう一度言ってみよう。`), 300);
+      setTimeout(() => alert('もう少し！\n正しく認識できた語：' + percentage + '%\nお手本を聞いて、もう一度言ってみよう。'), 300);
     }
   };
 </script>
