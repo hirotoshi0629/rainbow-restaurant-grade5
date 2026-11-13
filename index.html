@@ -5290,7 +5290,7 @@
       if (index >= 0) { used.add(index); matched++; }
     }
     const ratio = target.length ? matched / target.length : 0;
-    const ok = ratio >= 0.8;
+    const ok = ratio >= 0.75;
     if (ok) {
       showJudge(true);
       addChatBubble(userText, true, 'あなた');
@@ -5300,7 +5300,7 @@
       retryCountThisRound++;
       showJudge(false);
       const percentage = Math.round(ratio * 100);
-      document.getElementById('mic-status').innerText = 'もう少し！英文の8割以上を目指して、もう一度言ってみよう。';
+      document.getElementById('mic-status').innerText = 'もう少し！英文の75％以上を目指して、もう一度言ってみよう。';
       setTimeout(() => alert('もう少し！\n正しく認識できた語：' + percentage + '%\nお手本を聞いて、もう一度言ってみよう。'), 300);
     }
   };
