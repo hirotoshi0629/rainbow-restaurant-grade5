@@ -1450,9 +1450,9 @@
         <button type="button" class="voice-answer-back" onclick="leaveVoiceAnswerMode()">← 戻る</button>
         <label for="voice-answer-input">英語で答えよう（iPadの音声入力が使えます）</label>
       </div>
-      <p>入力欄をタップし、英語キーボードのマイクから話そう。話し終わると自動で判定します。ボタンでも判定できます。</p>
+      <p>入力欄をタップし、英語キーボードのマイクから話そう。話し終わったら「言い終わった。判定する」を押してください。</p>
       <button type="button" class="voice-answer-example" onclick="playCurrentTargetHint(0.55)">🔊 お手本を聞く</button>
-      <input id="voice-answer-input" class="voice-capture-only" type="text" lang="en-US" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="英語の音声入力欄。認識された英文は表示せず、判定結果のみ表示します。" placeholder="ここをタップして英語で話してください" onfocus="activateVoiceLayout()" oninput="scheduleVoiceAnswerCheck()">
+      <input id="voice-answer-input" class="voice-capture-only" type="text" lang="en-US" inputmode="text" autocomplete="off" autocapitalize="off" spellcheck="false" aria-label="英語の音声入力欄。認識された英文は表示せず、判定結果のみ表示します。" placeholder="ここをタップして英語で話してください" onfocus="activateVoiceLayout()">
       <button type="button" class="voice-answer-submit" onclick="checkVoiceAnswer()">✅ 言い終わった。判定する</button>
       <small>音声入力はiPadの機能を使います。アプリは入力された英文だけを採点し、録音を保存・送信しません。</small>
       <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
@@ -5216,30 +5216,14 @@
   }
 
   let voiceAnswerCheckBusy = false;
-  let voiceAnswerAutoTimer = null;
 
-  function scheduleVoiceAnswerCheck() {
-    const field = document.getElementById('voice-answer-input');
-    if (!field || voiceAnswerCheckBusy || !field.value.trim()) return;
-    window.clearTimeout(voiceAnswerAutoTimer);
-    const snapshot = field.value;
-    voiceAnswerAutoTimer = window.setTimeout(() => {
-      if (field.value !== snapshot) {
-        scheduleVoiceAnswerCheck();
-        return;
-      }
-      checkVoiceAnswer(true);
-    }, 1100);
-  }
-
-  async function checkVoiceAnswer(automatic = false) {
+  async function checkVoiceAnswer() {
     const field = document.getElementById('voice-answer-input');
     const status = document.getElementById('mic-status');
     if (!field || voiceAnswerCheckBusy) return;
     voiceAnswerCheckBusy = true;
-    window.clearTimeout(voiceAnswerAutoTimer);
     status.classList.remove('error');
-    status.innerText = automatic ? '音声入力を確認しています…' : '音声入力を確定しています…';
+    status.innerText = '音声入力を確定しています…';
 
     // iPadの音声入力は最後の語の反映が遅れることがあるため、
     // フォーカスを外す前に入力が少しの間落ち着くのを待つ。
@@ -5257,8 +5241,8 @@
     if (!answer) {
       voiceAnswerCheckBusy = false;
       status.classList.add('error');
-      status.innerText = '先に英文を音声入力してください。';
-      if (!automatic) field.focus({ preventScroll: true });
+      status.innerText = '先に英文を音声入力してから、判定ボタンを押してください。';
+      field.focus({ preventScroll: true });
       return;
     }
 
@@ -5274,7 +5258,8 @@
         document.body.classList.remove('voice-answer-active');
       }, 2200);
     }
-  }</script>
+  }
+</script>
 <script>
   // 音声入力は英文の80%以上の語が一致すれば正解にする。
   // 認識結果の英文は画面に表示せず、結果と再挑戦の案内だけを表示する。
