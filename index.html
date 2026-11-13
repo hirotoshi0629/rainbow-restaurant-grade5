@@ -638,6 +638,8 @@
     .mission-card { display:none; margin:0 0 14px; padding:12px 14px; border-radius:14px; background:linear-gradient(135deg,#fff3e0,#fffde7); border:3px solid #ffb300; }
     .mission-card strong { color:#e65100; font-size:1.05rem; }
     .customer-chip { display:inline-flex; align-items:center; gap:7px; margin-top:7px; padding:5px 10px; border-radius:999px; background:#fff; border:1px solid #ffcc80; font-weight:bold; }
+    .heard-box { display:none; margin:8px 0; padding:9px 12px; background:#eef8ff; border-left:5px solid #2196f3; border-radius:8px; text-align:left; color:#24485b; font-size:1rem; }
+    .heard-box strong { color:#1565c0; }
     .mic-status { margin-top:8px; min-height:24px; text-align:center; font-weight:bold; color:#37474f; }
     .voice-answer-panel { max-width:760px; margin:12px auto; padding:16px; border:2px solid #7ab8d2; border-radius:16px; background:#eef9ff; color:#24485b; text-align:center; }
     .voice-answer-header { display:flex; align-items:center; gap:12px; margin-bottom:8px; }
@@ -1452,6 +1454,7 @@
       <button type="button" class="voice-answer-submit" onclick="checkVoiceAnswer()">✅ 言い終わった。判定する</button>
       <small>音声入力はiPadの機能を使います。アプリは入力された英文だけを採点し、録音を保存・送信しません。</small>
       <div class="mic-status" id="mic-status" role="status" aria-live="polite"></div>
+      <div class="heard-box" id="heard-box" role="status" aria-live="polite"><strong>聞こえた英文：</strong><span id="heard-text"></span></div>
     </div>
 
     <!-- お金支払いエリア（お客役のみ） -->
@@ -5262,6 +5265,12 @@
     const heard = (priceMode ? normalizePriceSpeech(userText) : normalizeSpeech(userText))
       .split(' ').filter(Boolean)
       .map(word => word.replace(/^([a-z])\1(?=[a-z]{2,})/, '$1'));
+    const heardBox = document.getElementById('heard-box');
+    const heardText = document.getElementById('heard-text');
+    if (heardBox && heardText) {
+      heardText.innerText = userText;
+      heardBox.style.display = 'block';
+    }
     const used = new Set();
     let matched = 0;
     const numericTarget = target.find(word => /^\d+$/.test(word));
