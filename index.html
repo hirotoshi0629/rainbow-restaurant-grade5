@@ -1465,6 +1465,7 @@
       <button class="btn-money" onclick="addMoney(1000)">1000円</button>
       <button class="btn-money" onclick="addMoney(100)">100円</button>
       <button class="btn-money" onclick="addMoney(10)">10円</button>
+      <button class="btn-money" onclick="resetInsertedMoney()" aria-label="払う金額を0円に戻す">金額をリセット</button>
       <button style="background:#4caf50; color:white; padding: 6px 16px;" onclick="payMoney()">払う</button>
     </div>
   </div>
@@ -4390,6 +4391,11 @@
   function addMoney(amount) {
     insertedMoney += amount;
     document.getElementById('inserted-money-text').innerText = insertedMoney;
+  }
+
+  function resetInsertedMoney() {
+    insertedMoney = 0;
+    document.getElementById('inserted-money-text').innerText = '0';
   }
 
   function payMoney() {
